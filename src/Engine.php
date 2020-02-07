@@ -40,13 +40,13 @@ class Engine extends Handle
      */
     public function setTheme(string $theme) 
     {
-        if ($this->directoryExists($theme)) {
+        if (Insurance::isDirectory($theme)) {
             $this->theme = $theme;
             return $this;
         }
 
         $mainTheme = implode(DIRECTORY_SEPARATOR, [__DIR__, 'themes' , trim($theme, '/')]);
-        if ($this->directoryExists($mainTheme)) {
+        if (Insurance::isDirectory($mainTheme)) {
             $this->theme = $mainTheme;
             return $this;
         }
@@ -63,7 +63,7 @@ class Engine extends Handle
     {
         $file = $this->reader()->info()['logo.src'];
 
-        return $this->fileExists($file) 
+        return Insurance::isFile($file) 
             ? $file 
             : implode(DIRECTORY_SEPARATOR, [$this->themeDefault, 'assets' , 'logo.png']);
     }
@@ -77,7 +77,7 @@ class Engine extends Handle
     {
         $file = implode(DIRECTORY_SEPARATOR, [$this->theme, 'assets' , 'styles.css']);
 
-        return $this->fileExists($file) 
+        return Insurance::isFile($file) 
             ? $file 
             : implode(DIRECTORY_SEPARATOR, [$this->themeDefault, 'assets' , 'styles.css']);
     }
@@ -91,7 +91,7 @@ class Engine extends Handle
     {
         $file = implode(DIRECTORY_SEPARATOR, [$this->theme, 'assets' , 'scripts.js']);
         
-        return $this->fileExists($file) 
+        return Insurance::isFile($file) 
             ? $file 
             : implode(DIRECTORY_SEPARATOR, [$this->themeDefault, 'assets' , 'scripts.js']);
     }
@@ -105,7 +105,7 @@ class Engine extends Handle
     {
         $file = $this->reader()->info()['favicon'];
 
-        return $this->fileExists($file) 
+        return Insurance::isFile($file) 
             ? $file 
             : implode(DIRECTORY_SEPARATOR, [$this->themeDefault, 'assets' , 'favicon.ico']);
     }
@@ -119,7 +119,7 @@ class Engine extends Handle
     {
         $file = $this->reader()->info()['apple.icon'];
 
-        return $this->fileExists($file) 
+        return Insurance::isFile($file) 
             ? $file 
             : implode(DIRECTORY_SEPARATOR, [$this->themeDefault, 'assets' , 'apple-touch-icon-precomposed.png']);
     }
@@ -133,7 +133,7 @@ class Engine extends Handle
     {
         $file = implode(DIRECTORY_SEPARATOR, [$this->theme, 'document.html']);
         
-        return $this->fileExists($file) 
+        return Insurance::isFile($file) 
             ? $file 
             : implode(DIRECTORY_SEPARATOR, [$this->themeDefault, 'document.html']);
     }
@@ -179,8 +179,8 @@ class Engine extends Handle
         $markdown = $this->reader()->all();
         $replaces = $this->reader()->info();
 
-        $logoSrc      = basename($replaces['logo.src']);
-        $appleIconSrc = basename($replaces['apple.icon']);
+        $logoSrc      = Insurance::basename($replaces['logo.src']);
+        $appleIconSrc = Insurance::basename($replaces['apple.icon']);
 
         $replaces['home']       = "./index.html";
         $replaces['sidemenu']   = $this->convertMenuToHtml($markdown['menu'], './');

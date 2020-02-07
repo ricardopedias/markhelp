@@ -11,8 +11,9 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ### Added
 
--   Adicionada estrutura inicial do projeto
-
+-   Criação do tema padrão com flexibilidade via sass
+-   Implantação do compilador de assets css e javascript baseado em npm
+-   Criação da estrutura básica do projeto
 
 ## Releases
 

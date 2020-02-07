@@ -55,11 +55,11 @@ class Writer extends Handle
         $css            = $this->engine()->css();
         $script         = $this->engine()->script();
         
-        copy($logo, $path . DIRECTORY_SEPARATOR . basename($logo));
-        copy($favicon, $path . DIRECTORY_SEPARATOR . 'favicon.ico');
-        copy($appleTouchIcon, $path . DIRECTORY_SEPARATOR . basename($appleTouchIcon));
-        copy($css, $path . DIRECTORY_SEPARATOR . 'styles.css');
-        copy($script, $path . DIRECTORY_SEPARATOR . 'scripts.js');
+        Insurance::copy($logo, $path . DIRECTORY_SEPARATOR . basename($logo));
+        Insurance::copy($favicon, $path . DIRECTORY_SEPARATOR . 'favicon.ico');
+        Insurance::copy($appleTouchIcon, $path . DIRECTORY_SEPARATOR . basename($appleTouchIcon));
+        Insurance::copy($css, $path . DIRECTORY_SEPARATOR . 'styles.css');
+        Insurance::copy($script, $path . DIRECTORY_SEPARATOR . 'scripts.js');
 
         $filesystem->write('index.html', $list['index']);
         foreach($list['pages'] as $index => $page) {

@@ -69,11 +69,6 @@ main menu {
         transition-duration: 0.2s;
         transition-property: all;
 
-        &:hover {
-          color: $sidebar-font-color-hover;
-          background: $sidebar-bg-color-hover;
-        }
-
         & i.arrow {
           border-color: $sidebar-arrow-color;
           border-width: 0 $sidebar-arrow-weigth $sidebar-arrow-weigth 0;
@@ -106,6 +101,11 @@ main menu {
             color: $sidebar-submenu-font-color;
           }
         }
+      }
+
+      &:hover {
+        color: $sidebar-font-color-hover;
+        background: $sidebar-bg-color-hover;
       }
 
       &.selected,
@@ -210,18 +210,16 @@ $sidebar-right-gap : 25px;
       font-size: $sidebar-title-font-size;
     }
 
-    & ul li {
-      & a {
-        font-size: $sidebar-font-size;
-        padding: $sidebar-item-gap $sidebar-right-gap $sidebar-item-gap $sidebar-left-gap;
+    & ul li a {
+      font-size: $sidebar-font-size;
+      padding: $sidebar-item-gap $sidebar-right-gap $sidebar-item-gap $sidebar-left-gap;
+    }
 
-        &:hover {
-          padding-left: 45 + $sidebar-item-hover-move;
-        }
-      }
+    & ul li ul li a {
+      font-size: $sidebar-submenu-font-size;
 
-      & ul li a {
-        font-size: $sidebar-submenu-font-size;
+      &:hover {
+        padding-left: 45 + $sidebar-item-hover-move;
       }
     }
 

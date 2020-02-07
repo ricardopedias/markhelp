@@ -38,6 +38,20 @@ pre {
   border: solid #dcdddd 1px;
 }
 
+.language-bash .comment {
+  color: #b6b6b6;
+}
+
+.language-javascript {
+  & .punctuation {
+    color: #007e74;
+  }
+
+  & .string {
+    color: red;
+  }
+}
+
 .language-php .string {
   color: red;
 
@@ -102,20 +116,6 @@ pre {
       }
     }
   }
-}
-
-.language-javascript {
-  & .punctuation {
-    color: #007e74;
-  }
-
-  & .string {
-    color: red;
-  }
-}
-
-.language-bash .comment {
-  color: #b6b6b6;
 }
 
 /*

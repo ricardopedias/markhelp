@@ -1,0 +1,87 @@
+header {
+  background: $header-bg-color;
+  font-family: $font-family;
+  position: relative;
+  width: 100%;
+
+  & .logo {
+    display: block;
+    text-decoration: none;
+
+    & .name {
+      -webkit-font-smoothing: antialiased;
+      font-family: $font-family;
+      color: $header-logo-text;
+      font-size: 44px;
+      line-height: 90%;
+    }
+
+    .tagline {
+      font-family: $font-family;
+      color: $header-logo-slogan;
+      font-size: 12px;
+      line-height: 100%;
+      text-transform: uppercase;
+    }
+  }
+}
+
+@media screen and (max-width: 549px) {
+  header {
+    padding: 85px 10px 25px 10px;
+
+    .logo {
+      text-align: center;
+      font-size: 0;
+      line-height: 0;
+
+      .icon {
+        display: block;
+        margin: 0 0 10px 0;
+      }
+
+      .name {
+        display: block;
+        margin: 0 0 10px 0;
+      }
+
+      .tagline {
+        display: block;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 550px) {
+  header {
+    // max-width: 1000px;
+    padding: 20px 250px 20px 30px;
+
+    .logo {
+      font-size: 0;
+      line-height: 0;
+
+      .icon {
+        position: relative;
+        top: 5px;
+        display: inline-block;
+        margin: 0 7px 0 0;
+      }
+
+      .name {
+        margin: 0 7px 0 0;
+      }
+
+      .tagline {
+        display: inline-block;
+        margin: 7px 0;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 850px) {
+  header {
+    padding-left: 45px;
+  }
+}

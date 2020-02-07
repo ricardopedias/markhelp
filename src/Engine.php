@@ -175,7 +175,7 @@ class Engine extends Handle
     {
         $this->reader()->load();
 
-        $template = file_get_contents($this->document());
+        $template = Insurance::getContents($this->document());
         $markdown = $this->reader()->all();
         $replaces = $this->reader()->info();
 

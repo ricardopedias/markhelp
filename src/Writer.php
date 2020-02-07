@@ -55,9 +55,9 @@ class Writer extends Handle
         $css            = $this->engine()->css();
         $script         = $this->engine()->script();
         
-        Insurance::copy($logo, $path . DIRECTORY_SEPARATOR . basename($logo));
+        Insurance::copy($logo, $path . DIRECTORY_SEPARATOR . Insurance::basename($logo));
         Insurance::copy($favicon, $path . DIRECTORY_SEPARATOR . 'favicon.ico');
-        Insurance::copy($appleTouchIcon, $path . DIRECTORY_SEPARATOR . basename($appleTouchIcon));
+        Insurance::copy($appleTouchIcon, $path . DIRECTORY_SEPARATOR . Insurance::basename($appleTouchIcon));
         Insurance::copy($css, $path . DIRECTORY_SEPARATOR . 'styles.css');
         Insurance::copy($script, $path . DIRECTORY_SEPARATOR . 'scripts.js');
 

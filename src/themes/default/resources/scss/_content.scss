@@ -22,10 +22,28 @@ main article {
   & a {
     color: $content-link-color;
     text-decoration: underline;
+  }
 
-    &:hover {
-      color: $content-link-color-hover;
-    }
+  h1 a {
+    color: $content-title1-color;
+    text-decoration: none;
+  }
+
+  h2 a {
+    color: $content-title2-color;
+    text-decoration: none;
+  }
+
+  & a:hover {
+    color: $content-link-color-hover;
+  }
+
+  h1 a:hover {
+    text-decoration: underline;
+  }
+
+  h2 a:hover {
+    text-decoration: underline;
   }
 
   & h1 {
@@ -34,15 +52,6 @@ main article {
     color: $content-title1-color;
     line-height: 100%;
     font-weight: normal;
-
-    & a {
-      color: $content-title1-color;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
   }
 
   & + .quick_links {
@@ -55,15 +64,6 @@ main article {
     color: $content-title2-color;
     line-height: 100%;
     font-weight: normal;
-
-    & a {
-      color: $content-title2-color;
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-    }
   }
 
   & p {

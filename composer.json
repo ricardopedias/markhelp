@@ -1,9 +1,10 @@
 {
     "name": "ricardopedias/markhelp",
-    "type": "project",
-    "description": "Gerador de páginas HTML para documentações escritars em Markdown",
+    "type": "library",
+    "description": "Gerador de páginas HTML para documentações escritas em Markdown",
     "keywords": [
         "help",
+        "parser",
         "markdown",
         "documentation"
     ],
@@ -13,6 +14,11 @@
             "email": "contato@ricardopdias.com.br"
         }
     ],
+    "support": {
+        "docs": "https://github.com/ricardopedias/markhelp",
+        "issues": "https://github.com/ricardopedias/markhelp/issues",
+        "source": "https://github.com/ricardopedias/markhelp"
+    },
     "license": "MIT",
     "require": {
         "php": "^7.2",

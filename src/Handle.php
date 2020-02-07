@@ -51,14 +51,4 @@ abstract class Handle
     {
         return $this->structure;
     }
-
-    // protected function directoryExists($path)
-    // {
-    //     return Insurance::isDirectory($path);
-    // }
-
-    // protected function fileExists($file)
-    // {
-    //     return Insurance::isFile($file);
-    // }
 }

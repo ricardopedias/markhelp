@@ -1,12 +1,18 @@
-
+/* 
+---------------------------------------------------------------------------------------------
+Este script contém a estrutura do javascript a ser compilado para o tema.
+---------------------------------------------------------------------------------------------
+*/
 try {
 
-    window.$ = window.jQuery = require('jquery');
+    window.$ = window.jQuery = require("jquery");
 
-} catch (e) {}
+} catch (e) {
+    console.log(e);
+}
 
-require('html5shiv');
-require('./sidebar');
+require("html5shiv");
+require("./sidebar");
 
-const hljs = require('highlight.js');
+const hljs = require("highlight.js");
 hljs.initHighlightingOnLoad();

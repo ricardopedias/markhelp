@@ -1,0 +1,41 @@
+footer {
+  background-color: $footer-bg-color;
+  color: $footer-text;
+  font-family: $font-family;
+  font-size: 12px;
+  line-height: 175%;
+
+  & span {
+    display: inline-block;
+    margin: 0 5px 0 0;
+
+    & a {
+      color: $footer-link;
+      text-decoration: none;
+
+      &:hover {
+        color: $footer-link-hover;
+        text-decoration: $footer-link-hover-decoration;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 549px) {
+  footer {
+    padding: 25px 15px;
+    text-align: center;
+  }
+}
+
+@media screen and (min-width: 550px) and (max-width: 849px) {
+  footer {
+    padding: 25px 0 25px 30px;
+  }
+}
+
+@media screen and (min-width: 850px) {
+  footer {
+    padding: 25px 0 25px 45px;
+  }
+}

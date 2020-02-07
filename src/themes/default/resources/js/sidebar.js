@@ -9,7 +9,7 @@ $("menu ul li:has(ul)").each(function(){
     $(this).addClass("has-childs");
 
     $(this).find("> a")
-        .attr({ href: 'javascript:void(0);' })
+        .attr({ href: "javascript:void(0);" })
         .click(function() {
             
             if ($(this).parent().hasClass("open")) {

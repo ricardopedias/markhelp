@@ -153,10 +153,6 @@ $sidebar-right-gap : 25px;
         text-align: center;
       }
 
-      // & ul li a {
-      //   font-size: $sidebar-font-size;
-      // }
-
       &.has-childs.open > a,
       &.has-childs.open > a:hover {
         color: $sidebar-submenu-font-color-main !important;
@@ -217,13 +213,16 @@ $sidebar-right-gap : 25px;
 
     & ul li ul li a {
       font-size: $sidebar-submenu-font-size;
-
-      &:hover {
-        padding-left: 45 + $sidebar-item-hover-move;
-      }
     }
 
-    & ul li.has-childs > a,
+    & ul li.has-childs > a {
+      padding-left: 45px !important;
+    }
+
+    & ul li ul li a:hover {
+      padding-left: 45 + $sidebar-item-hover-move;
+    }
+
     & ul li.has-childs > a:hover {
       padding-left: 45px !important;
     }

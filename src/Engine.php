@@ -117,7 +117,7 @@ class Engine extends Handle
      */
     public function appleTouchIcon() : string
     {
-        $file = $this->reader()->info()['apple.touch.icon'];
+        $file = $this->reader()->info()['apple.icon'];
 
         return $this->fileExists($file) 
             ? $file 
@@ -148,13 +148,22 @@ class Engine extends Handle
     private function convertToHtml(string $markdownFile) : string
     {
         $markdown = $this->filesystem()->read($markdownFile);
-        $markdown = $this->fixLinks($markdown);
+        $markdown = str_replace('.md', '.html', $markdown);
         return (new CommonMarkConverter)->convertToHtml($markdown);
     }
 
-    private function fixLinks(string $markdownString) : string
+    private function convertMenuToHtml(string $markdownFile, $prefix) : string
     {
-        return str_replace('.md', '.html', $markdownString);
+        $markdown = $this->filesystem()->read($markdownFile);
+
+        $markdown = str_replace("index.md", "{$prefix}index.md", $markdown);
+        foreach($this->reader()->all()['pages'] as $linkPage) {
+            $markdown = str_replace($linkPage, "{$prefix}{$linkPage}", $markdown);
+        }
+
+        $markdown = str_replace('.md', '.html', $markdown);
+
+        return (new CommonMarkConverter)->convertToHtml($markdown);
     }
 
     /**
@@ -166,26 +175,38 @@ class Engine extends Handle
     {
         $this->reader()->load();
 
-        $html = $this->reader()->all();
-        $html['index'] = $this->convertToHtml($html['index']);
-        $html['menu'] = $this->convertToHtml($html['menu']);
-        foreach($html['pages'] as $index => $page) {
-            $html['pages'][$index] = $this->convertToHtml($page);
-        }
+        $template = file_get_contents($this->document());
+        $markdown = $this->reader()->all();
+        $replaces = $this->reader()->info();
 
-        $replaces = array_merge([
-            'sidemenu' => $html['menu'],
-            'content'  => $html['index']
-        ], $this->reader()->info());
-        $replaces['logo.src']         = basename($replaces['logo.src']);
-        $replaces['favicon']          = 'favicon.ico';
-        $replaces['apple.touch.icon'] = basename($replaces['apple.touch.icon']);
+        $logoSrc      = basename($replaces['logo.src']);
+        $appleIconSrc = basename($replaces['apple.icon']);
 
-        $document = file_get_contents($this->document());
-        $this->structure['index'] = $this->replace($document, $replaces);
-        foreach($html['pages'] as $index => $page) {
-            $replaces['content'] = $page;
-            $this->structure['pages'][$index] = $this->replace($document, $replaces);
+        $replaces['home']       = "./index.html";
+        $replaces['sidemenu']   = $this->convertMenuToHtml($markdown['menu'], './');
+        $replaces['content']    = $this->convertToHtml($markdown['index']);
+        $replaces['logo.src']   = $logoSrc;
+        $replaces['favicon']    = 'favicon.ico';
+        $replaces['apple.icon'] = $appleIconSrc;
+        $replaces['styles']     = "./styles.css";
+        $replaces['scripts']    = "./scripts.js";
+
+        $this->structure['index'] = $this->replace($template, $replaces);
+
+        foreach($markdown['pages'] as $index => $page) {
+
+            $prefix = $this->reader()->linkDots()['pages'][$index];
+
+            $replaces['home']       = "{$prefix}index.html";
+            $replaces['sidemenu']   = $this->convertMenuToHtml($markdown['menu'], $prefix);
+            $replaces['content']    = $this->convertToHtml($page);
+            $replaces['logo.src']   = "{$prefix}{$logoSrc}";
+            $replaces['favicon']    = "{$prefix}favicon.ico";
+            $replaces['apple.icon'] = "{$prefix}{$appleIconSrc}";
+            $replaces['styles']     = "{$prefix}styles.css";
+            $replaces['scripts']    = "{$prefix}scripts.js";
+
+            $this->structure['pages'][$index] = $this->replace($template, $replaces);
         }
 
         return $this;

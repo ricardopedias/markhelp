@@ -19,6 +19,15 @@ main article {
   line-height: 160%;
   font-weight: normal;
 
+  & a {
+    color: $content-link-color;
+    text-decoration: underline;
+
+    &:hover {
+      color: $content-link-color-hover;
+    }
+  }
+
   & h1 {
     -webkit-font-smoothing: antialiased;
     font-family: $font-family;
@@ -59,15 +68,6 @@ main article {
 
   & p {
     margin: 15px 0;
-  }
-
-  & a {
-    color: $content-link-color;
-    text-decoration: underline;
-
-    &:hover {
-      color: $content-link-color-hover;
-    }
   }
 
   & li {

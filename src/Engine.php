@@ -148,7 +148,13 @@ class Engine extends Handle
     private function convertToHtml(string $markdownFile) : string
     {
         $markdown = $this->filesystem()->read($markdownFile);
+        $markdown = $this->fixLinks($markdown);
         return (new CommonMarkConverter)->convertToHtml($markdown);
+    }
+
+    private function fixLinks(string $markdownString) : string
+    {
+        return str_replace('.md', '.html', $markdownString);
     }
 
     /**

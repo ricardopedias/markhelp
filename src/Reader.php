@@ -6,20 +6,25 @@ namespace MarkHelp;
 class Reader extends Handle
 {
     private $info = [
-        'logo.src'         => __DIR__ . '/themes/assets/logo.png',
-        'logo.status'      => 'active',
-        'project.name'     => 'Mark Help',
-        'project.slogan'   => 'Gerador de documentação',
-        'current.page'     => '',
-        'github.url'       => 'https://github.com/ricardopedias/markhelp',
-        'github.fork'      => 'active',
-        'copy.name'        => 'Open Source',
-        'copy.url'         => 'http://www.ricardopdias.com.br',
-        'design.by'        => 'Design by',
-        'designer.name'    => 'Ricardo Pereira',
-        'designer.url'     => 'http://www.ricardopdias.com.br',
-        'favicon'          => __DIR__ . '/themes/assets/favicon.ico',
-        'apple.touch.icon' => __DIR__ . '/themes/assets/apple-touch-icon-precomposed.png'
+        'logo.src'       => __DIR__ . '/themes/assets/logo.png',
+        'logo.status'    => 'active',
+        'project.name'   => 'Mark Help',
+        'project.slogan' => 'Gerador de documentação',
+        'current.page'   => '',
+        'github.url'     => 'https://github.com/ricardopedias/markhelp',
+        'github.fork'    => 'active',
+        'copy.name'      => 'Open Source',
+        'copy.url'       => 'http://www.ricardopdias.com.br',
+        'design.by'      => 'Design by',
+        'designer.name'  => 'Ricardo Pereira',
+        'designer.url'   => 'http://www.ricardopdias.com.br',
+        'favicon'        => __DIR__ . '/themes/assets/favicon.ico',
+        'apple.icon'     => __DIR__ . '/themes/assets/apple-touch-icon-precomposed.png'
+    ];
+
+    private $linkDots = [
+        'index' => null,
+        'pages' => []
     ];
 
     /**
@@ -43,6 +48,17 @@ class Reader extends Handle
         return $this->info;
     }
 
+    public function linkDots()
+    {
+        return $this->linkDots;
+    }
+
+    private function extractLinkDots($url)
+    {
+        $levels = substr_count ($url, "/");
+        return "./" . str_repeat("../", $levels);
+    }
+
     /**
      * Lé os arquivos markdown contidos no ditretório base
      * 
@@ -60,6 +76,7 @@ class Reader extends Handle
 
             if ($item['path'] === 'index.md') {
                 $this->structure['index'] = $item['path'];
+                $this->linkDots['index'] = $this->extractLinkDots($item['path']);
                 continue;
             }
 
@@ -70,6 +87,7 @@ class Reader extends Handle
 
             if (substr($item['path'], -2) === 'md') {
                 $this->structure['pages'][] = $item['path'];
+                $this->linkDots['pages'][] = $this->extractLinkDots($item['path']);
             }
         }
     }

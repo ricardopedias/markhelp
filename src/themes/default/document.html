@@ -9,9 +9,8 @@
 
         <meta name="description" content="{{ site.data.project.description }}">
         <link rel="icon" type="image/x-icon" href="{{ favicon }}" />
-        <link rel="apple-touch-icon-precomposed" href="{{ apple.touch.icon }}">
-        <link rel="stylesheet" href="styles.css">
-        <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" /> -->
+        <link rel="apple-touch-icon-precomposed" href="{{ apple.icon }}">
+        <link rel="stylesheet" href="{{ styles }}">
     </head>
     <body>
 
@@ -20,7 +19,7 @@
         </a>
 
         <header>
-            <a class="logo" href="index.html">
+            <a class="logo" href="{{ home }}">
                 <span class="icon {{ logo.status }}">
                     <img src="{{ logo.src }}" width="50" height="40" alt="{{ project.name }} - {{ project.slogan }}">
                 </span>
@@ -37,16 +36,6 @@
 
         <main>
             <menu>
-                <!-- 
-                <div class="version-select">
-                    <select class="version-select select2" style="width: 100%" data-minimum-results-for-search="5">
-                        <option value="3.0" selected="selected">3.0</option>
-                        <option value="2.0">2.0</option>
-                        <option value="1.0">1.0</option>
-                    </select>
-                </div>
-                -->
-
                 {{ sidemenu }}
             </menu>
 
@@ -60,15 +49,7 @@
             <span>{{ design.by }} <a href="{{ designer.url  }}">{{ designer.name }}</a>.</span>
         </footer>
 
-        <script src="scripts.js"></script>
-        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script> -->
-        <script>
-            $('select.select2').select2().on('change', function(e) {
-                var pathParts = window.location.pathname.split("/");
-                pathParts[1] = e.currentTarget.value;
-                window.location.href = pathParts.join("/");
-            });
-        </script>
+        <script src="{{ scripts }}"></script>
 
     </body>
 </html>

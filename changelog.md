@@ -11,10 +11,41 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ### Added
 
--   Criação do tema padrão com flexibilidade via sass
--   Implantação do compilador de assets css e javascript baseado em npm
--   Criação da estrutura básica do projeto
+-   Nenhuma alteração efetuada ainda.
+
+## \[1.0.0] - 2020-07-07
+
+### Added
+
+-   Diversas refatorações e otimizações no código fonte.
+
+## \[0.2.1] - 2020-07-07
+
+### Added
+
+-   Adicionado prefixos corretos nos links das páginas html.
+
+### Fixed
+
+-   Correção de diversos code smells identificados pelo Codacy
+
+## \[0.2.0] - 2020-07-06
+
+### Added
+
+-   Criação do tema padrão para as documentações.
+-   Adicionado correção de links de arquivos .md para .html.
+
+## \[0.1.0] - 2020-07-05
+
+### Added
+
+-   Criação da estrutura básica do projeto.
 
 ## Releases
 
-Ainda não há releases lançados
+-   Unreleased <https://github.com/ricardopedias/markhelp/compare/v1.0.0...HEAD>
+-   1.0.0 <https://github.com/ricardopedias/markhelp/compare/v0.2.1...v1.0.0>
+-   0.2.1 <https://github.com/ricardopedias/markhelp/compare/v0.2.0...v0.2.1>
+-   0.2.0 <https://github.com/ricardopedias/markhelp/compare/v0.1.0...v0.2.0>
+-   0.1.0 <https://github.com/ricardopedias/markhelp/releases/tag/v0.1.0>

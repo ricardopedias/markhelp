@@ -9,8 +9,6 @@ use League\Flysystem\MountManager;
 
 class Filesystem extends MountManager
 {
-    private $filesystem = null;
-
     /**
      * Constrói um gerenciador de arquivos.
      * O argumento $storages deve ser um array associativo, 

@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+
+use Symfony\Component\Console\Input\ArgvInput as Input;
+use Symfony\Component\Console\Output\ConsoleOutput as Output;
+
+define('APP_START', microtime(true));
+
+require __DIR__.'/Support/Vendor/autoload.php';
+
+$input = new Input;
+$output = new Output;
+
+$config = new Config($this->pathOrigin);
+$reader = new Reader($config);
+
+$writer = new Writer($reader);
+$writer->saveTo($this->pathDestination);
+
+exit(0);

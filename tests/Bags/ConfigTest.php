@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace Tests\Bags;
 
 use MarkHelp\Bags\Config;
-use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use Tests\TestCase;
 
 class ConfigTest extends TestCase
 {
@@ -22,7 +22,7 @@ class ConfigTest extends TestCase
 
         // tema padrão
         $reflect = new ReflectionClass(Config::class);
-        $parentDir = dirname(dirname($reflect->getFilename()));
+        $parentDir = $this->dirname($this->dirname($reflect->getFilename()));
         $this->assertEquals("{$parentDir}/Themes/default", $bag->param('path.theme'));
 
         $this->assertFalse($bag->param('generate.phpindex'));

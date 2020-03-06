@@ -1,5 +1,6 @@
 header {
   background: $header-bg-color;
+  border-bottom: $header-border-bottom-size solid $header-border-bottom-color;
   font-family: $font-family;
   position: relative;
   width: 100%;

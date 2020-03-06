@@ -3,28 +3,31 @@ $font-family: 'Raleway';
 $code-font-family: 'Fira Code', monospace;
 
 $header-bg-color: lighten(black, 90%);
-$header-logo-text: #ff4143;
+$header-logo-text: #336888;
 $header-logo-slogan: lighten(black, 70%);
+$header-border-bottom-color: darken($header-bg-color, 5%);
+$header-border-bottom-size: 1px;
 
-$sidebar-bg-color: #2b3d50;
-$sidebar-bg-color-hover: darken($sidebar-bg-color, 5%);
 $sidebar-font-family: $font-family;
-$sidebar-font-size: 17px;
-$sidebar-font-color: lighten($sidebar-bg-color, 50%);
-$sidebar-font-color-hover: lighten($sidebar-font-color, 5%);
 
 $sidebar-title-font-family: $font-family;
-$sidebar-title-font-size: 13px;
+$sidebar-title-font-size: 15px;
 $sidebar-title-font-color: #fff;
 
-$sidebar-submenu-bg-color: $sidebar-bg-color-hover;
+$sidebar-menu-bg-color: #2b3d50;
+$sidebar-menu-bg-color-hover: darken($sidebar-menu-bg-color, 5%);
+$sidebar-menu-font-size: 17px;
+$sidebar-menu-font-color: lighten($sidebar-menu-bg-color, 50%);
+$sidebar-menu-font-color-hover: lighten($sidebar-menu-font-color, 5%);
+
+$sidebar-submenu-bg-color: $sidebar-menu-bg-color-hover;
 $sidebar-submenu-bg-color-hover: darken($sidebar-submenu-bg-color, 10%);
 $sidebar-submenu-font-size: 15px;
-$sidebar-submenu-font-color: $sidebar-font-color;
-$sidebar-submenu-font-color-hover: darken($sidebar-font-color, 10%);
+$sidebar-submenu-font-color: $sidebar-menu-font-color;
+$sidebar-submenu-font-color-hover: darken($sidebar-menu-font-color, 10%);
 $sidebar-submenu-font-color-main: #fff;
 
-$sidebar-arrow-color: rgba(0, 0, 0, 0.3);
+$sidebar-arrow-color: lighten($sidebar-menu-bg-color, 10%);
 $sidebar-arrow-size: 10px;
 $sidebar-arrow-weigth: 2px;
 $sidebar-item-gap: 10px;
@@ -39,7 +42,7 @@ $footer-link-hover-decoration: underline;
 $select-bg-color: #6abcdd;
 $select-font-color:darken($select-bg-color, 30%);
 
-$content-title1-color: #ff4143;
+$content-title1-color: #417aff;
 $content-title2-color: $content-title1-color;
 $content-title3-color: $content-title1-color;
 $content-title4-color: $content-title1-color;

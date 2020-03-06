@@ -7,12 +7,12 @@
 
         <title>{{ current.page }}{{ project.name }}</title>
 
-        <meta name="description" content="{{ site.data.project.description }}">
+        <meta name="description" content="{{ project.description }}">
         <meta name="author" content="https://www.ricardopdias.com.br">
 
-        <link rel="icon" type="image/x-icon" href="{{ favicon }}">
-        <link rel="apple-touch-icon-precomposed" href="{{ apple.icon }}">
-        <link rel="stylesheet" href="{{ styles }}">
+        <link rel="icon" type="image/x-icon" href="{{ assets.icon.favicon }}">
+        <link rel="apple-touch-icon-precomposed" href="{{ assets.icon.apple }}">
+        <link rel="stylesheet" href="{{ assets.styles }}">
     </head>
     <body>
 
@@ -23,7 +23,7 @@
         <header>
             <a class="logo" href="{{ home }}">
                 <span class="icon {{ logo.status }}">
-                    <img src="{{ logo.src }}" width="50" height="40" alt="{{ project.name }} - {{ project.slogan }}">
+                    <img src="{{ assets.logo.src }}" width="50" height="40" alt="{{ project.name }} - {{ project.slogan }}">
                 </span>
                 <span class="name">{{ project.name }}</span>
                 <span class="tagline">{{ project.slogan }}</span>
@@ -48,10 +48,10 @@
 
         <footer>
             <span>&copy; Copyright <a href="{{ copy.url }}">{{ copy.name }}</a>.</span>
-            <span>{{ design.by }} <a href="{{ designer.url  }}">{{ designer.name }}</a>.</span>
+            <span>{{ created.by }} <a href="{{ creator.url  }}">{{ creator.name }}</a>.</span>
         </footer>
 
-        <script src="{{ scripts }}"></script>
+        <script src="{{ assets.scripts }}"></script>
 
     </body>
 </html>

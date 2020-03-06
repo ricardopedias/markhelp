@@ -23,7 +23,6 @@ label[for="menu"] {
   cursor: pointer;
   display: none;
   font-family: $font-family;
-  font-size: $sidebar-font-size;
   line-height: 100%;
   padding: 15px;
   text-transform: uppercase;
@@ -45,6 +44,7 @@ main menu {
   & h2 {
     color: $sidebar-title-font-color;
     font-family: $sidebar-title-font-family;
+    font-size: $sidebar-title-font-size;
     font-weight: normal;
     line-height: 100%;
     text-transform: uppercase;
@@ -59,9 +59,10 @@ main menu {
       display: block;
 
       & a {
-        color: $sidebar-font-color;
+        color: $sidebar-menu-font-color;
         display: block;
         font-family: $font-family;
+        font-size: $sidebar-menu-font-size;
         font-weight: normal;
         line-height: 100%;
         position: relative;
@@ -99,13 +100,14 @@ main menu {
           // padding-left: 10px;
           & a {
             color: $sidebar-submenu-font-color;
+            font-size: $sidebar-submenu-font-size;
           }
         }
       }
 
       &:hover {
-        color: $sidebar-font-color-hover;
-        background: $sidebar-bg-color-hover;
+        color: $sidebar-menu-font-color-hover;
+        background: $sidebar-menu-bg-color-hover;
       }
 
       &.selected,
@@ -137,18 +139,20 @@ $sidebar-right-gap : 25px;
 @media screen and (max-width: 549px) {
   main menu {
     float: left;
-    padding: 10px 0;
+    padding: $sidebar-item-gap 0;
     width: 50%;
 
+    & > ul {
+      margin-top: ($sidebar-item-gap*2);
+    }
+
     & h2 {
-      font-size: $sidebar-title-font-size - ($sidebar-title-font-size/12);
-      margin: 35px 15px 5px 15px;
+      margin: ($sidebar-item-gap*3) 0 ($sidebar-item-gap + ($sidebar-item-gap/2)) 0;
       text-align: center;
     }
 
     & ul li {
       & a {
-        font-size: $sidebar-font-size;
         padding: ($sidebar-item-gap + ($sidebar-item-gap/2)) 0;
         text-align: center;
       }
@@ -165,16 +169,20 @@ $sidebar-right-gap : 25px;
   main menu {
     float: left;
     width: 200px;
-    padding: 10px 0 30px 0;
+    padding: $sidebar-item-gap 0 ($sidebar-item-gap*3) 0;
+
+    & > ul {
+      margin-top: ($sidebar-item-gap*2);
+    }
 
     & h2 {
-      margin: 35px 20px 5px 30px;
-      font-size: $sidebar-title-font-size - ($sidebar-title-font-size/12);
+      font-size: $sidebar-title-font-size - $sidebar-title-font-size/($sidebar-title-font-size/2);
+      margin: ($sidebar-item-gap*3) ($sidebar-right-gap - ($sidebar-right-gap/5)) $sidebar-item-gap ($sidebar-left-gap - ($sidebar-left-gap/5));
     }
 
     & ul li {
       & a {
-        font-size: $sidebar-font-size - $sidebar-font-size/($sidebar-font-size/2);
+        font-size: $sidebar-menu-font-size - $sidebar-menu-font-size/($sidebar-menu-font-size/2);
         padding: $sidebar-item-gap ($sidebar-right-gap - ($sidebar-right-gap/5)) $sidebar-item-gap ($sidebar-left-gap - ($sidebar-left-gap/5));
       }
 
@@ -199,21 +207,23 @@ $sidebar-right-gap : 25px;
   main menu {
     float: left;
     width: 250px;
-    padding: 15px 0 50px 0;
+    padding: $sidebar-item-gap 0 ($sidebar-item-gap*4) 0;
+
+    & > ul {
+      margin-top: ($sidebar-item-gap*2);
+    }
 
     & h2 {
-      margin: 35px 25px 5px 45px;
-      font-size: $sidebar-title-font-size;
+      margin: ($sidebar-item-gap*3) $sidebar-right-gap $sidebar-item-gap $sidebar-left-gap;
     }
 
     & ul li a {
-      font-size: $sidebar-font-size;
       padding: $sidebar-item-gap $sidebar-right-gap $sidebar-item-gap $sidebar-left-gap;
     }
 
-    & ul li ul li a {
-      font-size: $sidebar-submenu-font-size;
-    }
+    // & ul li ul li a {
+    //   font-size: $sidebar-submenu-font-size;
+    // }
 
     & ul li.has-childs > a {
       padding-left: 45px !important;
@@ -242,7 +252,7 @@ main {
   main {
     background-size: 50% 1px;
     background-repeat: repeat-y;
-    background-image: linear-gradient($sidebar-bg-color 100%, $sidebar-bg-color 100%);
+    background-image: linear-gradient($sidebar-menu-bg-color 100%, $sidebar-menu-bg-color 100%);
   }
 }
 
@@ -250,7 +260,7 @@ main {
   main {
     background-size: 200px 1px;
     background-repeat: repeat-y;
-    background-image: linear-gradient($sidebar-bg-color 100%, $sidebar-bg-color 100%);
+    background-image: linear-gradient($sidebar-menu-bg-color 100%, $sidebar-menu-bg-color 100%);
   }
 }
 
@@ -258,6 +268,6 @@ main {
   main {
     background-size: 250px 1px;
     background-repeat: repeat-y;
-    background-image: linear-gradient($sidebar-bg-color 100%, $sidebar-bg-color 100%);
+    background-image: linear-gradient($sidebar-menu-bg-color 100%, $sidebar-menu-bg-color 100%);
   }
 }

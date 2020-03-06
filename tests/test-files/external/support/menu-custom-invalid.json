@@ -1,0 +1,13 @@
+{
+    "Teste {{ teste.menu.item }}" : "teste.html",
+    "Básico" : "O Básico/page-five.md",
+    "Intermediário" : [
+        { "Página Seis" : "O Básico/page-six.md" },
+        { "Página Um" : "page-one.md" },
+        { "Página Dois" : "page-two.md" }
+    ],
+    "Avançado" : [
+        { "Página Três" : "Avançado/page-three.md" },
+        { "Página Quatro" : "Avançado/page-four.md" }
+    ]
+}

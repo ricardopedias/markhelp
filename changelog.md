@@ -11,15 +11,27 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ### Added
 
--   Nenhuma alteração efetuada ainda.
+-   Criada a aplicação MarkHelp
+-   Adicionado carregamento de configurações via arquivo json
 
-## \[1.0.0] - 2020-07-07
+## \[0.4.0] - 2020-03-06
 
 ### Added
 
+-   Adicionados scripts para execução de testes via composer.
+
+### Changed
+
+-   Melhoria na arquitetura do projeto.
+-   Melhoria no tema padrão
+
+## \[0.3.0] - 2020-02-08
+
+### Changed
+
 -   Diversas refatorações e otimizações no código fonte.
 
-## \[0.2.1] - 2020-07-07
+## \[0.2.1] - 2020-02-07
 
 ### Added
 
@@ -29,14 +41,14 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 -   Correção de diversos code smells identificados pelo Codacy
 
-## \[0.2.0] - 2020-07-06
+## \[0.2.0] - 2020-02-06
 
 ### Added
 
 -   Criação do tema padrão para as documentações.
 -   Adicionado correção de links de arquivos .md para .html.
 
-## \[0.1.0] - 2020-07-05
+## \[0.1.0] - 2020-02-05
 
 ### Added
 
@@ -44,8 +56,9 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ## Releases
 
--   Unreleased <https://github.com/ricardopedias/markhelp/compare/v1.0.0...HEAD>
--   1.0.0 <https://github.com/ricardopedias/markhelp/compare/v0.2.1...v1.0.0>
+-   Unreleased <https://github.com/ricardopedias/markhelp/compare/v0.4.0...HEAD>
+-   0.4.0 <https://github.com/ricardopedias/markhelp/compare/v0.3.0...v0.4.0>
+-   0.3.0 <https://github.com/ricardopedias/markhelp/compare/v0.2.1...v0.3.0>
 -   0.2.1 <https://github.com/ricardopedias/markhelp/compare/v0.2.0...v0.2.1>
 -   0.2.0 <https://github.com/ricardopedias/markhelp/compare/v0.1.0...v0.2.0>
 -   0.1.0 <https://github.com/ricardopedias/markhelp/releases/tag/v0.1.0>

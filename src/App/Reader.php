@@ -370,7 +370,7 @@ class Reader
 
         if (! isset($this->mountedDirectories[$point])) {
             $this->filesystem->mount($point, $directory);
-            $mountedDirectories[$point] = true;
+            $this->mountedDirectories[$point] = true;
         }
 
         if ($this->filesystem->has("{$point}://{$basename}") === false){

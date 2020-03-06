@@ -1,0 +1,7 @@
+{
+    "logo.status"        : "true",
+    "generate.phpindex"  : {
+        "project.name"       : "Mark Help",
+        "project.slogan"     : "Gerador de documentação"
+    }
+}

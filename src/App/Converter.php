@@ -72,7 +72,7 @@ class Converter
 
         $this->menuContent = @json_decode($this->menuContent, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception("The menu file does not contain a json");
+            throw new Exception("The menu file does not contain a json: " . \json_last_error_msg());
         }
 
         return $this->menuContent;

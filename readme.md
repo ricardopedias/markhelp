@@ -13,6 +13,8 @@ Ferramenta que gera páginas html a partir de documentações escritas em markdo
 
 Sinta-se à vontade para conferir o [changelog](changelog.md), os [releases](https://github.com/ricardopedias/markhelp/releases) e a [licença](license.md).
 
+Acesse também a [documentação online](/docs/index.md) e confira os recursos disponiveis nesta biblioteca.
+
 ## Características
 
 -   Feito para o PHP 7 ou superior;

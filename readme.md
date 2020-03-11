@@ -9,6 +9,8 @@ By [Ricardo Pereira Dias](http://www.ricardopdias.com.br) ©
 [![Follow](https://img.shields.io/github/followers/ricardopedias?label=Siga%20no%20GitHUB&style=social)](https://github.com/ricardopedias)
 [![Twitter](https://img.shields.io/twitter/follow/ricardopedias?label=Siga%20no%20Twitter)](https://twitter.com/ricardopedias)
 
+> **ATENÇÃO**: esta ferramenta está em uma versão instável e pode apresentar resultados indesejados. Use-a por usa conta e risco!
+
 Ferramenta que gera páginas html a partir de documentações escritas em markdown.
 
 Sinta-se à vontade para conferir o [changelog](changelog.md), os [releases](https://github.com/ricardopedias/markhelp/releases) e a [licença](license.md).

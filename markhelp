@@ -1,20 +1,71 @@
 #!/usr/bin/env php
-<?php
+<?php declare(strict_types=1);
 
-use Symfony\Component\Console\Input\ArgvInput as Input;
-use Symfony\Component\Console\Output\ConsoleOutput as Output;
+/*
+ * This file is part of MarkHelp.
+ *
+ * (c) Ricardo Pereira <contato@ricardopdias.com.br>
+ *
+ * For the full copyright and license information, please view the licence.md
+ * file that was distributed with this source code.
+ */
+
+use MarkHelp\Console\Cli;
+use MarkHelp\Console\Commands\MainCommand;
+use MarkHelp\Console\Input;
+use MarkHelp\Console\Output;
 
 define('APP_START', microtime(true));
 
-require __DIR__.'/Support/Vendor/autoload.php';
+if (version_compare('7.2.0', PHP_VERSION, '>')) {
+    fwrite(
+        STDERR,
+        sprintf(
+            'This version of MarkHelp is supported on PHP 7.2, PHP 7.3, and PHP 7.4.' . PHP_EOL .
+            'You are using PHP %s (%s).' . PHP_EOL,
+            PHP_VERSION,
+            PHP_BINARY
+        )
+    );
+
+    die(1);
+}
+
+if (!ini_get('date.timezone')) {
+    ini_set('date.timezone', 'UTC');
+}
+
+$locations = [__DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php'];
+foreach ($locations as $file) {
+    if (file_exists($file)) {
+        define('MARKHELP_COMPOSER_INSTALL', $file);
+
+        break;
+    }
+}
+
+unset($file);
+
+if (!defined('MARKHELP_COMPOSER_INSTALL')) {
+    fwrite(
+        STDERR,
+        'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
+        '    composer install' . PHP_EOL . PHP_EOL .
+        'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
+    );
+
+    die(1);
+}
+
+require MARKHELP_COMPOSER_INSTALL;
 
 $input = new Input;
 $output = new Output;
 
-$config = new Config($this->pathOrigin);
-$reader = new Reader($config);
+$console = new Cli('0.5.0');
+$console->registerCommand(new MainCommand);
 
-$writer = new Writer($reader);
-$writer->saveTo($this->pathDestination);
+$status = $console->run($input, $output);
+$console->output($input, $status);
 
-exit(0);
+exit($status);

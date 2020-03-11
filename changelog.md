@@ -13,6 +13,7 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 -   Criada a aplicação MarkHelp
 -   Adicionado carregamento de configurações via arquivo json
+-   Adicionado script para execução via terminal
 
 ## \[0.4.0] - 2020-03-06
 

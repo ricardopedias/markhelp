@@ -15,3 +15,5 @@
 /.phpunit.result.cache
 /*.backup
 /tests/destination/*
+*.deb
+/dist

@@ -11,9 +11,6 @@
  */
 
 use MarkHelp\Console\Cli;
-use MarkHelp\Console\Commands\MainCommand;
-use MarkHelp\Console\Input;
-use MarkHelp\Console\Output;
 
 define('APP_START', microtime(true));
 
@@ -59,13 +56,4 @@ if (!defined('MARKHELP_COMPOSER_INSTALL')) {
 
 require MARKHELP_COMPOSER_INSTALL;
 
-$input = new Input;
-$output = new Output;
-
-$console = new Cli('0.5.0');
-$console->registerCommand(new MainCommand);
-
-$status = $console->run($input, $output);
-$console->output($input, $status);
-
-exit($status);
+(new Cli('0.5.0'))->run();

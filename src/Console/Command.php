@@ -103,7 +103,7 @@ class Command extends SymfonyCommand
             $output->writeln('<fg=red>The specified destination is not a valid path</>');
         }
         
-        $source      = rtrim($source, '/') . "/";
+        $source      = $source !== null ? rtrim($source, '/') . "/" : null;
         $destination = rtrim($destination, '/') . "/";
 
         $sourceMessage = "Reading from: {$source}";

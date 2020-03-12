@@ -179,7 +179,7 @@ class Writer
             $this->reader->config()->setParam($assetParam, "{$dotPrefix}assets/{$assetBasename}");
         }
 
-        $this->reader->config()->setParam('home', $dotPrefix);
+        $this->reader->config()->setParam('home', $dotPrefix . "index.html");
 
         return array_merge($this->reader->config()->all(), $replaceUrls);
     }

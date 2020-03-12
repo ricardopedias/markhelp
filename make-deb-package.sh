@@ -61,7 +61,7 @@ sudo cp -rf $PATH_ROOT/vendor/ $PATH_PACKAGE_SHARE/;
 # cria o arquivo de atalho global
 cat > $PATH_PACKAGE_BIN/markhelp <<EOF 
 #!/bin/bash
-/usr/share/markhelp/markhelp $@
+/usr/share/markhelp/markhelp \$@
 EOF
 
 sudo chmod a+x $PATH_PACKAGE_BIN/markhelp;

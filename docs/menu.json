@@ -1,5 +1,9 @@
 {
-    "Instalar" : "instalar.md",
-    "Utilizar" : "utilizar.md",
-    "Ajudar" : "ajudar.md"
+    "Principal" : "index.md",
+    "Instalando" : "instalando.md",
+    "Como Usar" : {
+        "Como biblioteca" : "utilizar-como-biblioteca.md",
+        "No terminal" : "utilizar-no-terminal.md"
+    },
+    "Como Ajudar" : "como-ajudar.md"
 }

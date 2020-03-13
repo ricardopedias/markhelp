@@ -1,6 +1,6 @@
 # Changelog
 
-Este é o registro contendo as alterações mais relevantes efetuadas no framework
+Este é o registro contendo as alterações mais relevantes efetuadas no projeto
 seguindo o padrão que pode ser encontrado em [Keep a Changelog](https://keepachangelog.com/en/1.0.0).
 
 Para obter o diff para uma versão específica, siga para o final deste documento 
@@ -14,6 +14,15 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 -   Criada a aplicação MarkHelp
 -   Adicionado carregamento de configurações via arquivo json
 -   Adicionado script para execução via terminal
+
+### Fixed
+
+-   Correção de bug no carregamento de arquivos de configuração 
+    que fazia o Filesystem gerar diretórios com as palavras chave null, true ou false
+
+### Removed
+
+-   Remoção de diretórios depreciados pela refatoração
 
 ## \[0.4.0] - 2020-03-06
 

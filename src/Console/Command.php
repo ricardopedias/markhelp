@@ -78,6 +78,10 @@ class Command extends SymfonyCommand
         if ($this->isGitUrl($source)) {
             // clonar o repo
             // ...
+            // $helper = $this->getHelper('question');
+            // $question = new Question('Please enter the name of the bundle: ', 'AcmeDemoBundle');
+            // $bundleName = $helper->ask($input, $output, $question);
+            // $output->writeln($bundleName);
         }
 
         try {
@@ -134,26 +138,6 @@ class Command extends SymfonyCommand
         $output->writeln("<fg=green>Documentation site successfully generated</>");
 
         return 0;
-
-        // // $helper = $this->getHelper('question');
-        // // $question = new Question('Please enter the name of the bundle: ', 'AcmeDemoBundle');
-        // // $bundleName = $helper->ask($input, $output, $question);
-        
-        // // $output->writeln($bundleName);
-
-        // // $file = $input->getArgument('file');
-        // // $output->writeln('xxxxx ' . $file);
-
-        // // $section1 = $output->section();
-        // // $section2 = $output->section();
-        // // $section1->writeln('Hello');
-        // // $section2->writeln('World!');
-        // // // Output displays "Hello\nWorld!\n"
-
-        // // // overwrite() replaces all the existing section contents with the given content
-        // // sleep(2);
-        // // $section1->overwrite('Goodbye');
-        // return 0;
     }
 
     private function isGitUrl($path)

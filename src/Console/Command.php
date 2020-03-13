@@ -2,17 +2,18 @@
 declare(strict_types=1);
 namespace MarkHelp\Console;
 
+use MarkHelp\App\Tools;
 use MarkHelp\MarkHelp;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
 use TypeError;
 
 class Command extends SymfonyCommand
 {
+    use Tools;
+
     protected static $defaultName = 'make';
 
     protected function configure()
@@ -85,7 +86,7 @@ class Command extends SymfonyCommand
         }
 
         try {
-            $source = $source !== null ? realpath($source) : null;
+            $source = $source !== null ? $this->absolutePath($source) : null;
         } catch(TypeError $e) {
             $output->writeln('<fg=red>The specified source is not a valid path</>');
             return 1;
@@ -97,7 +98,7 @@ class Command extends SymfonyCommand
         }
 
         try {
-            $destination = $this->getAbsolutePath($destination);
+            $destination = $this->absolutePath($destination);
         } catch(TypeError $e) {
             $output->writeln('<fg=red>The specified destination is not a valid path</>');
             return 1;
@@ -118,12 +119,12 @@ class Command extends SymfonyCommand
         $output->writeln("<fg=blue>{$sourceMessage}</>");
         $output->writeln("<fg=blue>Saving in {$destination}</>");
         
-        if ($config === null && is_file($currentDir . DIRECTORY_SEPARATOR . 'config.json')) {
+        if ($config === null && $this->isFile($currentDir . DIRECTORY_SEPARATOR . 'config.json')) {
             $config = $currentDir . DIRECTORY_SEPARATOR . 'config.json';
             $output->writeln("<fg=blue>Load config.js from current directory</>");
         }
 
-        if ($config === null && is_file($source . DIRECTORY_SEPARATOR . 'config.json')) {
+        if ($config === null && $this->isFile($source . DIRECTORY_SEPARATOR . 'config.json')) {
             $config = $source . 'config.json';
             $output->writeln("<fg=blue>Load config from {$config}</>");
         }
@@ -143,36 +144,6 @@ class Command extends SymfonyCommand
     private function isGitUrl($path)
     {
         return false;
-    }
-
-    /**
-     * @see https://www.php.net/manual/en/function.realpath.php
-     */
-    private function getAbsolutePath($path)
-    {
-        if(DIRECTORY_SEPARATOR !== '/') {
-            $path = str_replace(DIRECTORY_SEPARATOR, '/', $path);
-        }
-        $search = explode('/', $path);
-        $search = array_filter($search, function($part) {
-            return $part !== '.';
-        });
-        $append = array();
-        $match = false;
-        while(count($search) > 0) {
-            $match = realpath(implode('/', $search));
-            if($match !== false) {
-                break;
-            }
-            array_unshift($append, array_pop($search));
-        };
-        if($match === false) {
-            $match = getcwd();
-        }
-        if(count($append) > 0) {
-            $match .= DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $append);
-        }
-        return $match;
     }
 }
 

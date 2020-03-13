@@ -52,6 +52,7 @@ class MarkHelp
                     throw new Exception("Parameter {$param} does not contain a valid value");
                 }
 
+                $value = $this->normalizeValue($value);
                 $this->config->setParam($param, $value);
             }
 
@@ -60,6 +61,19 @@ class MarkHelp
         }
         
         return $this;
+    }
+
+    public function normalizeValue($value)
+    {
+        if ($value === "null") {
+            return null;
+        }
+
+        if (in_array($value, ["true", "false"]) === true) {
+            return (bool) $value;
+        }
+
+        return $value;
     }
 
     public function saveTo(string $pathDestination)

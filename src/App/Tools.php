@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace MarkHelp\App;
 
+use Exception;
 use League\CommonMark\CommonMarkConverter;
 
 trait Tools
@@ -24,7 +25,7 @@ trait Tools
     public function filename($filename)
     {
         $basename = $this->basename($filename);
-        return preg_replace('/\\.[^.\\s]{3,4}$/', '', $basename);
+        return preg_replace('/\\.[^.\\s]{2,}$/', '', $basename);
     }
 
     /**
@@ -73,5 +74,19 @@ trait Tools
         $filename = filter_var($filename, FILTER_SANITIZE_STRING);
         return is_file($filename);
     }
-    
+
+    public function isDirectory($path)
+    {
+        $path = filter_var($path, FILTER_SANITIZE_STRING);
+        return is_dir($path);
+    }
+
+    public function isDirectoryOrException($path)
+    {
+        if ($this->isDirectory($path) === false) {
+            throw new Exception("The path {$path} does not exist or is not valid");
+        }
+
+        return true;
+    }
 }

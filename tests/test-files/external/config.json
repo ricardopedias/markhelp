@@ -1,6 +1,5 @@
 {
     "logo.status"        : "true",
-    "generate.phpindex"  : "false",
     "project.name"       : "Mark Help",
     "project.slogan"     : "Gerador de documentação",
     "project.description": "Gerador de documentação feito em PHP",

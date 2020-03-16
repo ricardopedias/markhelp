@@ -38,7 +38,7 @@ class Writer
 
         $this->cleanup();
 
-        $this->generateIndexPhp();
+        // $this->generateIndexPhp();
 
         $this->copyAssets();
 
@@ -71,35 +71,31 @@ class Writer
      */
     private function generateIndexPhp() : void
     {
-        $generatePhpIndex = $this->reader->config()->param('generate.phpindex');
-        if ($generatePhpIndex !== false) {
+        $this->filesystem()->write("destination://index.php", "<?php
+            if (php_sapi_name() == 'cli-server') {
 
-            $this->filesystem()->write("destination://index.php", "<?php
-                if (php_sapi_name() == 'cli-server') {
+                \$info = parse_url(\$_SERVER['REQUEST_URI']);
 
-                    \$info = parse_url(\$_SERVER['REQUEST_URI']);
+                if (is_file( \"./\" . urldecode(\$info['path']) )) {
 
-                    if (is_file( \"./\" . urldecode(\$info['path']) )) {
-
-                        \$extension = pathinfo(\$info['path'], PATHINFO_EXTENSION);
-                        
-                        switch(\$extension) {
-                            case 'css':
-                                header('Content-type: text/css');
-                                break;
-                            case 'js':
-                                header('Content-type: application/javascript');
-                                break;
-                        }
-
-                        include_once \"./\" . urldecode(\$info['path']);
-                        return;
+                    \$extension = pathinfo(\$info['path'], PATHINFO_EXTENSION);
+                    
+                    switch(\$extension) {
+                        case 'css':
+                            header('Content-type: text/css');
+                            break;
+                        case 'js':
+                            header('Content-type: application/javascript');
+                            break;
                     }
 
-                    include_once 'index.html';
+                    include_once \"./\" . urldecode(\$info['path']);
+                    return;
                 }
-            ");
-        }
+
+                include_once 'index.html';
+            }
+        ");
     }
 
     /**
@@ -164,11 +160,11 @@ class Writer
 
         $dotPrefix = $fileBag->param('assetsPrefix');
         
-        $replaceUrls = [];
+        $replaceStrings = [];
         foreach($this->reader->markdownFiles() as $item) {
             $fileOrigin = $item->param('pathSearch');
             $fileDestination = $dotPrefix . $item->param('pathReplace');
-            $replaceUrls[$fileOrigin] = $fileDestination;
+            $replaceStrings[$fileOrigin] = $fileDestination;
         }
 
         $assetsList = $this->reader->assetsFiles();
@@ -179,8 +175,8 @@ class Writer
             $this->reader->config()->setParam($assetParam, "{$dotPrefix}assets/{$assetBasename}");
         }
 
-        $this->reader->config()->setParam('home', $dotPrefix . "index.html");
+        $replaceStrings['home'] = $dotPrefix . "index.html";
 
-        return array_merge($this->reader->config()->all(), $replaceUrls);
+        return array_merge($this->reader->config()->all(), $replaceStrings);
     }
 }

@@ -169,59 +169,14 @@ class Reader
 
             $supportFile = $this->config()->param("support.{$supportParam}");
 
-            $bag = $this->retrieveThemeSupportFile($supportFile);
-            if ($bag !== null) {
-                $support[$supportParam] = $bag;
+            if ($supportFile === null) {
                 continue;
             }
 
-            if ($this->isThemeFile($supportFile) === true){
-                continue;
-            }
-
-            $bag = $this->retrieveCustomSupportFile($supportFile);
-            if ($bag !== null) {
-                $support[$supportParam] = $bag;
-                continue;
-            }
-
-            $bag = $this->retrieveProjectSupportFile($filename);
-            if ($bag !== null) {
-                $support[$supportParam] = $bag;
-                continue;
-            }
+            $support[$supportParam] = $this->retrieveSupportFile($supportFile);
         }
 
         return $support;
-    }
-
-    private function isThemeFile(?string $filename) : bool
-    {
-        return $filename !== null && substr($filename, 0, 9) === '{{theme}}';
-    }
-
-    /**
-     * Obtém as informações do arquivo especificado
-     * com base na localização do tema atual.
-     * 
-     * @param string $supportFile
-     * @return Bag
-     */
-    private function retrieveThemeSupportFile($supportFile) : ?Bag
-    {
-        if ($supportFile === null){
-            return null;
-        }
-
-        $themeSupportFile = substr($supportFile, 10);
-        if ($this->filesystem()->has("theme://{$themeSupportFile}") === false) {
-            return null;
-        }
-
-        $bag = new Support;
-        $bag->setParam('mountPoint', 'theme');
-        $bag->setParam('supportPath', $themeSupportFile);
-        return $bag;
     }
 
     /**
@@ -231,12 +186,8 @@ class Reader
      * @param string $supportFile
      * @return Bag
      */
-    private function retrieveCustomSupportFile(?string $supportFile) : ?Bag
+    private function retrieveSupportFile(string $supportFile) : Bag
     {
-        if ($supportFile === null){
-            return null;
-        }
-
         $directory = $this->dirname($supportFile);
         $basename  = $this->basename($supportFile);
         $point     = 'mount_' . md5($directory);
@@ -246,37 +197,10 @@ class Reader
             $this->mountedDirectories[$point] = true;
         }
 
-        if ($this->filesystem->has("{$point}://{$basename}") === false){
-            return null;
-        }
-
         $bag = new Support;
         $bag->setParam('mountPoint', $point);
         $bag->setParam('supportPath', $basename);
-        return $bag;
-    }
 
-    /**
-     * Obtém as informações do arquivo especificado
-     * com base na localização do projeto.
-     * 
-     * @param string $supportFile
-     * @return Bag
-     */
-    private function retrieveProjectSupportFile(?string $supportFile) : ?Bag
-    {
-        if ($supportFile === null) {
-            return null;
-        }
-
-        $exists = $this->filesystem()->has("origin://{$supportFile}");
-        if ($exists === false) {
-            return null;
-        }
-
-        $bag = new Support;
-        $bag->setParam('mountPoint', 'origin');
-        $bag->setParam('supportPath', $supportFile);
         return $bag;
     }
 
@@ -302,52 +226,14 @@ class Reader
 
             $assetFile = $this->config()->param($assetParam);
 
-            $bag = $this->retrieveThemeAssetFile($assetParam, $assetFile);
-            if ($bag !== null) {
-                $assets[$assetParam] = $bag;
+            if ($assetFile === null) {
                 continue;
             }
 
-            if ($this->isThemeFile($assetFile) === true){
-                continue;
-            }
-
-            $bag = $this->retrieveCustomAssetFile($assetParam, $assetFile);
-            if ($bag !== null) {
-                $assets[$assetParam] = $bag;
-                continue;
-            }
+            $assets[$assetParam] = $this->retrieveAssetFile($assetParam, $assetFile);
         }
 
         return $assets;
-    }
-
-    /**
-     * Obtém as informações do arquivo especificado
-     * com base na localização do tema atual.
-     * 
-     * @param string $assetParam
-     * @param string $assetFile
-     * @return Bag
-     */
-    private function retrieveThemeAssetFile(string $assetParam, ?string $assetFile) : ?Bag
-    {
-        if ($assetFile === null){
-            return null;
-        }
-        
-        $themeAssetFile = substr($assetFile, 10);
-        if ($this->filesystem()->has("theme://{$themeAssetFile}") === false) {
-            return null;
-        }
-
-        $bag = new Asset;
-        $bag->setParam('assetType', "builtin");
-        $bag->setParam('mountPoint', 'theme');
-        $bag->setParam('assetParam', $assetParam);
-        $bag->setParam('assetPath', $themeAssetFile);
-        $bag->setParam('assetBasename', $this->basename($assetFile));
-        return $bag;
     }
 
     /**
@@ -358,12 +244,8 @@ class Reader
      * @param string $assetFile
      * @return Bag
      */
-    private function retrieveCustomAssetFile(string $assetParam, ?string $assetFile) : ?Bag
+    private function retrieveAssetFile(string $assetParam, string $assetFile) : Bag
     {
-        if ($assetFile === null){
-            return null;
-        }
-
         $directory = $this->dirname($assetFile);
         $basename  = $this->basename($assetFile);
         $point     = 'mount_' . md5($directory);
@@ -373,16 +255,12 @@ class Reader
             $this->mountedDirectories[$point] = true;
         }
 
-        if ($this->filesystem->has("{$point}://{$basename}") === false){
-            return null;
-        }
-
         $bag = new Asset;
-        $bag->setParam('assetType', "custom");
         $bag->setParam('mountPoint', $point);
         $bag->setParam('assetParam', $assetParam);
         $bag->setParam('assetPath', $basename);
         $bag->setParam('assetBasename', $this->basename($assetFile));
+
         return $bag;
     }
 

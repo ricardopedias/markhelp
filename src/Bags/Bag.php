@@ -5,7 +5,7 @@ namespace MarkHelp\Bags;
 
 class Bag
 {
-    private $params = [];
+    protected $params = [];
 
     public function setParam(string $name, $value)
     {
@@ -20,7 +20,9 @@ class Bag
 
     public function addParams(array $params)
     {
-        $this->params = array_merge($this->params, $params);
+        foreach($params as $name => $value) {
+            $this->setParam($name, $value);
+        }
         return $this;
     }
 

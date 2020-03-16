@@ -15,7 +15,6 @@ class AssetTest extends TestCase
     {
         $bag = new Asset;
         $this->assertEquals([
-            'assetType'     => 'builtin',           // builtin|custom
             'mountPoint'    => 'origin',
             'assetParam'    => 'assets.none',
             'assetPath'     => 'assets/none.css',

@@ -9,7 +9,14 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ## \[Unreleased]
 
--   Nada novo
+### Added
+
+-   Validações de diretórios diretamente na setagem de configurações
+-   Melhorias na legibilidade do código fonte
+
+### Fixed 
+
+-   Correção de configuração errada quando um arquivo de suporte inexistente era especificado
 
 ## \[0.5.0] - 2020-03-13
 

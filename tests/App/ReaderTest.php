@@ -15,34 +15,70 @@ class ReaderTest extends TestCase
     /**
      * @test
      */
-    public function pathException()
-    {
-        $this->expectException(Exception::class);
-
-        $config = new Config('/not-exists-and-not-permission-to-create');
-        new Reader($config); // tentativa de acesso ao diretório
-    }
-
-    /**
-     * @test
-     */
-    public function loadSupportDocumentTheme()
+    public function loadSupportDocumentDefaultFromTheme()
     {
         $config = new Config($this->pathRootMinimal);
-        $config->setParam('support.document', '{{theme}}/support/document.html');
         $reader = new Reader($config);
 
         $this->assertIsArray($reader->supportFiles());
         $this->assertCount(1, $reader->supportFiles());
         $this->assertInstanceOf(Support::class, $reader->supportFiles()['document']);
-        $this->assertEquals('theme', $reader->supportFiles()['document']->param('mountPoint'));
-        $this->assertEquals('support/document.html', $reader->supportFiles()['document']->param('supportPath'));
+        $this->assertStringContainsString('mount_', $reader->supportFiles()['document']->param('mountPoint'));
+        $this->assertSame('document.html', $reader->supportFiles()['document']->param('supportPath'));
     }
 
     /**
      * @test
      */
-    public function loadSupportDocumentOrigin()
+    public function loadSupportDocumentSetFromTheme()
+    {
+        $config = new Config($this->pathRootMinimal);
+        $config->setParam('support.document', '{{ theme }}/support/document.html');
+        $reader = new Reader($config);
+
+        $this->assertIsArray($reader->supportFiles());
+        $this->assertCount(1, $reader->supportFiles());
+        $this->assertInstanceOf(Support::class, $reader->supportFiles()['document']);
+        $this->assertStringContainsString('mount_', $reader->supportFiles()['document']->param('mountPoint'));
+        $this->assertSame('document.html', $reader->supportFiles()['document']->param('supportPath'));
+    }
+
+    /**
+     * @test
+     */
+    public function loadSupportDocumentSetCustom()
+    {
+        $config = new Config($this->pathRootMinimal);
+        $config->setParam('support.document', "{$this->pathExternal}/support/document-custom.html");
+        $reader = new Reader($config);
+
+        $this->assertIsArray($reader->supportFiles());
+        $this->assertCount(1, $reader->supportFiles());
+        $this->assertInstanceOf(Support::class, $reader->supportFiles()['document']);
+        $this->assertStringContainsString('mount_', $reader->supportFiles()['document']->param('mountPoint'));
+        $this->assertSame('document-custom.html', $reader->supportFiles()['document']->param('supportPath'));
+    }
+
+    /**
+     * @test
+     */
+    public function loadSupportDocumentSetInvalidFallback()
+    {
+        $config = new Config($this->pathRootMinimal);
+        $config->setParam('support.document', null);
+        $reader = new Reader($config);
+
+        $this->assertIsArray($reader->supportFiles());
+        $this->assertCount(1, $reader->supportFiles());
+        $this->assertInstanceOf(Support::class, $reader->supportFiles()['document']);
+        $this->assertStringContainsString('mount_', $reader->supportFiles()['document']->param('mountPoint'));
+        $this->assertSame('document.html', $reader->supportFiles()['document']->param('supportPath'));
+    }
+
+    /**
+     * @test
+     */
+    public function loadSupportDocumentFromProject()
     {
         $config = new Config($this->pathRootDocument);
         $reader = new Reader($config);
@@ -50,7 +86,7 @@ class ReaderTest extends TestCase
         $this->assertIsArray($reader->supportFiles());
         $this->assertCount(1, $reader->supportFiles());
         $this->assertInstanceOf(Support::class, $reader->supportFiles()['document']);
-        $this->assertEquals('origin', $reader->supportFiles()['document']->param('mountPoint'));
+        $this->assertStringContainsString('mount_', $reader->supportFiles()['document']->param('mountPoint'));
         $this->assertEquals('document.html', $reader->supportFiles()['document']->param('supportPath'));
     }
 
@@ -80,9 +116,9 @@ class ReaderTest extends TestCase
         $reader = new Reader($config);
 
         $this->assertIsArray($reader->supportFiles());
-        $this->assertCount(1, $reader->supportFiles());
+        $this->assertCount(2, $reader->supportFiles());
         $this->assertInstanceOf(Support::class, $reader->supportFiles()['menu']);
-        $this->assertEquals('origin', $reader->supportFiles()['menu']->param('mountPoint'));
+        $this->assertStringContainsString('mount_', $reader->supportFiles()['menu']->param('mountPoint'));
         $this->assertEquals('menu.json', $reader->supportFiles()['menu']->param('supportPath'));
     }
 
@@ -97,9 +133,9 @@ class ReaderTest extends TestCase
         $reader = new Reader($config);
 
         $this->assertIsArray($reader->supportFiles());
-        $this->assertCount(1, $reader->supportFiles());
+        $this->assertCount(2, $reader->supportFiles());
         $this->assertInstanceOf(Support::class, $reader->supportFiles()['menu']);
-        $this->assertNotEquals('origin', $reader->supportFiles()['menu']->param('mountPoint'));
+        $this->assertStringContainsString('mount_', $reader->supportFiles()['menu']->param('mountPoint'));
         $this->assertEquals('menu-custom.json', $reader->supportFiles()['menu']->param('supportPath'));
     }
 
@@ -116,29 +152,24 @@ class ReaderTest extends TestCase
         $this->assertCount(5, $reader->assetsFiles());
 
         $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.styles']);
-        $this->assertEquals('builtin', $reader->assetsFiles()['assets.styles']->param('assetType'));
-        $this->assertEquals('theme', $reader->assetsFiles()['assets.styles']->param('mountPoint'));
-        $this->assertEquals('assets/styles.css', $reader->assetsFiles()['assets.styles']->param('assetPath'));
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.styles']->param('mountPoint'));
+        $this->assertEquals('styles.css', $reader->assetsFiles()['assets.styles']->param('assetPath'));
 
         $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.scripts']);
-        $this->assertEquals('builtin', $reader->assetsFiles()['assets.scripts']->param('assetType'));
-        $this->assertEquals('theme', $reader->assetsFiles()['assets.scripts']->param('mountPoint'));
-        $this->assertEquals('assets/scripts.js', $reader->assetsFiles()['assets.scripts']->param('assetPath'));
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.scripts']->param('mountPoint'));
+        $this->assertEquals('scripts.js', $reader->assetsFiles()['assets.scripts']->param('assetPath'));
 
         $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.logo.src']);
-        $this->assertEquals('builtin', $reader->assetsFiles()['assets.logo.src']->param('assetType'));
-        $this->assertEquals('theme', $reader->assetsFiles()['assets.logo.src']->param('mountPoint'));
-        $this->assertEquals('assets/logo.png', $reader->assetsFiles()['assets.logo.src']->param('assetPath'));
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.logo.src']->param('mountPoint'));
+        $this->assertEquals('logo.png', $reader->assetsFiles()['assets.logo.src']->param('assetPath'));
 
         $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.icon.favicon']);
-        $this->assertEquals('builtin', $reader->assetsFiles()['assets.icon.favicon']->param('assetType'));
-        $this->assertEquals('theme', $reader->assetsFiles()['assets.icon.favicon']->param('mountPoint'));
-        $this->assertEquals('assets/favicon.ico', $reader->assetsFiles()['assets.icon.favicon']->param('assetPath'));
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.icon.favicon']->param('mountPoint'));
+        $this->assertEquals('favicon.ico', $reader->assetsFiles()['assets.icon.favicon']->param('assetPath'));
 
         $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.icon.apple']);
-        $this->assertEquals('builtin', $reader->assetsFiles()['assets.icon.apple']->param('assetType'));
-        $this->assertEquals('theme', $reader->assetsFiles()['assets.icon.apple']->param('mountPoint'));
-        $this->assertEquals('assets/apple-touch-icon-precomposed.png', $reader->assetsFiles()['assets.icon.apple']->param('assetPath'));
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.icon.apple']->param('mountPoint'));
+        $this->assertEquals('apple-touch-icon-precomposed.png', $reader->assetsFiles()['assets.icon.apple']->param('assetPath'));
     }
 
     /**
@@ -151,25 +182,27 @@ class ReaderTest extends TestCase
         $reader = new Reader($config);
 
         $this->assertIsArray($reader->assetsFiles());
-        $this->assertCount(3, $reader->assetsFiles());
+        $this->assertCount(5, $reader->assetsFiles());
 
         $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.styles']);
-        $this->assertEquals('builtin', $reader->assetsFiles()['assets.styles']->param('assetType'));
-        $this->assertEquals('theme', $reader->assetsFiles()['assets.styles']->param('mountPoint'));
-        $this->assertEquals('assets/styles.css', $reader->assetsFiles()['assets.styles']->param('assetPath'));
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.styles']->param('mountPoint'));
+        $this->assertEquals('styles.css', $reader->assetsFiles()['assets.styles']->param('assetPath'));
 
         $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.scripts']);
-        $this->assertEquals('builtin', $reader->assetsFiles()['assets.scripts']->param('assetType'));
-        $this->assertEquals('theme', $reader->assetsFiles()['assets.scripts']->param('mountPoint'));
-        $this->assertEquals('assets/scripts.js', $reader->assetsFiles()['assets.scripts']->param('assetPath'));
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.scripts']->param('mountPoint'));
+        $this->assertEquals('scripts.js', $reader->assetsFiles()['assets.scripts']->param('assetPath'));
 
         $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.logo.src']);
-        $this->assertEquals('builtin', $reader->assetsFiles()['assets.logo.src']->param('assetType'));
-        $this->assertEquals('theme', $reader->assetsFiles()['assets.logo.src']->param('mountPoint'));
-        $this->assertEquals('assets/logo.png', $reader->assetsFiles()['assets.logo.src']->param('assetPath'));
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.logo.src']->param('mountPoint'));
+        $this->assertEquals('logo.png', $reader->assetsFiles()['assets.logo.src']->param('assetPath'));
 
-        $this->assertArrayNotHasKey('assets.icon.favicon', $reader->assetsFiles());
-        $this->assertArrayNotHasKey('assets.icon.apple', $reader->assetsFiles());
+        $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.icon.favicon']);
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.icon.favicon']->param('mountPoint'));
+        $this->assertEquals('favicon.ico', $reader->assetsFiles()['assets.icon.favicon']->param('assetPath'));
+
+        $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.icon.apple']);
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.icon.apple']->param('mountPoint'));
+        $this->assertEquals('apple-touch-icon-precomposed.png', $reader->assetsFiles()['assets.icon.apple']->param('assetPath'));
     }
 
     /**
@@ -187,29 +220,24 @@ class ReaderTest extends TestCase
         $this->assertCount(5, $reader->assetsFiles());
 
         $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.styles']);
-        $this->assertEquals('custom', $reader->assetsFiles()['assets.styles']->param('assetType'));
-        $this->assertNotEquals('theme', $reader->assetsFiles()['assets.styles']->param('mountPoint'));
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.styles']->param('mountPoint'));
         $this->assertEquals('custom-styles.css', $reader->assetsFiles()['assets.styles']->param('assetPath'));
 
         $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.scripts']);
-        $this->assertEquals('custom', $reader->assetsFiles()['assets.scripts']->param('assetType'));
-        $this->assertNotEquals('theme', $reader->assetsFiles()['assets.scripts']->param('mountPoint'));
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.scripts']->param('mountPoint'));
         $this->assertEquals('custom-scripts.js', $reader->assetsFiles()['assets.scripts']->param('assetPath'));
 
         $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.logo.src']);
-        $this->assertEquals('builtin', $reader->assetsFiles()['assets.logo.src']->param('assetType'));
-        $this->assertEquals('theme', $reader->assetsFiles()['assets.logo.src']->param('mountPoint'));
-        $this->assertEquals('assets/logo.png', $reader->assetsFiles()['assets.logo.src']->param('assetPath'));
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.logo.src']->param('mountPoint'));
+        $this->assertEquals('logo.png', $reader->assetsFiles()['assets.logo.src']->param('assetPath'));
 
         $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.icon.favicon']);
-        $this->assertEquals('builtin', $reader->assetsFiles()['assets.icon.favicon']->param('assetType'));
-        $this->assertEquals('theme', $reader->assetsFiles()['assets.icon.favicon']->param('mountPoint'));
-        $this->assertEquals('assets/favicon.ico', $reader->assetsFiles()['assets.icon.favicon']->param('assetPath'));
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.icon.favicon']->param('mountPoint'));
+        $this->assertEquals('favicon.ico', $reader->assetsFiles()['assets.icon.favicon']->param('assetPath'));
 
         $this->assertInstanceOf(Asset::class, $reader->assetsFiles()['assets.icon.apple']);
-        $this->assertEquals('builtin', $reader->assetsFiles()['assets.icon.apple']->param('assetType'));
-        $this->assertEquals('theme', $reader->assetsFiles()['assets.icon.apple']->param('mountPoint'));
-        $this->assertEquals('assets/apple-touch-icon-precomposed.png', $reader->assetsFiles()['assets.icon.apple']->param('assetPath'));
+        $this->assertStringContainsString('mount_', $reader->assetsFiles()['assets.icon.apple']->param('mountPoint'));
+        $this->assertEquals('apple-touch-icon-precomposed.png', $reader->assetsFiles()['assets.icon.apple']->param('assetPath'));
     }
 
     /**
@@ -277,6 +305,4 @@ class ReaderTest extends TestCase
         $this->assertEquals('O Básico/page-six.md', $reader->markdownFiles()['page-six']->param('pathSearch'));
         $this->assertEquals('o_básico/page-six.html', $reader->markdownFiles()['page-six']->param('pathReplace'));
     }
-
-    
 }

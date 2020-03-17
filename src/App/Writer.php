@@ -38,8 +38,6 @@ class Writer
 
         $this->cleanup();
 
-        // $this->generateIndexPhp();
-
         $this->copyAssets();
 
         $this->generateFiles();
@@ -64,41 +62,6 @@ class Writer
     }
 
     /**
-     * Se a configuração estiver ativada, gera um arquivo 
-     * de índice PHP para rotear a documentação.
-     * 
-     * @return void
-     */
-    private function generateIndexPhp() : void
-    {
-        $this->filesystem()->write("destination://index.php", "<?php
-            if (php_sapi_name() == 'cli-server') {
-
-                \$info = parse_url(\$_SERVER['REQUEST_URI']);
-
-                if (is_file( \"./\" . urldecode(\$info['path']) )) {
-
-                    \$extension = pathinfo(\$info['path'], PATHINFO_EXTENSION);
-                    
-                    switch(\$extension) {
-                        case 'css':
-                            header('Content-type: text/css');
-                            break;
-                        case 'js':
-                            header('Content-type: application/javascript');
-                            break;
-                    }
-
-                    include_once \"./\" . urldecode(\$info['path']);
-                    return;
-                }
-
-                include_once 'index.html';
-            }
-        ");
-    }
-
-    /**
      * Copia os arquivos de assets para o projeto.
      * 
      * @return void
@@ -110,10 +73,12 @@ class Writer
         foreach($list as $item) {
 
             $mountPoint    = $item->param('mountPoint');
+            $assetParam    = $item->param('assetParam');
             $assetPath     = $item->param('assetPath');
             $assetBasename = $item->param('assetBasename');
 
-            $this->filesystem()->copy("{$mountPoint}://{$assetPath}", "destination://assets/{$assetBasename}");
+            $destinationPath = $assetParam === 'assets.images' ? 'images' : 'assets';
+            $this->filesystem()->copy("{$mountPoint}://{$assetPath}", "destination://{$destinationPath}/{$assetBasename}");
         }
     }
 
@@ -157,7 +122,6 @@ class Writer
      */
     private function replaces(File $fileBag) : array
     {
-
         $dotPrefix = $fileBag->param('assetsPrefix');
         
         $replaceStrings = [];
@@ -171,7 +135,14 @@ class Writer
         foreach($assetsList as $assetBag) {
 
             $assetParam = $assetBag->param('assetParam');
+            $assetFile = $assetBag->param('assetPath');
             $assetBasename = $assetBag->param('assetBasename');
+
+            if($assetParam === 'assets.images') {
+                $replaceStrings["images/$assetFile"] = "{$dotPrefix}images/{$assetFile}";
+                continue;
+            }
+
             $this->reader->config()->setParam($assetParam, "{$dotPrefix}assets/{$assetBasename}");
         }
 

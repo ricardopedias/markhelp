@@ -29,6 +29,7 @@ class Config extends Bag
             'project.name'        => $this->makeString('Mark Help'),
             'project.slogan'      => $this->makeString('Gerador de documentação'),
             'project.description' => $this->makeString('Gerador de documentação feito em PHP'),
+            'project.images'      => $this->makePath('{{project}}/images'),
             'current.page'        => $this->makeString(''),
             'github.url'          => $this->makeString('https://github.com/ricardopedias/markhelp'),
             'github.fork'         => $this->makeBoolean(true),
@@ -159,6 +160,9 @@ class Config extends Bag
         $themePath = rtrim($this->param('path.theme'),  DIRECTORY_SEPARATOR);
         $value     = str_replace(["{{theme}}", "{{ theme }}"], $themePath, $value);
 
+        $rootPath = rtrim($this->param('path.root'),  DIRECTORY_SEPARATOR);
+        $value     = str_replace(["{{project}}", "{{ project }}"], $rootPath, $value);
+
         if ($checkExist === true) {
             return $this->isDirectory($value) ? $value : null;
         }
@@ -198,9 +202,15 @@ class Config extends Bag
             return $value;
         }
 
-        // caminhos padrões dinâmicos, contendo variáveis {{theme}} devem ser reprocessados
-        if ($value === $this->defaults[$name]->value 
-        && (strpos((string) $value, "{{theme}}") !== false || strpos((string) $value, "{{ theme }}") !== false)
+        if ($value !== $this->defaults[$name]->value) {
+            return $value;
+        }
+
+        // caminhos padrões dinâmicos, contendo variáveis {{theme|project}} devem ser reprocessados
+        if (strpos((string) $value, "{{theme}}") !== false 
+         || strpos((string) $value, "{{ theme }}") !== false
+         || strpos((string) $value, "{{project}}") !== false 
+         || strpos((string) $value, "{{ project }}") !== false
         ) {
             $value = $this->normalizeFile($value);
         }

@@ -105,6 +105,15 @@ class ConfigTest extends TestCase
 
         $path = $bag->normalizePath('{{ theme }}/teste/', false);
         $this->assertSame("{$pathTheme}/teste", $path);
+
+        $path = $bag->normalizePath('{{theme}}/teste/', true);
+        $this->assertNull($path);
+
+        $path = $bag->normalizePath('{{project}}/teste/', false);
+        $this->assertSame("{$this->pathRootMinimal}/teste", $path);
+
+        $path = $bag->normalizePath('{{project}}/teste/', true);
+        $this->assertNull($path);
     }
 
     /**

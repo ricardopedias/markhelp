@@ -17,3 +17,8 @@ markhelp --help
 ```
 
 Este conteúdo está sendo elaborado! Em breve mais informações...
+
+-   [Instalando](instalando.md)
+-   [Utilizar como Biblioteca](utilizar-como-biblioteca.md)
+-   [Utilizar no Terminal](utilizar-no-terminal.md)
+-   [Ajudar o Projeto](como-ajudar.md)

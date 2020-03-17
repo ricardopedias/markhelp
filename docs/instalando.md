@@ -34,3 +34,9 @@ cd markhelp
 Um pacote chamado markhelp_9.9.9_all.deb será gerado no mesmo diretório. 
 Basta instalar este pacote com o gerenciador de pacotes de sua preferência 
 e começar a usar o MarkHelp em sua distribuição.
+
+-   [Instalando](instalando.md)
+-   [Utilizar como Biblioteca](utilizar-como-biblioteca.md)
+-   [Utilizar no Terminal](utilizar-no-terminal.md)
+-   [Ajudar o Projeto](como-ajudar.md)
+

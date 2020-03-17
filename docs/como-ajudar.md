@@ -19,3 +19,9 @@ Reporte como uma *issue* ou faça um `pull request`. Sua contribuição será mu
 Decidiu adicionar uma nova característica ou funcionalidade? Corrigiu um bug no projeto?
 Compartilhe fazendo um `pull request`. Se for coerente com o projeto teremos o prazer 
 de mesclar sua contribuição nesta ferramenta.
+
+-   [Instalando](instalando.md)
+-   [Utilizar como Biblioteca](utilizar-como-biblioteca.md)
+-   [Utilizar no Terminal](utilizar-no-terminal.md)
+-   [Ajudar o Projeto](como-ajudar.md)
+

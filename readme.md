@@ -14,9 +14,9 @@ Simples de usar dentro ou fora de seus projetos.
 
 ![Screenshot](docs/images/screenshot.png)
 
-Sinta-se à vontade para conferir o [changelog](changelog.md), os [releases](https://github.com/ricardopedias/markhelp/releases) e a [licença](license.md).
+Sinta-se à vontade para conferir o [changelog](https://github.com/ricardopedias/markhelp/changelog.md), os [releases](https://github.com/ricardopedias/markhelp/releases) e a [licença](https://github.com/ricardopedias/markhelp/license.md).
 
-Acesse também a [documentação online](/docs/index.md) e confira os recursos disponíveis nesta biblioteca.
+Acesse também a [documentação online](https://github.com/ricardopedias/markhelp/docs/index.md) e confira os recursos disponíveis nesta biblioteca.
 
 ## Características
 

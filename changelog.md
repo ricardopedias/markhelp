@@ -9,6 +9,10 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ## \[Unreleased]
 
+Nada implementado ainda.
+
+## \[0.6.1] - 2020-03-17
+
 ### Fixed 
 
 -   Geração de diretórios inválidos com base nas imagens do projeto

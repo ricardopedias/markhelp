@@ -246,7 +246,7 @@ class Reader
             }
 
             $assetParam = "assets.images";
-            $assetFile  = $item['path'];
+            $assetFile  = $imagesPath . DIRECTORY_SEPARATOR . $item['path'];
             $assets["$assetParam.{$item['filename']}"] = $this->retrieveAssetFile($assetParam, $assetFile);
             $assets["$assetParam.{$item['filename']}"]->setParam('mountPoint', 'images');
         }

@@ -11,6 +11,8 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ### Added
 
+-   Suporte a exibição da versão real da biblioteca na linha de comando
+-   Suporte a utilização de imagens dentro da documentação
 -   Validações de diretórios diretamente na setagem de configurações
 -   Melhorias na legibilidade do código fonte
 

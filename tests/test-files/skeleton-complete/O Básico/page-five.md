@@ -9,3 +9,5 @@ possibilitar a criação programática de sites de documentação de forma autom
 - [Utilizar como Biblioteca](utilizar-como-biblioteca.md)
 - [Utilizar no Terminal](utilizar-no-terminal.md)
 - [Ajudar o Projeto](como-ajudar.md)
+
+![Screenshot](images/screenshot.png)

@@ -1,5 +1,10 @@
 # Instalando o MarkHelper
 
+Com MarkHelp você é capaz de gerar belíssimas páginas HTML para seus documentos escritos em Markdown.
+Simples de usar dentro ou fora de seus projetos.
+
+![Screenshot](images/screenshot.png)
+
 ## Em projeto PHP
 
 Para utilizar o MarkHelp em qualquer projeto PHP, basta instalar 

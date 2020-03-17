@@ -233,6 +233,24 @@ class Reader
             $assets[$assetParam] = $this->retrieveAssetFile($assetParam, $assetFile);
         }
 
+        $imagesPath = $this->config()->param('project.images');
+        if ($imagesPath === null) {
+            return $assets;
+        }
+
+        $list = $this->filesystem()->mount('images', $imagesPath)->listContents('images://', true);
+        foreach($list as $item) {
+
+            if ($item['type'] === 'dir') {
+                continue;
+            }
+
+            $assetParam = "assets.images";
+            $assetFile  = $item['path'];
+            $assets["$assetParam.{$item['filename']}"] = $this->retrieveAssetFile($assetParam, $assetFile);
+            $assets["$assetParam.{$item['filename']}"]->setParam('mountPoint', 'images');
+        }
+
         return $assets;
     }
 

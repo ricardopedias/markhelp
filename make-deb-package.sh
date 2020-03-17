@@ -54,6 +54,7 @@ EOF
 
 # copia o conteudo
 sudo cp $PATH_ROOT/markhelp $PATH_PACKAGE_SHARE/;
+sudo cp $PATH_ROOT/version.app $PATH_PACKAGE_SHARE/;
 sudo chmod a+x $PATH_PACKAGE_SHARE/markhelp;
 sudo cp -rf $PATH_ROOT/src/ $PATH_PACKAGE_SHARE/;
 sudo cp -rf $PATH_ROOT/vendor/ $PATH_PACKAGE_SHARE/;

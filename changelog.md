@@ -9,16 +9,30 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ## \[Unreleased]
 
+Nada implementado ainda.
+
+## \[0.6.0] - 2020-03-17
+
 ### Added
 
 -   Suporte a exibição da versão real da biblioteca na linha de comando
 -   Suporte a utilização de imagens dentro da documentação
--   Validações de diretórios diretamente na setagem de configurações
 -   Melhorias na legibilidade do código fonte
 
 ### Fixed 
 
--   Correção de configuração errada quando um arquivo de suporte inexistente era especificado
+-   Script de geração de pacotes Debian para contemplar novo arquivo version.app
+-   Configuração errada quando um arquivo de suporte inexistente era especificado
+
+## \[0.5.1] - 2020-03-16
+
+### Added
+
+-   Melhorias na documentação
+
+### Fixed 
+
+-   Validações de diretórios diretamente na setagem de configurações
 
 ## \[0.5.0] - 2020-03-13
 
@@ -30,8 +44,8 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ### Fixed
 
--   Correção de bug no carregamento de arquivos de configuração 
-    que fazia o Filesystem gerar diretórios com as palavras chave null, true ou false
+-   Bug no carregamento de arquivos de configuração fazia 
+    o Filesystem gerar diretórios com as palavras chave null, true ou false
 
 ### Removed
 
@@ -62,7 +76,7 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ### Fixed
 
--   Correção de diversos code smells identificados pelo Codacy
+-   Diversos code smells identificados pelo Codacy
 
 ## \[0.2.0] - 2020-02-06
 
@@ -79,7 +93,9 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ## Releases
 
--   Unreleased <https://github.com/ricardopedias/markhelp/compare/v0.5.0...HEAD>
+-   Unreleased <https://github.com/ricardopedias/markhelp/compare/v0.6.0...HEAD>
+-   0.6.0 <https://github.com/ricardopedias/markhelp/compare/v0.5.1...v0.6.0>
+-   0.5.1 <https://github.com/ricardopedias/markhelp/compare/v0.5.0...v0.5.1>
 -   0.5.0 <https://github.com/ricardopedias/markhelp/compare/v0.4.0...v0.5.0>
 -   0.4.0 <https://github.com/ricardopedias/markhelp/compare/v0.3.0...v0.4.0>
 -   0.3.0 <https://github.com/ricardopedias/markhelp/compare/v0.2.1...v0.3.0>

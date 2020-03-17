@@ -56,4 +56,6 @@ if (!defined('MARKHELP_COMPOSER_INSTALL')) {
 
 require MARKHELP_COMPOSER_INSTALL;
 
-(new Cli('0.5.0'))->run();
+(new Cli)
+    ->loadVersionFrom(__DIR__ . DIRECTORY_SEPARATOR . 'version.app')
+    ->run();

@@ -73,3 +73,7 @@ echo -e "${BLUE}→ Limpando dados de compilação${NC}";
 sudo rm -Rf $PATH_DIST
 
 echo -e "${GREEN}→ Pacote gerado com sucesso${NC}";
+
+# atualiza o arquivo de versão
+cd $PATH_ROOT
+echo $VERSION > version.app

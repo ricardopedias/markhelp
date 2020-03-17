@@ -143,7 +143,9 @@ class Writer
                 continue;
             }
 
-            $this->reader->config()->setParam($assetParam, "{$dotPrefix}assets/{$assetBasename}");
+            $replaceStrings[$assetParam] = "{$dotPrefix}assets/{$assetFile}";
+            //var_dump($assetParam, "{$dotPrefix}assets/{$assetBasename}"); exit;
+            // $this->reader->config()->setParam($assetParam, "{$dotPrefix}assets/{$assetBasename}");
         }
 
         $replaceStrings['home'] = $dotPrefix . "index.html";

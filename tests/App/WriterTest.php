@@ -16,7 +16,7 @@ class WriterTest extends TestCase
     public function render()
     {
         $config = new Config($this->pathRootComplete);
-        $config->setParam('support.document', implode(DIRECTORY_SEPARATOR, [ $this->pathDefaultTheme, 'support', 'document.html']));
+        //$config->setParam('support.document', implode(DIRECTORY_SEPARATOR, [ $this->pathDefaultTheme, 'support', 'document.html']));
 
         $reader = new Reader($config);
 

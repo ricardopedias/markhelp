@@ -15,7 +15,7 @@ class ToolsTest extends TestCase
     /**
      * @test
      */
-    public function basename()
+    public function basenameTest()
     {
         $this->assertEquals('meu-arquivo.md', (new Tools)->basename('/caminho/para/meu-arquivo.md'));
         $this->assertEquals('meu-arquivo', (new Tools)->basename('/caminho/para/meu-arquivo'));
@@ -24,7 +24,7 @@ class ToolsTest extends TestCase
     /**
      * @test
      */
-    public function filename()
+    public function filenameTest()
     {
         $this->assertEquals('meu-arquivo', (new Tools)->filename('/caminho/para/meu-arquivo.md'));
         $this->assertEquals('meu-arquivo.m', (new Tools)->filename('/caminho/para/meu-arquivo.m'));
@@ -35,7 +35,7 @@ class ToolsTest extends TestCase
     /**
      * @test
      */
-    public function dirname()
+    public function dirnameTest()
     {
         $this->assertEquals('/caminho/para', (new Tools)->dirname('/caminho/para/meu-arquivo.md'));
         $this->assertEquals('/caminho/para', (new Tools)->dirname('/caminho/para/meu-arquivo'));
@@ -44,7 +44,7 @@ class ToolsTest extends TestCase
     /**
      * @test
      */
-    public function absolutePath()
+    public function absolutePathTest()
     {
         $fullPath = $this->pathExternal;
         $startPath = (new Tools)->dirname($this->pathExternal);

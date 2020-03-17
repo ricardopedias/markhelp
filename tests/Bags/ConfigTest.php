@@ -167,7 +167,7 @@ class ConfigTest extends TestCase
     public function defaultPathRoot()
     {
         $bag = new Config($this->pathRootMinimal);
-        $this->assertEquals($this->pathRootMinimal, $bag->param('path.root'));
+        $this->assertSame($this->pathRootMinimal, $bag->param('path.root'));
     }
 
     /**
@@ -182,23 +182,23 @@ class ConfigTest extends TestCase
         $themePath = "{$parentDir}/Themes/default";
 
         // tema padrão
-        $this->assertEquals($themePath, $bag->param('path.theme')); 
+        $this->assertSame($themePath, $bag->param('path.theme')); 
 
         // tema existente
         $bag->setParam('path.theme', "{$this->pathExternal}/themes/one");
-        $this->assertEquals("{$this->pathExternal}/themes/one", $bag->param('path.theme')); 
+        $this->assertSame("{$this->pathExternal}/themes/one", $bag->param('path.theme')); 
 
         // Tema nulo -> volta para o padrão
         $bag->setParam('path.theme', null);
-        $this->assertEquals($themePath, $bag->param('path.theme')); 
+        $this->assertSame($themePath, $bag->param('path.theme')); 
 
         // Tema vazio -> volta para o padrão
         $bag->setParam('path.theme', "");
-        $this->assertEquals($themePath, $bag->param('path.theme')); 
+        $this->assertSame($themePath, $bag->param('path.theme')); 
 
         // Tema inválido -> volta para o padrão
         $bag->setParam('path.theme', true);
-        $this->assertEquals($themePath, $bag->param('path.theme')); 
+        $this->assertSame($themePath, $bag->param('path.theme')); 
 
     }
 
@@ -278,23 +278,23 @@ class ConfigTest extends TestCase
         foreach($assets as $paramName => $defaultFile) {
 
             // arquivo padrão
-            $this->assertEquals($defaultFile, $bag->param($paramName));
+            $this->assertSame($defaultFile, $bag->param($paramName));
     
             // arquivo existente
             $bag->setParam($paramName, "{$this->pathExternal}/themes/one/assets/logo.png");
-            $this->assertEquals("{$this->pathExternal}/themes/one/assets/logo.png", $bag->param($paramName)); 
+            $this->assertSame("{$this->pathExternal}/themes/one/assets/logo.png", $bag->param($paramName)); 
      
             // arquivo nulo -> volta para o padrão
             $bag->setParam($paramName, null);
-            $this->assertEquals($defaultFile, $bag->param($paramName)); 
+            $this->assertSame($defaultFile, $bag->param($paramName)); 
      
             // Tema vazio -> volta para o padrão
             $bag->setParam($paramName, "");
-            $this->assertEquals($defaultFile, $bag->param($paramName)); 
+            $this->assertSame($defaultFile, $bag->param($paramName)); 
      
             // Tema inválido -> volta para o padrão
             $bag->setParam($paramName, true);
-            $this->assertEquals($defaultFile, $bag->param($paramName)); 
+            $this->assertSame($defaultFile, $bag->param($paramName)); 
         }
     }
 
@@ -312,23 +312,23 @@ class ConfigTest extends TestCase
         $defaultFile = "{$themePath}/support/document.html";
         
         // arquivo padrão
-        $this->assertEquals($defaultFile, $bag->param('support.document'));
+        $this->assertSame($defaultFile, $bag->param('support.document'));
 
         // arquivo existente
         $bag->setParam('support.document', "{$this->pathExternal}/support/document-custom.html");
-        $this->assertEquals("{$this->pathExternal}/support/document-custom.html", $bag->param('support.document')); 
+        $this->assertSame("{$this->pathExternal}/support/document-custom.html", $bag->param('support.document')); 
  
         // arquivo nulo -> volta para o padrão
         $bag->setParam('support.document', null);
-        $this->assertEquals($defaultFile, $bag->param('support.document')); 
+        $this->assertSame($defaultFile, $bag->param('support.document')); 
  
         // Tema vazio -> volta para o padrão
         $bag->setParam('support.document', "");
-        $this->assertEquals($defaultFile, $bag->param('support.document')); 
+        $this->assertSame($defaultFile, $bag->param('support.document')); 
  
         // Tema inválido -> volta para o padrão
         $bag->setParam('support.document', true);
-        $this->assertEquals($defaultFile, $bag->param('support.document')); 
+        $this->assertSame($defaultFile, $bag->param('support.document')); 
     }
 
     /**
@@ -339,7 +339,7 @@ class ConfigTest extends TestCase
         $defaultFile = "{$this->pathRootComplete}/document.html";
 
         $bag = new Config($this->pathRootComplete);
-        $this->assertEquals($defaultFile, $bag->param('support.document'));
+        $this->assertSame($defaultFile, $bag->param('support.document'));
     }
 
     /**
@@ -353,7 +353,7 @@ class ConfigTest extends TestCase
         $bag->setParam('support.document', $defaultFile);
         
         // arquivo personalizado
-        $this->assertEquals($defaultFile, $bag->param('support.document'));
+        $this->assertSame($defaultFile, $bag->param('support.document'));
     }
 
     /**
@@ -373,7 +373,7 @@ class ConfigTest extends TestCase
         $defaultFile = "{$this->pathRootComplete}/menu.json";
 
         $bag = new Config($this->pathRootComplete);
-        $this->assertEquals($defaultFile, $bag->param('support.menu'));
+        $this->assertSame($defaultFile, $bag->param('support.menu'));
     }
 
     /**
@@ -386,7 +386,7 @@ class ConfigTest extends TestCase
         $bag = new Config($this->pathRootComplete);
         $bag->setParam('support.menu', $defaultFile);
         
-        $this->assertEquals($defaultFile, $bag->param('support.menu'));
+        $this->assertSame($defaultFile, $bag->param('support.menu'));
     }
 
     /**
@@ -400,7 +400,7 @@ class ConfigTest extends TestCase
         $bag->setParam('support.menu', $defaultFile);
         
         // arquivo personalizado
-        $this->assertEquals($defaultFile, $bag->param('support.menu'));
+        $this->assertSame($defaultFile, $bag->param('support.menu'));
 
         // arquivo nulo -> volta para o padrão
         $bag->setParam('support.menu', null);

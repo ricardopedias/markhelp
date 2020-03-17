@@ -33,6 +33,11 @@ class MarkHelp
         return $this;
     }
 
+    public function config(string $param)
+    {
+        return $this->config->param($param);
+    }
+
     public function loadConfigFrom(string $pathConfigJsonFile)
     {
         $filesystem = new Filesystem;

@@ -135,6 +135,9 @@ class Command extends SymfonyCommand
             $app->loadConfigFrom($config);
         }
 
+        $templateDocument = $app->config('support.document');
+        $output->writeln("<fg=blue>Load template from {$templateDocument}</>");
+
         $app->saveTo($destination);
         $output->writeln("<fg=green>Documentation site successfully generated</>");
 

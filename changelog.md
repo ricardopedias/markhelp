@@ -15,6 +15,7 @@ Nada implementado ainda.
 
 ### Fixed 
 
+-   Assets não eram substituídos corretamente no template do documento
 -   Geração de diretórios inválidos com base nas imagens do projeto
 
 

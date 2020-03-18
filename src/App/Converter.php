@@ -123,7 +123,7 @@ class Converter
      * @param array $replaces 
      * @return string
      */
-    private function replace(string $content, array $replaces) : string
+    public function replace(string $content, array $replaces) : string
     {
         // tags: {{ minhatag  }}
         $content = preg_replace_callback("/{{\s*(?P<key>[a-zA-Z0-9_\.-]+?)\s*}}/", function($match) use($replaces){
@@ -132,8 +132,8 @@ class Converter
 
         // links markdown: (minha/url.ext)
         foreach($replaces as $search => $replace) {
-            $search = ["($search)", "( $search )"];
-            $replace = "($replace)";
+            $search = ["($search", "( $search"];
+            $replace = "($replace";
             $content = str_replace($search, $replace, $content);
         }
 

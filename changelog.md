@@ -11,13 +11,13 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 Nada implementado ainda.
 
-## \[0.6.1] - 2020-03-17
+## \[0.6.1] - 2020-03-18
 
 ### Fixed 
 
 -   Assets não eram substituídos corretamente no template do documento
 -   Geração de diretórios inválidos com base nas imagens do projeto
-
+-   Correção de bug que ignorava a conversão de urls com hash de fragmento
 
 ## \[0.6.0] - 2020-03-17
 
@@ -101,7 +101,8 @@ Nada implementado ainda.
 
 ## Releases
 
--   Unreleased <https://github.com/ricardopedias/markhelp/compare/v0.6.0...HEAD>
+-   Unreleased <https://github.com/ricardopedias/markhelp/compare/v0.6.1...HEAD>
+-   0.6.1 <https://github.com/ricardopedias/markhelp/compare/v0.6.0...v0.6.1>
 -   0.6.0 <https://github.com/ricardopedias/markhelp/compare/v0.5.1...v0.6.0>
 -   0.5.1 <https://github.com/ricardopedias/markhelp/compare/v0.5.0...v0.5.1>
 -   0.5.0 <https://github.com/ricardopedias/markhelp/compare/v0.4.0...v0.5.0>

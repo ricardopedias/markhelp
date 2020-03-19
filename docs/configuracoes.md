@@ -73,7 +73,7 @@ Abaixo, seguem todas elas:
 *  **assets.icon.favicon**: define o caminho completo até o favicon da documentação. Por padrão, o ícone do MarkHelp será utilizado;
 *  **assets.icon.apple**: define o caminho completo até o apple-touch-icon da documentação. Por padrão, o ícone do MarkHelp será utilizado.
 
-> **Observação**: usando o MarkHelp para implementar em projetos PHP, é possível setar configurações pontuais, sem a necessidade de usar um arquivo `config.json. Para mais informações, confira [Implementando projetos PHP](utilizar-como-biblioteca.md).
+> **Observação**: usando o MarkHelp para implementar em projetos PHP, é possível setar configurações pontuais, sem a necessidade de usar um arquivo `config.json`. Para mais informações, confira [Implementando projetos PHP](utilizar-como-biblioteca.md).
 
 
 ## Sumário

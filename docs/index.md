@@ -9,8 +9,8 @@ Sinta-se à vontade para conferir o [changelog](https://github.com/ricardopedias
 
 ## Tópicos de interesse
 
--   [Instalando](instalando.md)
--   [Utilizando em projetos PHP](utilizar-como-biblioteca.md)
+-   [Instalando o Mark Help](instalando.md)
+-   [Implementando projetos PHP](utilizar-como-biblioteca.md)
 -   [Utilizando no Terminal Linux](utilizar-no-terminal.md)
 -   [Personalizando e Configurando](configuracoes.md)
 -   [Quero ajudar o projeto](como-ajudar.md)

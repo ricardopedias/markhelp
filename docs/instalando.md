@@ -20,7 +20,7 @@ $app->loadConfigFrom('/minhas/configurações/personalizadas/config.json');
 $app->saveTo('/meu/site/html');
 ```
 
-Para mais informações, acesse [Utilizando em projetos PHP](utilizar-como-biblioteca.md).
+Para mais informações, acesse [Implementando projetos PHP](utilizar-como-biblioteca.md).
 
 ## Em um ambiente Linux (baseado em Debian)
 
@@ -43,7 +43,7 @@ Para mais informações, acesse [Utilizando no Terminal Linux](utilizar-no-termi
 
 -   [Início](index.md)
 -   [Instalando](instalando.md)
--   [Utilizando em projetos PHP](utilizar-como-biblioteca.md)
+-   [Implementando projetos PHP](utilizar-como-biblioteca.md)
 -   [Utilizando no Terminal Linux](utilizar-no-terminal.md)
 -   [Personalizando e Configurando](configuracoes.md)
 -   [Quero ajudar o projeto](como-ajudar.md)

@@ -17,3 +17,4 @@
 /tests/destination/*
 *.deb
 /dist
+/docs/*.backup

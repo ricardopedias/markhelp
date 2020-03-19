@@ -57,7 +57,7 @@ Para mais informações sobre como criar um arquivo contendo configurações, ac
 ## Sumário
 
 -   [Início](index.md)
--   [Instalando o Mark Help](instalando.md)
+-   [Instalando o MarkHelp](instalando.md)
 -   [Implementando projetos PHP](utilizar-como-biblioteca.md)
 -   [Utilizando no Terminal Linux](utilizar-no-terminal.md)
 -   [Personalizando e Configurando](configuracoes.md)

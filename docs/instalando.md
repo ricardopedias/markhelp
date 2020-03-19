@@ -1,6 +1,6 @@
-# Instalando o MarkHelper
+# Instalando o MarkHelp
 
-## Em um projeto PHP
+## Instalar como biblioteca para projeto PHP
 
 Para utilizar o MarkHelp em qualquer projeto PHP, basta instalar 
 o pacote de software usando o composer:
@@ -22,7 +22,7 @@ $app->saveTo('/meu/site/html');
 
 Para mais informações, acesse [Implementando projetos PHP](utilizar-como-biblioteca.md).
 
-## Em um ambiente Linux (baseado em Debian)
+## Instalar como comando de terminal em ambientes Linux (baseados em Debian)
 
 Para utilizar o MarkHelp como um comando dentro de um sistema operacional 
 baseado em Debian Linux, basta efetuar os seguintes passos:
@@ -42,7 +42,7 @@ Para mais informações, acesse [Utilizando no Terminal Linux](utilizar-no-termi
 ## Sumário
 
 -   [Início](index.md)
--   [Instalando](instalando.md)
+-   [Instalando o MarkHelp](instalando.md)
 -   [Implementando projetos PHP](utilizar-como-biblioteca.md)
 -   [Utilizando no Terminal Linux](utilizar-no-terminal.md)
 -   [Personalizando e Configurando](configuracoes.md)

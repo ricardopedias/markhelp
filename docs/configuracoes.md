@@ -75,7 +75,6 @@ Abaixo, seguem todas elas:
 
 > **Observação**: usando o MarkHelp para implementar em projetos PHP, é possível setar configurações pontuais, sem a necessidade de usar um arquivo `config.json`. Para mais informações, confira [Implementando projetos PHP](utilizar-como-biblioteca.md).
 
-
 ## Sumário
 
 -   [Início](index.md)

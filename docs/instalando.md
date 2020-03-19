@@ -16,8 +16,6 @@ Após a atualização do composer, basta instanciar o MarkHelper e usar:
 include 'vendor/autoload.php';
 
 $app = new MarkHelp('/meus/arquivos/markdown/');
-$app->loadConfigFrom('/minhas/configurações/personalizadas/config.json');
-$app->saveTo('/meu/site/html');
 ```
 
 Para mais informações, acesse [Implementando projetos PHP](utilizar-como-biblioteca.md).

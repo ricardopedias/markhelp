@@ -32,6 +32,7 @@ $app->config('assets.logo.src', '/caminho/do/meu/logotipo.png');
 $app->saveTo('/caminho/para/resultado/html/');
 ```
 
+Para mais informações sobra as configurações disponíveis, configa [Personalizando e Configurando](configuracoes.md).
 
 ## Sumário
 

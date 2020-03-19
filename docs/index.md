@@ -7,7 +7,10 @@ possibilitar a criação programática de sites de documentação de forma autom
 
 Sinta-se à vontade para conferir o [changelog](https://github.com/ricardopedias/markhelp/blob/master/changelog.md), os [releases](https://github.com/ricardopedias/markhelp/releases) e a [licença](https://github.com/ricardopedias/markhelp/blob/master/license.md).
 
+## Tópicos de interesse
+
 -   [Instalando](instalando.md)
--   [Utilizar como Biblioteca](utilizar-como-biblioteca.md)
--   [Utilizar no Terminal](utilizar-no-terminal.md)
--   [Ajudar o Projeto](como-ajudar.md)
+-   [Utilizando em projetos PHP](utilizar-como-biblioteca.md)
+-   [Utilizando no Terminal Linux](utilizar-no-terminal.md)
+-   [Personalizando e Configurando](configuracoes.md)
+-   [Quero ajudar o projeto](como-ajudar.md)

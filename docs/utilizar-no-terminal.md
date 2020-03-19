@@ -36,73 +36,11 @@ Load template from Themes/default/support/document.html
 Documentation site successfully generated
 ```
 
-## Personalizando o menu lateral
+## Sumário
 
-O MarkHelp é capaz de transformar qualquer projeto contendo arquivos markdown em HTML, formatando-os de uma forma padrão. Mas é possível personalizar várias coisas, de forma que a geração dos documentos se adapte às mais diversas necessidades.
-
-Para personalizar o menu lateral basta adicionar, na raiz do projeto markdown, uma arquivo chamado `menu.json`. Este arquivo deve possuir a seguinte formatação:
-
-```json
-{
-    "Item Simples 1" : "item-um.md",
-    "Item Simples 2" : "item-dois.md",
-
-    "Titulo 1" : {
-        "Item Agrupado 1" : "Diretório Um/item-três.md",
-        "Item Agrupado 2" : "Diretório Um/item-quatro.md"
-    },
-
-    "Título 2": {
-
-        "Item Agrupado 3" : {
-            "Subitem 1" : "Diretório Dois/item-cinco.md",
-            "Subitem 2" : "item-seis.md",
-            "Subitem 3" : "item-sete.md"
-        },
-
-        "Item Agrupado 4" : {
-            "Subitem 4" : "Diretório Três/item-oito.md",
-            "Subitem 5" : "Diretório Três/item-nove.md"
-        }
-    }
-}
-```
-
-### Entendendo a estrutura
-
-Analisando o objeto Json, vejamos o que significa cada item na estrutura:
-
-1. **Item Simples 1 e 2**: esses itens serão renderizados diretamente no primeiro nível do menu;
-2. **Título 1 e 2**: itens com sub-objetos serão considerados grupos de itens, juntando os itens do segundo nível em um bloco deparado por um título;
-3. **Item Agrupado 1, 2**: são itens agrupados de forma simples;
-4. **Item Agrupado 3 e 4**: são itens agrupados em forma se submenu, que deverá ser clicado para ser expandido e revelar os subitems;
-4. **Subitem 1, 2, 3, 4 e 5**: são os subitens de submenus, propriamente ditos.
-
-Abaixo, um exemplo desta estrutura após a renderização.
-
-![Menu Lateral](images/menu-lateral.png)
-
-
-## Mudando o tema
-
-
-Esta parte da documentação ainda está sendo elaborada.
-
-## Mudando o logotipo
-
-
-Esta parte da documentação ainda está sendo elaborada.
-
-## Outras configurações
-
-
-Esta parte da documentação ainda está sendo elaborada.
-
-
-
-## Outros tópicos interessantes
-
+-   [Início](index.md)
 -   [Instalando](instalando.md)
--   [Utilizar como Biblioteca](utilizar-como-biblioteca.md)
--   [Utilizar no Terminal](utilizar-no-terminal.md)
--   [Ajudar o Projeto](como-ajudar.md)
+-   [Utilizando em projetos PHP](utilizar-como-biblioteca.md)
+-   [Utilizando no Terminal Linux](utilizar-no-terminal.md)
+-   [Personalizando e Configurando](configuracoes.md)
+-   [Quero ajudar o projeto](como-ajudar.md)

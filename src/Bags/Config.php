@@ -17,6 +17,8 @@ class Config extends Bag
     public function __construct(string $pathRoot)
     {
         $pathRoot = $this->requireValue('path_root', $pathRoot);
+
+        // verificar se é uma url GIT
         $this->isDirectoryOrException($pathRoot);
         parent::setParam('path.root', $pathRoot);
 

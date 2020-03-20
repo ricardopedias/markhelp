@@ -59,7 +59,7 @@ class Command extends SymfonyCommand
         $version = $this->getApplication()->getVersion();
         $output->writeln([
             '<fg=green>---------------------------------------------------</>',
-            "<fg=green>MarkHelp {$version}</>",
+            '<fg=green>MarkHelp ' . $version . '</>',
             '<fg=green>---------------------------------------------------</>',
         ]);
         
@@ -144,9 +144,9 @@ class Command extends SymfonyCommand
         return 0;
     }
 
-    private function isGitUrl($path)
+    private function isGitUrl($url)
     {
-        return false;
+        return strpos($url, ".git") !== false;
     }
 }
 

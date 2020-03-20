@@ -15,6 +15,7 @@ class TestCase extends PhpUnitTestCase
     protected $pathRootMenu     = null;
     protected $pathRootComplete = null;
     protected $pathExternal     = null;
+    protected $pathDestination  = null;
     protected $pathDefaultTheme = null;
 
     protected function setUp() : void

@@ -44,27 +44,32 @@ class MarkHelpTest extends TestCase
         $this->assertFileExists("{$this->pathDestination}/page-two.html");
     }
 
-    // /**
-    //  * @test
-    //  */
-    // public function renderConfigFileSintaxException()
-    // {
-    //     $this->expectException(Exception::class);
+    /**
+     * @test
+     */
+    public function renderRepositoryDefaultConfigs()
+    {
+        $app = new MarkHelp('https://github.com/ricardopedias/markhelp.git');
+        $app->saveTo($this->pathDestination);
 
-    //     $app = new MarkHelp($this->pathRootComplete);
-    //     $app->loadConfigFrom($this->pathExternal . DIRECTORY_SEPARATOR . "config-sintax.json");
-    //     $app->saveTo($this->pathDestination);
-    // }
+        $this->assertDirectoryExists("{$this->pathDestination}/markhelp/master");
+        $this->assertDirectoryNotExists("{$this->pathDestination}/markhelp/v1.0.0");
+        $this->assertDirectoryNotExists("{$this->pathDestination}/markhelp/v2.0.0");
+        $this->assertDirectoryNotExists("{$this->pathDestination}/markhelp/v3.0.0");
+    }
 
-    // /**
-    //  * @test
-    //  */
-    // public function renderConfigFileException()
-    // {
-    //     $this->expectException(Exception::class);
+    /**
+     * @test
+     */
+    public function renderRepositoryCustomConfigs()
+    {
+        $app = new MarkHelp('https://github.com/ricardopedias/markhelp.git');
+        $app->loadConfigFrom($this->pathExternal . DIRECTORY_SEPARATOR . "config.json");
+        $app->saveTo($this->pathDestination);
 
-    //     $app = new MarkHelp($this->pathRootComplete);
-    //     $app->loadConfigFrom($this->pathExternal . DIRECTORY_SEPARATOR . "config-invalid.json");
-    //     $app->saveTo($this->pathDestination);
-    // }
+        $this->assertDirectoryExists("{$this->pathDestination}/markhelp/master");
+        $this->assertDirectoryExists("{$this->pathDestination}/markhelp/v1.0.0");
+        $this->assertDirectoryExists("{$this->pathDestination}/markhelp/v2.0.0");
+        $this->assertDirectoryExists("{$this->pathDestination}/markhelp/v3.0.0");
+    }
 }

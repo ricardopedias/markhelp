@@ -6,36 +6,66 @@ namespace MarkHelp;
 use Error;
 use Exception;
 use MarkHelp\App\Filesystem;
-use MarkHelp\App\Reader;
 use MarkHelp\App\Tools;
-use MarkHelp\App\Writer;
 use MarkHelp\Bags\Config;
+use MarkHelp\Handlers\LocalHandle;
+use MarkHelp\Handlers\RepositoryHandle;
 
 class MarkHelp
 {
     use Tools;
 
-    private $config = null;
+    private $origin = null;
+
+    private $configList = [];
+
+    private $handle = null;
+
+    private $isRepository = false;
 
     /**
      * Constrói um leitor de arquivos markdown.
      * 
-     * @param string $path Diretório contendo arquivos markdown
+     * @param string $path Localização contendo arquivos markdown
      */
     public function __construct(string $path)
     {
+        $this->origin = $path;
+        
+        if ($this->canBeGitUrl($this->origin) === true) {
+            $this->isRepository = true;
+            $this->handle = new RepositoryHandle($this->origin);
+            return;
+        }
+
+        $this->handle = new LocalHandle;
+    }
+
+    public function canBeGitUrl($url)
+    {
+        return substr($url, -4) === '.git';
+    }
+
+    public function saveTo(string $pathDestination)
+    {
+        $path = $this->isRepository === true ? $pathDestination : $this->origin;
+
         $this->config = new Config($path);
+        $this->config->addParams($this->configList);
+
+        $this->handle->setConfig($this->config);
+        $this->handle->toDestination($pathDestination);
     }
 
     public function setConfig(string $param, $value)
     {
-        $this->config->setParam($param, $value);
+        $this->configList[$param] = $value;
         return $this;
     }
 
     public function config(string $param)
     {
-        return $this->config->param($param);
+        return $this->configList[$param] ?? null;
     }
 
     public function loadConfigFrom(string $pathConfigJsonFile)
@@ -58,7 +88,7 @@ class MarkHelp
                 }
 
                 $value = $this->normalizeValue($value);
-                $this->config->setParam($param, $value);
+                $this->setConfig($param, $value);
             }
 
         } catch(Error $e) {
@@ -79,12 +109,5 @@ class MarkHelp
         }
 
         return $value;
-    }
-
-    public function saveTo(string $pathDestination)
-    {
-        $reader = new Reader($this->config);
-        $writer = new Writer($reader);
-        $writer->saveTo($pathDestination);
     }
 }

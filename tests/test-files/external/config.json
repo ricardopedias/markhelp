@@ -14,5 +14,7 @@
     "assets.scripts"     : "{{theme}}/assets/scripts.js",
     "assets.logo.src"    : "{{theme}}/assets/logo.png",
     "assets.icon.favicon": "{{theme}}/assets/favicon.ico",
-    "assets.icon.apple"  : "{{theme}}/assets/apple-touch-icon-precomposed.png"
+    "assets.icon.apple"  : "{{theme}}/assets/apple-touch-icon-precomposed.png",
+    "clone.directory"    : "docs",
+    "clone.branchs"      : "master, v1.0.0, v2.0.0,v3.0.0"
 }

@@ -44,6 +44,8 @@ class Config extends Bag
             'assets.logo.src'     => $this->makeFile('{{theme}}/assets/logo.png'),
             'assets.icon.favicon' => $this->makeFile('{{theme}}/assets/favicon.ico'),
             'assets.icon.apple'   => $this->makeFile('{{theme}}/assets/apple-touch-icon-precomposed.png'),
+            'clone.directory'     => $this->makeString('docs'),
+            'clone.branchs'       => $this->makeString('master'),
         ];
         
         $this->addParams(array_map(function($v){ return $v->value; }, $this->defaults));
@@ -78,15 +80,10 @@ class Config extends Bag
         return $this->makeParam('bool', $value, $required);
     }
 
-    private function makeInteger($value, bool $required = false)
-    {
-        return $this->makeParam('int', $value, $required);
-    }
-
     public function setParam(string $name, $value)
     {
         $info = $this->defaults[$name] ?? null;
-        if ($info === null || $name === 'path.root') {
+        if ($info === null) {
             throw new Exception("The configuration parameter {$name} is invalid");
         }
         

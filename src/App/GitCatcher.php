@@ -27,7 +27,7 @@ class GitCatcher
      * 
      * @return array
      */
-    public function cloneds() : array
+    public function allCloneds() : array
     {
         return $this->listCloneds;
     }

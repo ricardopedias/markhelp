@@ -40,18 +40,32 @@ class RepositoryHandle implements IHandle
         $gotcha->addRepo($this->repository, $cloneDir, $cloneBranchs);
         $gotcha->grabTo($pathDestination);
 
+        $repoName = key($gotcha->allCloneds());
         $allBranchs = current($gotcha->allCloneds());
-        foreach($allBranchs as $branchName => $info) {
+        $versions = array_map(function($v){ return explode('/', $v['path'])[1]; }, current($gotcha->allCloneds()));
+        foreach($allBranchs as $branchName => $item) {
 
             $currentConfig = $this->config->all();
             unset($currentConfig['path.root']);
 
-            $newConfig = new Config($pathDestination . DIRECTORY_SEPARATOR . $info['path']);
+            $newConfig = new Config($pathDestination . DIRECTORY_SEPARATOR . $item['path']);
             $newConfig->addParams($currentConfig);
 
             $reader = new Reader($newConfig);
+            $reader->setCurrentVersion($branchName);
+            foreach($versions as $versionLabel) {
+                $versionUrl = "$versionLabel";
+                $reader->addVersion($versionLabel, $versionUrl, true);
+            }
+
             $writer = new Writer($reader);
             $writer->saveTo($pathDestination . DIRECTORY_SEPARATOR . 'rendered' . DIRECTORY_SEPARATOR . $branchName);  
         }
+
+        $filesystem = new Filesystem;
+        $filesystem->mount('destination', $pathDestination);
+
+        $filesystem->deleteDir("destination://{$repoName}");
+        $filesystem->moveDirectory("destination://rendered", "destination://{$repoName}");
     }
 }

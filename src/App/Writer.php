@@ -144,12 +144,29 @@ class Writer
             }
 
             $replaceStrings[$assetParam] = "{$dotPrefix}assets/{$assetFile}";
-            //var_dump($assetParam, "{$dotPrefix}assets/{$assetBasename}"); exit;
-            // $this->reader->config()->setParam($assetParam, "{$dotPrefix}assets/{$assetBasename}");
         }
+
+        $replaceStrings['versions'] = $this->renderVersions();
 
         $replaceStrings['home'] = $dotPrefix . "index.html";
 
         return array_merge($this->reader->config()->all(), $replaceStrings);
+    }
+
+    private function renderVersions()
+    {
+        $versions = $this->reader->versions();
+        $current = $this->reader->currentVersion();
+
+        $html = "<div class='block-version-selector'>";
+        $html.= "<select id='version-select'>";
+        foreach($versions as $label => $version) {
+            $selected = $version == $current ? 'selected' : '';
+            $html.= "<option value='{$version}' {$selected}>{$label}</option>";
+        }
+        $html.= "</select>";
+        $html.= "</div>";
+
+        return $html;
     }
 }

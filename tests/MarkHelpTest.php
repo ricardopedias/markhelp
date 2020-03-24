@@ -12,6 +12,45 @@ class MarkHelpTest extends TestCase
     /**
      * @test
      */
+    public function canBeGitUrl()
+    {
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @test
+     */
+    public function normalizeValue()
+    {
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @test
+     */
+    public function setConfig()
+    {
+        $this->assertTrue(true);
+    }
+
+    /**
+     * @test
+     */
+    public function config()
+    {
+        $this->assertTrue(true);
+    }
+    /**
+     * @test
+     */
+    public function loadConfigFrom()
+    {
+        $this->assertTrue(true);
+    }
+    
+    /**
+     * @test
+     */
     public function renderDefaultConfigs()
     {
         $app = new MarkHelp($this->pathRootComplete);

@@ -23,4 +23,12 @@ class FilesystemTest extends TestCase
         $list = $filesystem->listContents('destination://.', true);
         $this->assertIsArray($list);
     }
+
+    /**
+     * @test
+     */
+    public function moveDirectory()
+    {
+        $this->assertTrue(true);
+    }
 }

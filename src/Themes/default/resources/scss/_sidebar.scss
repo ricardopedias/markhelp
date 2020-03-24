@@ -41,6 +41,10 @@ main menu {
   margin: 0;
   padding: 0;
 
+  & .block-version-selector {
+    margin-top: $sidebar-item-gap;
+  }
+
   & h2 {
     color: $sidebar-title-font-color;
     font-family: $sidebar-title-font-family;
@@ -142,6 +146,11 @@ $sidebar-right-gap : 25px;
     padding: $sidebar-item-gap 0;
     width: 50%;
 
+    & .block-version-selector {
+      text-align: center;
+      padding: ($sidebar-item-gap + ($sidebar-item-gap/2)) 0;
+    }
+
     & > ul {
       margin-top: ($sidebar-item-gap*2);
     }
@@ -170,6 +179,10 @@ $sidebar-right-gap : 25px;
     float: left;
     width: 200px;
     padding: $sidebar-item-gap 0 ($sidebar-item-gap*3) 0;
+
+    & .block-version-selector {
+      padding: $sidebar-item-gap ($sidebar-right-gap - ($sidebar-right-gap/5)) $sidebar-item-gap ($sidebar-left-gap - ($sidebar-left-gap/5));
+    }
 
     & > ul {
       margin-top: ($sidebar-item-gap*2);
@@ -208,6 +221,10 @@ $sidebar-right-gap : 25px;
     float: left;
     width: 250px;
     padding: $sidebar-item-gap 0 ($sidebar-item-gap*4) 0;
+
+    & .block-version-selector {
+      padding: $sidebar-item-gap $sidebar-right-gap $sidebar-item-gap $sidebar-left-gap;
+    }
 
     & > ul {
       margin-top: ($sidebar-item-gap*2);

@@ -30,6 +30,10 @@ class Reader
 
     private $assets = null;
 
+    private $versions = [];
+
+    private $currentVersion = null;
+
     /**
      * Constrói um leitor de arquivos markdown.
      * 
@@ -61,6 +65,27 @@ class Reader
     public function filesystem() : Filesystem
     {
         return $this->filesystem;
+    }
+
+    public function setCurrentVersion(string $version)
+    {
+        $this->currentVersion = $version;
+    }
+
+    public function currentVersion()
+    {
+        return $this->currentVersion;
+    }
+
+    public function addVersion(string $label, string $version)
+    {
+        $this->versions[$label] = $version;
+        return $this;
+    }
+
+    public function versions() : array
+    {
+        return $this->versions;
     }
 
     /**

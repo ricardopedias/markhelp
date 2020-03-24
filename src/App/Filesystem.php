@@ -9,6 +9,8 @@ use League\Flysystem\MountManager;
 
 class Filesystem extends MountManager
 {
+    use Tools;
+
     /**
      * Constrói um gerenciador de arquivos.
      * O argumento $storages deve ser um array associativo, 
@@ -50,4 +52,38 @@ class Filesystem extends MountManager
 
         return $this;
     }
+
+    private function normalizeNamespace($namespace)
+    {
+        $namespace = rtrim(str_replace("//", "--", $namespace), "/");
+        return str_replace("--", "//", $namespace);
+    }
+
+    public function moveDirectory($origin, $destination)
+    {
+        $origin = explode("//", $this->normalizeNamespace($origin));
+        $destination = explode("//", $this->normalizeNamespace($destination));
+
+        $originNamespace = $origin[0] . "//";
+        $originPath = $origin[1];
+
+        $destinationNamespace = $destination[0] . "//";
+        $destinationPath = $destination[1];
+
+        $list = $this->listContents("{$originNamespace}{$originPath}", true);
+
+        foreach($list as $item) {
+
+            if ($item['type'] === 'dir'){
+                continue;
+            }
+
+            $originFile = $item['path'];
+            $destinationFile = str_replace($originPath, $destinationPath, $item['path']);
+            $this->copy("{$originNamespace}{$originFile}", "{$destinationNamespace}/{$destinationFile}");
+        }
+
+        $this->deleteDir("{$originNamespace}{$originPath}");
+    }
+
 }

@@ -252,7 +252,7 @@ class ReaderTest extends TestCase
 
         $this->assertEquals('./', $reader->markdownFiles()['index']->param('assetsPrefix'));
         $this->assertEquals('index.md', $reader->markdownFiles()['index']->param('pathSearch'));
-        $this->assertEquals('index.html', $reader->markdownFiles()['index']->param('pathReplace'));
+        $this->assertEquals('home.html', $reader->markdownFiles()['index']->param('pathReplace'));
 
         $this->assertEquals('./', $reader->markdownFiles()['page-one']->param('assetsPrefix'));
         $this->assertEquals('page-one.md', $reader->markdownFiles()['page-one']->param('pathSearch'));
@@ -277,7 +277,7 @@ class ReaderTest extends TestCase
 
         $this->assertEquals('./', $reader->markdownFiles()['index']->param('assetsPrefix'));
         $this->assertEquals('index.md', $reader->markdownFiles()['index']->param('pathSearch'));
-        $this->assertEquals('index.html', $reader->markdownFiles()['index']->param('pathReplace'));
+        $this->assertEquals('home.html', $reader->markdownFiles()['index']->param('pathReplace'));
 
         $this->assertEquals('./', $reader->markdownFiles()['page-one']->param('assetsPrefix'));
         $this->assertEquals('page-one.md', $reader->markdownFiles()['page-one']->param('pathSearch'));

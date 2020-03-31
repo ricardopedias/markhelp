@@ -148,7 +148,11 @@ class Writer
 
         $replaceStrings['versions'] = $this->renderVersions();
 
-        $replaceStrings['home'] = $dotPrefix . "index.html";
+        $homeUrl = $this->reader->config()->param('project.home');
+        $homeUrl = (strpos($homeUrl, '{{project}}') !== false)
+            ? $dotPrefix . substr($homeUrl, 12)
+            : $homeUrl;
+        $replaceStrings['home'] = $homeUrl;
 
         return array_merge($this->reader->config()->all(), $replaceStrings);
     }
@@ -158,14 +162,11 @@ class Writer
         $versions = $this->reader->versions();
         $current = $this->reader->currentVersion();
 
-        $html = "<div class='block-version-selector'>";
-        $html.= "<select class='version-select'>";
+        $html = "";
         foreach($versions as $label => $version) {
             $selected = $version == $current ? 'selected' : '';
             $html.= "<option value='{$version}' {$selected}>{$label}</option>";
         }
-        $html.= "</select>";
-        $html.= "</div>";
 
         return $html;
     }

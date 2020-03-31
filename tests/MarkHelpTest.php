@@ -88,13 +88,13 @@ class MarkHelpTest extends TestCase
      */
     public function renderRepositoryDefaultConfigs()
     {
-        $app = new MarkHelp('https://github.com/ricardopedias/markhelp.git');
+        $app = new MarkHelp('https://github.com/ricardopedias/markhelp-test-repo.git');
         $app->saveTo($this->pathDestination);
 
-        $this->assertDirectoryExists("{$this->pathDestination}/markhelp/master");
-        $this->assertDirectoryNotExists("{$this->pathDestination}/markhelp/v1.0.0");
-        $this->assertDirectoryNotExists("{$this->pathDestination}/markhelp/v2.0.0");
-        $this->assertDirectoryNotExists("{$this->pathDestination}/markhelp/v3.0.0");
+        $this->assertDirectoryExists("{$this->pathDestination}/markhelp-test-repo/master");
+        $this->assertDirectoryNotExists("{$this->pathDestination}/markhelp-test-repo/v1.0.0");
+        $this->assertDirectoryNotExists("{$this->pathDestination}/markhelp-test-repo/v2.0.0");
+        $this->assertDirectoryNotExists("{$this->pathDestination}/markhelp-test-repo/v3.0.0");
     }
 
     /**
@@ -102,13 +102,13 @@ class MarkHelpTest extends TestCase
      */
     public function renderRepositoryCustomConfigs()
     {
-        $app = new MarkHelp('https://github.com/ricardopedias/markhelp.git');
+        $app = new MarkHelp('https://github.com/ricardopedias/markhelp-test-repo.git');
         $app->loadConfigFrom($this->pathExternal . DIRECTORY_SEPARATOR . "config.json");
         $app->saveTo($this->pathDestination);
 
-        $this->assertDirectoryExists("{$this->pathDestination}/markhelp/master");
-        $this->assertDirectoryExists("{$this->pathDestination}/markhelp/v1.0.0");
-        $this->assertDirectoryExists("{$this->pathDestination}/markhelp/v2.0.0");
-        $this->assertDirectoryExists("{$this->pathDestination}/markhelp/v3.0.0");
+        $this->assertDirectoryExists("{$this->pathDestination}/markhelp-test-repo/master");
+        $this->assertDirectoryExists("{$this->pathDestination}/markhelp-test-repo/v1.0.0");
+        $this->assertDirectoryExists("{$this->pathDestination}/markhelp-test-repo/v2.0.0");
+        $this->assertDirectoryExists("{$this->pathDestination}/markhelp-test-repo/v3.0.0");
     }
 }

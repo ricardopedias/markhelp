@@ -16,42 +16,43 @@ class RepositoryHandle implements IHandle
 {
     use Tools;
 
-    private $config = null;
+    private $gitUrl = null;
 
-    private $repository = [];
+    private $configList = [];
 
-    public function __construct(string $repository)
+    public function setOrigin(string $pathOrigin)
     {
-        $this->repository = $repository;
+        $this->gitUrl = $pathOrigin;
+        return $this;
     }
-
-    public function setConfig(Config $instance)
+    
+    public function setConfigList(array $params)
     {
-        $this->config = $instance;
+        $this->configList = $params;
         return $this;
     }
 
     public function toDestination(string $pathDestination) : void
     {
-        $cloneDir = $this->config->param('clone.directory');
-        $cloneBranchs = array_map(function($v){ return trim($v); }, explode(",", $this->config->param('clone.branchs')));
+        $defaultConfig = new Config($pathDestination);
+        $defaultConfig->addParams($this->configList);
+
+        $cloneDir = $defaultConfig->param('clone.directory');
+        $cloneBranchs = array_map(function($v){ return trim($v); }, explode(",", $defaultConfig->param('clone.branchs')));
 
         $gotcha = new GitCatcher;
-        $gotcha->addRepo($this->repository, $cloneDir, $cloneBranchs);
+        $gotcha->addRepo($this->gitUrl, $cloneDir, $cloneBranchs);
         $gotcha->grabTo($pathDestination);
 
-        $repoName = key($gotcha->allCloneds());
+        $repoName   = key($gotcha->allCloneds());
         $allBranchs = current($gotcha->allCloneds());
-        $versions = array_map(function($v){ return explode('/', $v['path'])[1]; }, current($gotcha->allCloneds()));
+        $versions   = array_map(function($v){ return explode('/', $v['path'])[1]; }, current($gotcha->allCloneds()));
         foreach($allBranchs as $branchName => $item) {
 
-            $currentConfig = $this->config->all();
-            unset($currentConfig['path.root']);
+            $config = new Config($pathDestination . DIRECTORY_SEPARATOR . $item['path']);
+            $config->addParams($this->configList);
 
-            $newConfig = new Config($pathDestination . DIRECTORY_SEPARATOR . $item['path']);
-            $newConfig->addParams($currentConfig);
-
-            $reader = new Reader($newConfig);
+            $reader = new Reader($config);
             $reader->setCurrentVersion($branchName);
             foreach($versions as $versionLabel) {
                 $versionUrl = "$versionLabel";

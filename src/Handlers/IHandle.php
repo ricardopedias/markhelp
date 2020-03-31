@@ -7,7 +7,9 @@ use MarkHelp\Bags\Config;
 
 interface IHandle
 {
-    public function setConfig(Config $instance);
+    public function setOrigin(string $pathOrigin);
+
+    public function setConfigList(array $instance);
 
     public function toDestination(string $pathDestination) : void;
 }

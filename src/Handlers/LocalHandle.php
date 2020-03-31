@@ -12,17 +12,28 @@ class LocalHandle implements IHandle
 {
     use Tools;
 
-    private $config = null;
+    private $pathOrigin = null;
 
-    public function setConfig(Config $instance)
+    private $configList = [];
+
+    public function setOrigin(string $pathOrigin)
     {
-        $this->config = $instance;
+        $this->pathOrigin = $pathOrigin;
+        return $this;
+    }
+
+    public function setConfigList(array $params)
+    {
+        $this->configList = $params;
         return $this;
     }
 
     public function toDestination(string $pathDestination) : void
     {
-        $reader = new Reader($this->config);
+        $config = new Config($this->pathOrigin);
+        $config->addParams($this->configList);
+
+        $reader = new Reader($config);
         $writer = new Writer($reader);
         $writer->saveTo($pathDestination);
     }

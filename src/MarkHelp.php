@@ -15,7 +15,9 @@ class MarkHelp
 {
     use Tools;
 
-    private $origin = null;
+    private $pathOrigin = null;
+
+    private $urlRepository = null;
 
     private $configList = [];
 
@@ -25,20 +27,26 @@ class MarkHelp
 
     /**
      * Constrói um leitor de arquivos markdown.
+     * O argumento $path pode ser um caminho real (/caminho/para/projeto)
+     * ou um URL para repositório do git (http://meurepos.com/repo.git)
      * 
      * @param string $path Localização contendo arquivos markdown
      */
     public function __construct(string $path)
     {
         $this->origin = $path;
-        
-        if ($this->canBeGitUrl($this->origin) === true) {
+
+        if ($this->canBeGitUrl($path) === true) {
+
             $this->isRepository = true;
-            $this->handle = new RepositoryHandle($this->origin);
+
+            $this->handle = new RepositoryHandle;
+            $this->handle->setOrigin($path);
             return;
         }
 
         $this->handle = new LocalHandle;
+        $this->handle->setOrigin($path);
     }
 
     public function canBeGitUrl($url)
@@ -48,13 +56,12 @@ class MarkHelp
 
     public function saveTo(string $pathDestination)
     {
-        $path = $this->isRepository === true ? $pathDestination : $this->origin;
+        $path = $this->isRepository === true 
+            ? $pathDestination // a origem é o local que foram clonados
+            : $this->origin;
 
-        $this->config = new Config($path);
-        $this->config->addParams($this->configList);
-
-        $this->handle->setConfig($this->config);
-        $this->handle->toDestination($pathDestination);
+        $this->handle->setConfigList($this->configList);
+        $this->handle->toDestination($path);
     }
 
     public function setConfig(string $param, $value)

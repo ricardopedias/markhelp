@@ -29,7 +29,11 @@
                 <span class="tagline">{{ project.slogan }}</span>
             </a>
 
-            {{ versions }}
+            <div class='block-version-selector'>
+                <select class='version-select'>
+                {{ versions }}
+                </select>
+            </div>
             
         </header>
 
@@ -43,7 +47,11 @@
 
             <menu>
                 
-                {{ versions }}
+                <div class='block-version-selector'>
+                    <select class='version-select'>
+                    {{ versions }}
+                    </select>
+                </div>
 
                 {{ sidemenu }}
 

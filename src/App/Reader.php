@@ -154,7 +154,7 @@ class Reader
                 $bag->setParam('type', 'index');
                 $bag->setParam('assetsPrefix', './');
                 $bag->setParam('pathSearch', "index.md");
-                $bag->setParam('pathReplace', "index.html");
+                $bag->setParam('pathReplace', "home.html");
 
                 $files[$item['filename']] = $bag;
                 continue;

@@ -32,6 +32,7 @@ class Config extends Bag
             'project.slogan'      => $this->makeString('Gerador de documentação'),
             'project.description' => $this->makeString('Gerador de documentação feito em PHP'),
             'project.images'      => $this->makePath('{{project}}/images'),
+            'project.home'        => $this->makeString('{{project}}/home.html'),
             'current.page'        => $this->makeString(''),
             'git.url'             => $this->makeString('https://github.com/ricardopedias/markhelp'),
             'git.fork'            => $this->makeBoolean(true),

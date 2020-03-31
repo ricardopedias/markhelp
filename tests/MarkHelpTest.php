@@ -60,7 +60,7 @@ class MarkHelpTest extends TestCase
         $this->assertDirectoryExists("{$this->pathDestination}/avançado");
         $this->assertDirectoryExists("{$this->pathDestination}/o_básico");
         $this->assertFileExists("{$this->pathDestination}/assets/styles.css");
-        $this->assertFileExists("{$this->pathDestination}/index.html");
+        $this->assertFileExists("{$this->pathDestination}/home.html"); // os arquivos 'index.md' são convertidos para 'home.html'
         $this->assertFileExists("{$this->pathDestination}/page-one.html");
         $this->assertFileExists("{$this->pathDestination}/page-two.html");
     }
@@ -78,7 +78,7 @@ class MarkHelpTest extends TestCase
         $this->assertDirectoryExists("{$this->pathDestination}/avançado");
         $this->assertDirectoryExists("{$this->pathDestination}/o_básico");
         $this->assertFileExists("{$this->pathDestination}/assets/styles.css");
-        $this->assertFileExists("{$this->pathDestination}/index.html");
+        $this->assertFileExists("{$this->pathDestination}/home.html"); // os arquivos 'index.md' são convertidos para 'home.html'
         $this->assertFileExists("{$this->pathDestination}/page-one.html");
         $this->assertFileExists("{$this->pathDestination}/page-two.html");
     }

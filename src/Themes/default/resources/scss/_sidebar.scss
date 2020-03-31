@@ -270,6 +270,10 @@ main {
     background-size: 50% 1px;
     background-repeat: repeat-y;
     background-image: linear-gradient($sidebar-menu-bg-color 100%, $sidebar-menu-bg-color 100%);
+
+    & menu .block-version-selector {
+      display: none;
+    }
   }
 }
 

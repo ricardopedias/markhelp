@@ -4,10 +4,10 @@ Este script contém as funcionalidades do menu lateral.
 ---------------------------------------------------------------------------------------------
 */
 
-$('#version-select').change(function () {
+$('select.version-select').change(function () {
 
     var versions = [];
-    $('#version-select option').each(function(){ versions.push($(this).val()) });
+    $('select.version-select option').each(function(){ versions.push($(this).val()) });
 
     var versionSelected = $("option:selected", this).val();
 

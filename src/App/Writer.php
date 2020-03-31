@@ -159,7 +159,7 @@ class Writer
         $current = $this->reader->currentVersion();
 
         $html = "<div class='block-version-selector'>";
-        $html.= "<select id='version-select'>";
+        $html.= "<select class='version-select'>";
         foreach($versions as $label => $version) {
             $selected = $version == $current ? 'selected' : '';
             $html.= "<option value='{$version}' {$selected}>{$label}</option>";

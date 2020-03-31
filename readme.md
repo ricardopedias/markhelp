@@ -18,7 +18,7 @@ Simples de usar dentro ou fora de seus projetos.
 Sinta-se à vontade para conferir o [changelog](https://github.com/ricardopedias/markhelp/blob/master/changelog.md), os [releases](https://github.com/ricardopedias/markhelp/releases) e a [licença](https://github.com/ricardopedias/markhelp/blob/master/license.md).
 
 Acesse também a [documentação online](https://github.com/ricardopedias/markhelp/blob/master/docs/index.md) e confira os recursos disponíveis nesta biblioteca.
-Um exemplo do resultado obtido com MarkHelp pode ser visto [clicando aqui](https://www.ricardopdias.com.br/projects/markhelp/index.html).
+Um exemplo do resultado obtido com MarkHelp pode ser visto [clicando aqui](https://www.ricardopdias.com.br/projects/markhelp/master/index.html).
 
 ## Características
 

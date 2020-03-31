@@ -9,7 +9,9 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ## \[Unreleased]
 
-Nada implementado ainda.
+### Added
+
+-   Melhorias na documentação
 
 ## \[0.6.1] - 2020-03-18
 

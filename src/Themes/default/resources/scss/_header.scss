@@ -25,13 +25,19 @@ header {
       text-transform: uppercase;
     }
   }
+
+  & .block-version-selector {
+    display: none;
+    margin-top: 25px;
+    text-align: center;
+  }
 }
 
 @media screen and (max-width: 549px) {
   header {
     padding: 85px 10px 25px 10px;
 
-    .logo {
+    & .logo {
       text-align: center;
       font-size: 0;
       line-height: 0;
@@ -49,6 +55,10 @@ header {
       .tagline {
         display: block;
       }
+    }
+
+    & .block-version-selector {
+      display: block;
     }
   }
 }

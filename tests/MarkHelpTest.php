@@ -48,40 +48,40 @@ class MarkHelpTest extends TestCase
         $this->assertTrue(true);
     }
     
-    /**
-     * @test
-     */
-    public function renderDefaultConfigs()
-    {
-        $app = new MarkHelp($this->pathRootComplete);
-        $app->saveTo($this->pathDestination);
+    // /**
+    //  * @test
+    //  */
+    // public function renderDefaultConfigs()
+    // {
+    //     $app = new MarkHelp($this->pathRootComplete);
+    //     $app->saveTo($this->pathDestination);
         
-        $this->assertDirectoryExists("{$this->pathDestination}/assets");
-        $this->assertDirectoryExists("{$this->pathDestination}/avançado");
-        $this->assertDirectoryExists("{$this->pathDestination}/o_básico");
-        $this->assertFileExists("{$this->pathDestination}/assets/styles.css");
-        $this->assertFileExists("{$this->pathDestination}/home.html"); // os arquivos 'index.md' são convertidos para 'home.html'
-        $this->assertFileExists("{$this->pathDestination}/page-one.html");
-        $this->assertFileExists("{$this->pathDestination}/page-two.html");
-    }
+    //     $this->assertDirectoryExists("{$this->pathDestination}/assets");
+    //     $this->assertDirectoryExists("{$this->pathDestination}/avançado");
+    //     $this->assertDirectoryExists("{$this->pathDestination}/o_básico");
+    //     $this->assertFileExists("{$this->pathDestination}/assets/styles.css");
+    //     $this->assertFileExists("{$this->pathDestination}/home.html"); // os arquivos 'index.md' são convertidos para 'home.html'
+    //     $this->assertFileExists("{$this->pathDestination}/page-one.html");
+    //     $this->assertFileExists("{$this->pathDestination}/page-two.html");
+    // }
 
-    /**
-     * @test
-     */
-    public function renderConfigFile()
-    {
-        $app = new MarkHelp($this->pathRootComplete);
-        $app->loadConfigFrom($this->pathExternal . DIRECTORY_SEPARATOR . "config.json");
-        $app->saveTo($this->pathDestination);
+    // /**
+    //  * @test
+    //  */
+    // public function renderConfigFile()
+    // {
+    //     $app = new MarkHelp($this->pathRootComplete);
+    //     $app->loadConfigFrom($this->pathExternal . DIRECTORY_SEPARATOR . "config.json");
+    //     $app->saveTo($this->pathDestination);
         
-        $this->assertDirectoryExists("{$this->pathDestination}/assets");
-        $this->assertDirectoryExists("{$this->pathDestination}/avançado");
-        $this->assertDirectoryExists("{$this->pathDestination}/o_básico");
-        $this->assertFileExists("{$this->pathDestination}/assets/styles.css");
-        $this->assertFileExists("{$this->pathDestination}/home.html"); // os arquivos 'index.md' são convertidos para 'home.html'
-        $this->assertFileExists("{$this->pathDestination}/page-one.html");
-        $this->assertFileExists("{$this->pathDestination}/page-two.html");
-    }
+    //     $this->assertDirectoryExists("{$this->pathDestination}/assets");
+    //     $this->assertDirectoryExists("{$this->pathDestination}/avançado");
+    //     $this->assertDirectoryExists("{$this->pathDestination}/o_básico");
+    //     $this->assertFileExists("{$this->pathDestination}/assets/styles.css");
+    //     $this->assertFileExists("{$this->pathDestination}/home.html"); // os arquivos 'index.md' são convertidos para 'home.html'
+    //     $this->assertFileExists("{$this->pathDestination}/page-one.html");
+    //     $this->assertFileExists("{$this->pathDestination}/page-two.html");
+    // }
 
     /**
      * @test

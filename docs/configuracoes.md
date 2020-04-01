@@ -60,7 +60,8 @@ Abaixo, seguem todas elas:
 *  **project.name**: define o nome do projeto ao qual a documentação renderizada se refere;
 *  **project.slogan**: define uma pequena frase, que aparecerá no cabeçalho, como slogan do projeto;
 *  **project.description**: define um texto descritivo para a documentação ser indexada pelos mecanismos de busca. Especifique no máximo 255 caracteres para uma boa descrição;
-*  **project.images**: define a localização do diretório de imagens (se o projeto possuir). A url pode ser passada de forma absoluta (caminho completo) ou de forma relativa, usando a tag especial      {{project}} como prefixo (por exemplo, '{{project}}/images'), indicando que o diretório está no projeto markdown;
+*  **project.images**: define a localização do diretório de imagens (se o projeto possuir). O url pode ser passado de forma absoluta (caminho completo) ou de forma relativa, usando a tag especial {{project}} como prefixo (por exemplo, '{{project}}/images'), indicando que o diretório está no projeto markdown;
+*  **project.home**: define a url a ser usada como pagina inicial. Semelhante ao parâmetro anterior, o url pode ser passada de forma absoluta (caminho completo) ou de forma relativa, usando a tag especial {{project}} como prefixo (por exemplo, '{{project}}/home.html'), indicando que o diretório está no projeto markdown;
 *  **git.url**: define a url para acessar o repositório do projeto;
 *  **git.fork**: define se a bandeira de "Faça um fork" deverá, ou não aparecer;
 *  **copy.name**: o nome da pessoa/instituição detentora dos direitos da documentação renderizada;
@@ -71,14 +72,15 @@ Abaixo, seguem todas elas:
 *  **assets.scripts**: define um arquivo contendo as rotinas javascript, para usar no lugar do contido no tema em uso;
 *  **assets.logo.src**: define o caminho completo até o logotipo da documentação. Este parâmetro é muito útil para personalizar a renderização e utilizar a identidade visual corretamente. Por padrão, o logotipo do MarkHelp será utilizado;
 *  **assets.icon.favicon**: define o caminho completo até o favicon da documentação. Por padrão, o ícone do MarkHelp será utilizado;
-*  **assets.icon.apple**: define o caminho completo até o apple-touch-icon da documentação. Por padrão, o ícone do MarkHelp será utilizado.
+*  **assets.icon.apple**: define o caminho completo até o apple-touch-icon da documentação. Por padrão, o ícone do MarkHelp será utilizado;
+*  **clone.directory**: define o diretório, dentro do repositório do git, de onde a documentação em markdown deverá ser extraída;
+*  **clone.branchs**: define os `branchs` a serem usados como versões do documento. Por padrão o branch `master` será usado. Para especificar mais de um `branch`, basta adicioná-los separados por vírgula.
 
 > **Observação**: usando o MarkHelp para implementar em projetos PHP, é possível setar configurações pontuais, sem a necessidade de usar um arquivo `config.json`. Para mais informações, confira [Implementando projetos PHP](utilizar-como-biblioteca.md).
 
 ## Sumário
 
 -   [Início](index.md)
--   [Instalando o MarkHelp](instalando.md)
 -   [Implementando projetos PHP](utilizar-como-biblioteca.md)
 -   [Utilizando no Terminal Linux](utilizar-no-terminal.md)
 -   [Personalizando e Configurando](configuracoes.md)

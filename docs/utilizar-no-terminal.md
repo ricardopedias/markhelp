@@ -10,7 +10,23 @@ gerar uma documentação HTML e disponibilizá-la manualmente em algum canal na 
 
 > Obs: para automatizar o processo de criação de documentações, veja [Implementando projetos PHP](utilizar-como-biblioteca.md).
 
-## 1. Uso básico
+## 1. Instalado no Ubuntu (ou distribuições baseadas no Debian)
+
+Para utilizar o MarkHelp como um comando dentro de um sistema operacional 
+baseado em Debian Linux, basta efetuar os seguintes passos:
+
+```bash
+git clone https://github.com/ricardopedias/markhelp.git
+cd markhelp
+./make-deb-package.sh
+```
+
+Um pacote chamado markhelp\_9.9.9_all.deb será gerado no mesmo diretório. 
+Basta instalar este pacote com o gerenciador de pacotes de sua preferência 
+e começar a usar o MarkHelp em sua distribuição.
+
+
+## 2. Uso básico
 
 Dentro do terminal, basta digitar o comando markhelp --help para exibir a lista de ajuda.
 
@@ -31,6 +47,12 @@ Uma forma mais declarativa é útil para executar fora do diretório do projeto:
 markhelp -i /caminho/ate/meu/projeto/markdown/ -o /caminho/para/resultado/html/
 ```
 
+Ou para obter os arquivos de um repositório GIT:
+
+```bash
+markhelp -i http://endereco.do/meu/repo.git -o /caminho/para/resultado/html/
+```
+
 O resultado será parecido com o mostrado abaixo:
 
 ```bash
@@ -43,7 +65,7 @@ Load template from Themes/default/support/document.html
 Documentation site successfully generated
 ```
 
-## 2. Definindo configurações
+## 3. Definindo configurações
 
 Para especificar um arquivo contendo as configurações, use o seguinte comando:
 
@@ -57,7 +79,6 @@ Para mais informações sobre como criar um arquivo contendo configurações, ac
 ## Sumário
 
 -   [Início](index.md)
--   [Instalando o MarkHelp](instalando.md)
 -   [Implementando projetos PHP](utilizar-como-biblioteca.md)
 -   [Utilizando no Terminal Linux](utilizar-no-terminal.md)
 -   [Personalizando e Configurando](configuracoes.md)

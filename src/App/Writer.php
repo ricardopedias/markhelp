@@ -129,6 +129,7 @@ class Writer
             $fileOrigin = $item->param('pathSearch');
             $fileDestination = $dotPrefix . $item->param('pathReplace');
             $replaceStrings[$fileOrigin] = $fileDestination;
+            
         }
 
         $assetsList = $this->reader->assetsFiles();
@@ -152,7 +153,7 @@ class Writer
         $homeUrl = (strpos($homeUrl, '{{project}}') !== false)
             ? $dotPrefix . substr($homeUrl, 12)
             : $homeUrl;
-        $replaceStrings['home'] = $homeUrl;
+        $replaceStrings['home.url'] = $homeUrl;
 
         return array_merge($this->reader->config()->all(), $replaceStrings);
     }

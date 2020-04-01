@@ -1,8 +1,24 @@
 # Implementando projetos PHP
 
-Para utilizar o MarkHelp como biblioteca em um projeto PHP, é preciso fazer a instalação através do [composer](https://getcomposer.org/). Para mais informações, confira [Instalando o MarkHelp](instalando.md).
+## 1. Instalando a biblioteca
 
-## 1. Uso básico
+Para utilizar o MarkHelp como biblioteca em um projeto PHP, é preciso fazer a instalação através do [composer](https://getcomposer.org/):
+
+```bash
+composer require ricardopedias/markhelp
+composer update
+```
+
+Após a atualização do composer, basta instanciar o MarkHelper e usar:
+
+```php
+include 'vendor/autoload.php';
+
+$app = new MarkHelp('/meus/arquivos/markdown/');
+```
+
+
+## 2. Uso básico
 
 Após a instalação, basta instanciar o MarkHelper e usar, como no exemplo abaixo:
 
@@ -13,7 +29,7 @@ $app = new MarkHelp('/caminho/ate/meu/projeto/markdown/');
 $app->saveTo('/caminho/para/resultado/html/');
 ```
 
-## 2. Definindo configurações
+## 3. Definindo configurações
 
 Para especificar um arquivo contendo as configurações, use o método `loadConfigFrom`:
 
@@ -37,7 +53,6 @@ Para mais informações sobra as configurações disponíveis, configa [Personal
 ## Sumário
 
 -   [Início](index.md)
--   [Instalando o MarkHelp](instalando.md)
 -   [Implementando projetos PHP](utilizar-como-biblioteca.md)
 -   [Utilizando no Terminal Linux](utilizar-no-terminal.md)
 -   [Personalizando e Configurando](configuracoes.md)

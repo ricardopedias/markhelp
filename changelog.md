@@ -9,9 +9,20 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ## \[Unreleased]
 
+Nada implementado ainda.
+
+## \[0.7.0] - 2020-04-01
+
 ### Added
 
 -   Melhorias na documentação
+-   Adicionado o badge do Travis
+-   Adicionada possibilidade de renderização com base em repositórios GIT
+-   Adicionada renderização de várias versões com base em branchs
+
+### Fixed 
+
+-   Pequenas irregularidades de layout
 
 ## \[0.6.1] - 2020-03-18
 
@@ -103,7 +114,8 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 ## Releases
 
--   Unreleased <https://github.com/ricardopedias/markhelp/compare/v0.6.1...HEAD>
+-   Unreleased <https://github.com/ricardopedias/markhelp/compare/v0.7.0...HEAD>
+-   0.7.0 <https://github.com/ricardopedias/markhelp/compare/v0.6.1...v0.7.0>
 -   0.6.1 <https://github.com/ricardopedias/markhelp/compare/v0.6.0...v0.6.1>
 -   0.6.0 <https://github.com/ricardopedias/markhelp/compare/v0.5.1...v0.6.0>
 -   0.5.1 <https://github.com/ricardopedias/markhelp/compare/v0.5.0...v0.5.1>

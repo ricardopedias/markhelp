@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use Exception;
-use MarkHelp\App;
 use MarkHelp\MarkHelp;
 
 class MarkHelpTest extends TestCase
@@ -92,9 +90,9 @@ class MarkHelpTest extends TestCase
         $app->saveTo($this->pathDestination);
 
         $this->assertDirectoryExists("{$this->pathDestination}/markhelp-test-repo/master");
-        $this->assertDirectoryNotExists("{$this->pathDestination}/markhelp-test-repo/v1.0.0");
-        $this->assertDirectoryNotExists("{$this->pathDestination}/markhelp-test-repo/v2.0.0");
-        $this->assertDirectoryNotExists("{$this->pathDestination}/markhelp-test-repo/v3.0.0");
+        $this->assertDirectoryDoesNotExist("{$this->pathDestination}/markhelp-test-repo/v1.0.0");
+        $this->assertDirectoryDoesNotExist("{$this->pathDestination}/markhelp-test-repo/v2.0.0");
+        $this->assertDirectoryDoesNotExist("{$this->pathDestination}/markhelp-test-repo/v3.0.0");
     }
 
     /**

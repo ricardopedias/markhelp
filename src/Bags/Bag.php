@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarkHelp\Bags;
@@ -20,13 +21,13 @@ class Bag
 
     public function addParams(array $params)
     {
-        foreach($params as $name => $value) {
+        foreach ($params as $name => $value) {
             $this->setParam($name, $value);
         }
         return $this;
     }
 
-    public function all() : array
+    public function all(): array
     {
         return $this->params;
     }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarkHelp\App;
@@ -18,21 +19,19 @@ class Writer
 
     /**
      * Obtém a instancia do gerenciador de arquivos.
-     * 
-     * @return Filesystem
+     * @return MarkHelp\App\Filesystem
      */
-    protected function filesystem() : Filesystem
+    protected function filesystem(): Filesystem
     {
         return $this->reader->filesystem();
     }
 
     /**
      * Salva o projeto no diretório especificado.
-     * 
      * @param string $path
      * @return void
      */
-    public function saveTo(string $path) : void
+    public function saveTo(string $path): void
     {
         $this->filesystem()->mount('destination', $path);
 
@@ -44,15 +43,14 @@ class Writer
     }
 
     /**
-     * Limpa o diretório de destino, 
+     * Limpa o diretório de destino,
      * onde a nova documentação será salva.
-     * 
      * @return void
      */
-    private function cleanup() : void
+    private function cleanup(): void
     {
         $cleanup = $this->filesystem()->listContents('destination://');
-        foreach($cleanup as $item) {
+        foreach ($cleanup as $item) {
             if ($item['type'] === 'dir') {
                 $this->filesystem()->deleteDir("destination://{$item['path']}");
                 continue;
@@ -63,37 +61,36 @@ class Writer
 
     /**
      * Copia os arquivos de assets para o projeto.
-     * 
      * @return void
      */
-    private function copyAssets() : void
+    private function copyAssets(): void
     {
         $list = $this->reader->assetsFiles();
 
-        foreach($list as $item) {
-
+        foreach ($list as $item) {
             $mountPoint    = $item->param('mountPoint');
             $assetParam    = $item->param('assetParam');
             $assetPath     = $item->param('assetPath');
             $assetBasename = $item->param('assetBasename');
 
             $destinationPath = $assetParam === 'assets.images' ? 'images' : 'assets';
-            $this->filesystem()->copy("{$mountPoint}://{$assetPath}", "destination://{$destinationPath}/{$assetBasename}");
+            $this->filesystem()->copy(
+                "{$mountPoint}://{$assetPath}",
+                "destination://{$destinationPath}/{$assetBasename}"
+            );
         }
     }
 
     /**
      * Gera os arquivos html do projeto.
-     * 
      * @return void
      */
-    private function generateFiles() : void
+    private function generateFiles(): void
     {
         $documentBag = $this->reader->supportFiles()['document'] ?? null;
-        $menuBag = $this->reader->supportFiles()['menu'] ?? null;
+        $menuBag     = $this->reader->supportFiles()['menu'] ?? null;
 
-        foreach($this->reader->markdownFiles() as $fileBag){
-
+        foreach ($this->reader->markdownFiles() as $fileBag) {
             $fileOrigin = $fileBag->param('pathSearch');
             $fileDestination = $fileBag->param('pathReplace');
 
@@ -114,32 +111,29 @@ class Writer
     }
 
     /**
-     * Obtém a lista de parâmetros usados para substituição 
+     * Obtém a lista de parâmetros usados para substituição
      * nos templates do projeto.
-     * 
-     * @param File $fileBag
+     * @param \MarkHelp\Bags\File $fileBag
      * @return array
      */
-    private function replaces(File $fileBag) : array
+    private function replaces(File $fileBag): array
     {
         $dotPrefix = $fileBag->param('assetsPrefix');
         
         $replaceStrings = [];
-        foreach($this->reader->markdownFiles() as $item) {
+        foreach ($this->reader->markdownFiles() as $item) {
             $fileOrigin = $item->param('pathSearch');
             $fileDestination = $dotPrefix . $item->param('pathReplace');
             $replaceStrings[$fileOrigin] = $fileDestination;
-            
         }
 
         $assetsList = $this->reader->assetsFiles();
-        foreach($assetsList as $assetBag) {
-
+        foreach ($assetsList as $assetBag) {
             $assetParam = $assetBag->param('assetParam');
             $assetFile = $assetBag->param('assetPath');
             $assetBasename = $assetBag->param('assetBasename');
 
-            if($assetParam === 'assets.images') {
+            if ($assetParam === 'assets.images') {
                 $replaceStrings["images/$assetFile"] = "{$dotPrefix}images/{$assetFile}";
                 continue;
             }
@@ -164,9 +158,9 @@ class Writer
         $current = $this->reader->currentVersion();
 
         $html = "";
-        foreach($versions as $label => $version) {
+        foreach ($versions as $label => $version) {
             $selected = $version == $current ? 'selected' : '';
-            $html.= "<option value='{$version}' {$selected}>{$label}</option>";
+            $html .= "<option value='{$version}' {$selected}>{$label}</option>";
         }
 
         return $html;

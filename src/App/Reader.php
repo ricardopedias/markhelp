@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarkHelp\App;
@@ -36,33 +37,30 @@ class Reader
 
     /**
      * Constrói um leitor de arquivos markdown.
-     * 
      * @param string $path Diretório contendo arquivos markdown
      */
     public function __construct(Config $config)
     {
         $this->config = $config;
-        $this->filesystem = new Filesystem;
+        $this->filesystem = new Filesystem();
         $this->filesystem->mount('origin', $this->config()->param('path.root'));
         $this->filesystem->mount("theme", $this->config()->param('path.theme'));
     }
 
     /**
      * Obtém a instancia do objeto de configurações.
-     * 
-     * @return Config
+     * @return \MarkHelp\Bags\Config
      */
-    public function config() : Config
+    public function config(): Config
     {
         return $this->config;
     }
 
     /**
      * Obtém a instancia do gerenciador de arquivos.
-     * 
-     * @return Filesystem
+     * @return \MarkHelp\App\Filesystem
      */
-    public function filesystem() : Filesystem
+    public function filesystem(): Filesystem
     {
         return $this->filesystem;
     }
@@ -83,20 +81,19 @@ class Reader
         return $this;
     }
 
-    public function versions() : array
+    public function versions(): array
     {
         return $this->versions;
     }
 
     /**
      * Obtém os arquivos markdown do projeto.
-     * 
      * @return array
      */
-    public function markdownFiles() : array
+    public function markdownFiles(): array
     {
-        if ($this->files === null){
-            $this->files = $this->loadMarkdownFiles();    
+        if ($this->files === null) {
+            $this->files = $this->loadMarkdownFiles();
         }
 
         return $this->files;
@@ -104,13 +101,12 @@ class Reader
 
 /**
      * Obtém os arquivos de suporte do projeto.
-     * 
      * @return array
      */
-    public function supportFiles() : array
+    public function supportFiles(): array
     {
-        if ($this->support === null){
-            $this->support = $this->loadSupportFiles();    
+        if ($this->support === null) {
+            $this->support = $this->loadSupportFiles();
         }
 
         return $this->support;
@@ -118,13 +114,12 @@ class Reader
 
     /**
      * Obtém os assets do projeto.
-     * 
      * @return array
      */
-    public function assetsFiles() : array
+    public function assetsFiles(): array
     {
-        if ($this->assets === null){
-            $this->assets = $this->loadAssetsFiles();    
+        if ($this->assets === null) {
+            $this->assets = $this->loadAssetsFiles();
         }
 
         return $this->assets;
@@ -133,24 +128,21 @@ class Reader
     /**
      * Lê os arquivos markdown contidos no diretório especificado na configuração
      * e retorna uma lista de informações pertinentes.
-     * 
      * @return array
      */
-    private function loadMarkdownFiles() : array
+    private function loadMarkdownFiles(): array
     {
         $files = [];
 
         $list = $this->filesystem()->listContents('origin://', true);
 
-        foreach($list as $item) {
-
+        foreach ($list as $item) {
             if ($item['type'] === 'dir' || $item['extension'] !== 'md') {
                 continue;
             }
 
             if ($item['path'] === 'index.md') {
-
-                $bag = new File;
+                $bag = new File();
                 $bag->setParam('type', 'index');
                 $bag->setParam('assetsPrefix', './');
                 $bag->setParam('pathSearch', "index.md");
@@ -163,7 +155,7 @@ class Reader
             $prefixUrl = $this->generatePrefix($item['path']);
             $filebase  = mb_strtolower(str_replace([' ', '.md'], ['_', '.html'], $item['path']));
 
-            $bag = new File;
+            $bag = new File();
             $bag->setParam('type', 'page');
             $bag->setParam('assetsPrefix', $prefixUrl);
             $bag->setParam('pathSearch', $item['path']);
@@ -178,10 +170,9 @@ class Reader
     /**
      * Lê os arquivos de suporte contidos na configuração especificada
      * e retorna uma lista de informações pertinentes.
-     * 
      * @return array
      */
-    private function loadSupportFiles() : array
+    private function loadSupportFiles(): array
     {
         $support = [];
 
@@ -190,8 +181,7 @@ class Reader
             'menu'     => 'menu.json',
         ];
 
-        foreach($allowedSupport as $supportParam => $filename){
-
+        foreach ($allowedSupport as $supportParam => $filename) {
             $supportFile = $this->config()->param("support.{$supportParam}");
 
             if ($supportFile === null) {
@@ -207,11 +197,10 @@ class Reader
     /**
      * Obtém as informações do arquivo especificado
      * com base em uma url absoluta.
-     * 
      * @param string $supportFile
-     * @return Bag
+     * @return \MarkHelp\Bags\Bag
      */
-    private function retrieveSupportFile(string $supportFile) : Bag
+    private function retrieveSupportFile(string $supportFile): Bag
     {
         $directory = $this->dirname($supportFile);
         $basename  = $this->basename($supportFile);
@@ -222,7 +211,7 @@ class Reader
             $this->mountedDirectories[$point] = true;
         }
 
-        $bag = new Support;
+        $bag = new Support();
         $bag->setParam('mountPoint', $point);
         $bag->setParam('supportPath', $basename);
 
@@ -232,10 +221,9 @@ class Reader
     /**
      * Lê os arquivos de assets contidos na configuração especificada
      * e retorna uma lista de informações pertinentes.
-     * 
      * @return array
      */
-    private function loadAssetsFiles() : array
+    private function loadAssetsFiles(): array
     {
         $assets = [];
 
@@ -247,8 +235,7 @@ class Reader
             'assets.icon.apple'
         ];
 
-        foreach($allowedAssets as $assetParam){
-
+        foreach ($allowedAssets as $assetParam) {
             $assetFile = $this->config()->param($assetParam);
 
             if ($assetFile === null) {
@@ -264,8 +251,7 @@ class Reader
         }
 
         $list = $this->filesystem()->mount('images', $imagesPath)->listContents('images://', true);
-        foreach($list as $item) {
-
+        foreach ($list as $item) {
             if ($item['type'] === 'dir') {
                 continue;
             }
@@ -282,12 +268,11 @@ class Reader
     /**
      * Obtém as informações do arquivo especificado
      * com base em uma url absoluta.
-     * 
      * @param string $assetParam
      * @param string $assetFile
-     * @return Bag
+     * @return \MarkHelp\Bags\Bag
      */
-    private function retrieveAssetFile(string $assetParam, string $assetFile) : Bag
+    private function retrieveAssetFile(string $assetParam, string $assetFile): Bag
     {
         $directory = $this->dirname($assetFile);
         $basename  = $this->basename($assetFile);
@@ -298,7 +283,7 @@ class Reader
             $this->mountedDirectories[$point] = true;
         }
 
-        $bag = new Asset;
+        $bag = new Asset();
         $bag->setParam('mountPoint', $point);
         $bag->setParam('assetParam', $assetParam);
         $bag->setParam('assetPath', $basename);
@@ -309,23 +294,21 @@ class Reader
 
     /**
      * Gera o prefixo para URLs relativas.
-     * 
      * @param string $url
      * @return string
      */
-    private function generatePrefix(string $url) : string
+    private function generatePrefix(string $url): string
     {
-        $levels = substr_count ($url, "/");
+        $levels = substr_count($url, "/");
         return "./" . str_repeat("../", $levels);
     }
 
     /**
      * Devolve um nome seguro para um arquivo a ser salvo.
-     * 
      * @param string $name
      * @return string
      */
-    private function safeFilename(string $name) : string
+    private function safeFilename(string $name): string
     {
         $except = array('\\', ':', '*', '?', '"', '<', '>', '|');
         return str_replace($except, '', $name);

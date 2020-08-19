@@ -1,5 +1,7 @@
-<?php 
+<?php
+
 declare(strict_types=1);
+
 namespace MarkHelp\Console;
 
 use MarkHelp\App\Tools;
@@ -19,7 +21,8 @@ class Command extends SymfonyCommand
     protected function configure()
     {
         $this->setDescription('Create an HTML site based on the markdown files');
-        $this->setHelp('This command scans a directory containing markdown files and generates browsable HTML pages in the form of documentation');
+        $this->setHelp('This command scans a directory containing markdown files '
+            . 'and generates browsable HTML pages in the form of documentation');
 
         $this->addOption(
             'input',
@@ -87,7 +90,7 @@ class Command extends SymfonyCommand
 
         try {
             $source = $source !== null ? $this->absolutePath($source) : null;
-        } catch(TypeError $e) {
+        } catch (TypeError $e) {
             $output->writeln('<fg=red>The specified source is not a valid path</>');
             return 1;
         }
@@ -99,7 +102,7 @@ class Command extends SymfonyCommand
 
         try {
             $destination = $this->absolutePath($destination);
-        } catch(TypeError $e) {
+        } catch (TypeError $e) {
             $output->writeln('<fg=red>The specified destination is not a valid path</>');
             return 1;
         }
@@ -112,7 +115,7 @@ class Command extends SymfonyCommand
         $destination = rtrim($destination, '/') . "/";
 
         $sourceMessage = "Reading from: {$source}";
-        if ($source === null && $repository === NULL) {
+        if ($source === null && $repository === null) {
             $source = $currentDir;
             $sourceMessage = "Reading from current directory";
         }
@@ -149,9 +152,3 @@ class Command extends SymfonyCommand
         return strpos($url, ".git") !== false;
     }
 }
-
-
-
-
-
-

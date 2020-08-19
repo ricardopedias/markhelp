@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarkHelp\App;
@@ -44,26 +45,26 @@ trait Tools
      */
     public function absolutePath($path)
     {
-        if(DIRECTORY_SEPARATOR !== '/') {
+        if (DIRECTORY_SEPARATOR !== '/') {
             $path = str_replace(DIRECTORY_SEPARATOR, '/', $path);
         }
         $search = explode('/', $path);
-        $search = array_filter($search, function($part) {
+        $search = array_filter($search, function ($part) {
             return $part !== '.';
         });
         $append = array();
         $match = false;
-        while(count($search) > 0) {
+        while (count($search) > 0) {
             $match = realpath(implode('/', $search));
-            if($match !== false) {
+            if ($match !== false) {
                 break;
             }
             array_unshift($append, array_pop($search));
         };
-        if($match === false) {
+        if ($match === false) {
             $match = getcwd();
         }
-        if(count($append) > 0) {
+        if (count($append) > 0) {
             $match .= DIRECTORY_SEPARATOR . implode(DIRECTORY_SEPARATOR, $append);
         }
         return $match;

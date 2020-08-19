@@ -1,9 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarkHelp\Handlers;
-
-use MarkHelp\Bags\Config;
 
 interface IHandle
 {
@@ -11,5 +10,5 @@ interface IHandle
 
     public function setConfigList(array $instance);
 
-    public function toDestination(string $pathDestination) : void;
+    public function toDestination(string $pathDestination): void;
 }

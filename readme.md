@@ -1,7 +1,5 @@
 # MarkHelp
 
-By [Ricardo Pereira Dias](http://www.ricardopdias.com.br) ©
-
 ![PHP Version](https://img.shields.io/badge/php-%5E7.2.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![TDD](https://img.shields.io/badge/tdd-Tested%20100%25-blue)
@@ -17,8 +15,7 @@ Simples de usar dentro ou fora de seus projetos.
 
 Sinta-se à vontade para conferir o [changelog](https://github.com/ricardopedias/markhelp/blob/master/changelog.md), os [releases](https://github.com/ricardopedias/markhelp/releases) e a [licença](https://github.com/ricardopedias/markhelp/blob/master/license.md).
 
-Acesse também a [documentação online](https://github.com/ricardopedias/markhelp/blob/master/docs/index.md) e confira os recursos disponíveis nesta biblioteca.
-Um exemplo do resultado obtido com MarkHelp pode ser visto [clicando aqui](https://www.ricardopdias.com.br/projects/markhelp/master/home.html).
+Acesse também a [documentação online](https://www.ricardopedias.com.br/projects/markhelp/master/home.html).
 
 ## Características
 
@@ -27,3 +24,9 @@ Um exemplo do resultado obtido com MarkHelp pode ser visto [clicando aqui](https
 -   Bem documentado e amigável para IDEs;
 -   Feito para TDD (Test Driven Development);
 -   Feito com :heart: & :coffee:.
+
+## Sumário
+
+## Créditos 
+
+[Ricardo Pereira Dias](http://www.ricardopedias.com.br)

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarkHelp\Handlers;
@@ -28,7 +29,7 @@ class LocalHandle implements IHandle
         return $this;
     }
 
-    public function toDestination(string $pathDestination) : void
+    public function toDestination(string $pathDestination): void
     {
         $config = new Config($this->pathOrigin);
         $config->addParams($this->configList);

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarkHelp\App;
@@ -26,14 +27,12 @@ class Converter
 
     public function useDocument(Support $documentBag)
     {
-        $mountPoint = $documentBag->param('mountPoint');
+        $mountPoint  = $documentBag->param('mountPoint');
         $supportPath = $documentBag->param('supportPath');
 
         try {
-
             $this->documentContent = $this->filesystem->read("{$mountPoint}://{$supportPath}");
-
-        } catch(FilesystemNotFoundException $e) {
+        } catch (FilesystemNotFoundException $e) {
             throw new Exception($e->getMessage(), $e->getCode());
         }
     }
@@ -44,10 +43,8 @@ class Converter
         $supportPath = $menuBag->param('supportPath');
 
         try {
-
             $this->menuContent = $this->filesystem->read("{$mountPoint}://{$supportPath}");
-
-        } catch(FilesystemNotFoundException $e) {
+        } catch (FilesystemNotFoundException $e) {
             throw new Exception($e->getMessage(), $e->getCode());
         }
     }
@@ -64,7 +61,7 @@ class Converter
             : $this->documentContent;
     }
 
-    private function menuItems() : array
+    private function menuItems(): array
     {
         if ($this->menuContent === null || $this->menuContent === '') {
             return [];
@@ -81,12 +78,11 @@ class Converter
     /**
      * Redesenha uma string contendo formatação em markdown,
      * tranformando-a em HTML e substituindo os parâmetros passados.
-     * 
      * @param string $contents
-     * @param array $replaces 
-     * @return string 
+     * @param array $replaces
+     * @return string
      */
-    public function render(string $contents, array $replaces = []) : string
+    public function render(string $contents, array $replaces = []): string
     {
         $sidemenu = $this->renderMenu($this->menuItems(), $replaces);
         $sidemenu = $this->replace($sidemenu, $replaces);
@@ -98,40 +94,38 @@ class Converter
             'content'  => $contents,
             'sidemenu' => $sidemenu
         ];
-        
-       return $this->replace(
-           $this->document(), 
-           array_merge($replaces, $mainReplaces)
+
+        return $this->replace(
+            $this->document(),
+            array_merge($replaces, $mainReplaces)
         );
     }
 
     /**
      * Converte um arquivo markdown para HTML
-     * 
      * @param string $markdownString
      * @return string
      */
-    private function toHtml(string $markdownString) : string
+    private function toHtml(string $markdownString): string
     {
-        return (new CommonMarkConverter)->convertToHtml($markdownString);
+        return (new CommonMarkConverter())->convertToHtml($markdownString);
     }
 
     /**
      * Substitui os parâmetros passados dentro de uma string.
-     * 
-     * @param string $content 
-     * @param array $replaces 
+     * @param string $content
+     * @param array $replaces
      * @return string
      */
-    public function replace(string $content, array $replaces) : string
+    public function replace(string $content, array $replaces): string
     {
         // tags: {{ minhatag  }}
-        $content = preg_replace_callback("/{{\s*(?P<key>[a-zA-Z0-9_\.-]+?)\s*}}/", function($match) use($replaces){
+        $content = preg_replace_callback("/{{\s*(?P<key>[a-zA-Z0-9_\.-]+?)\s*}}/", function ($match) use ($replaces) {
             return isset($replaces[$match["key"]]) ? $replaces[$match["key"]] : $match[0];
         }, $content);
 
         // links markdown: (minha/url.ext)
-        foreach($replaces as $search => $replace) {
+        foreach ($replaces as $search => $replace) {
             $search = ["($search", "( $search"];
             $replace = "($replace";
             $content = str_replace($search, $replace, $content);
@@ -140,7 +134,7 @@ class Converter
         return $content;
     }
 
-    private function renderMenu(array $menuItems, array $replaces) : ?string
+    private function renderMenu(array $menuItems, array $replaces): ?string
     {
         if (count($menuItems) === 0) {
             return '';
@@ -148,8 +142,7 @@ class Converter
 
         try {
             $menu = "";
-            foreach($menuItems as $label => $url) {
-
+            foreach ($menuItems as $label => $url) {
                 if (is_array($url) === false) {
                     $menu .= "<ul>";
                     $menu .= $this->renderMenuItem($label, $url, $replaces);
@@ -160,32 +153,30 @@ class Converter
                 $menu .= "<h2>{$label}</h2>";
                 $menu .= $this->renderMenuSection($url, $replaces);
             }
-        } catch(Error $e) {
+        } catch (Error $e) {
             throw new Exception("The menu file format is invalid. " . $e->getMessage(), $e->getCode());
         }
 
         return $menu;
     }
 
-    private function renderMenuSection(array $menuItems, array $replaces) : ?string
+    private function renderMenuSection(array $menuItems, array $replaces): ?string
     {
         $block = "<ul>";
-        foreach($menuItems as $label => $url) {
-
+        foreach ($menuItems as $label => $url) {
             if (is_array($url) === false) {
                 $block .= $this->renderMenuItem($label, $url, $replaces);
                 continue;
             }
 
             $block .= $this->renderMenuBlock($label, $url, $replaces);
-
         }
         $block .= "</ul>";
 
         return $block;
     }
 
-    private function renderMenuItem(string $label, string $url, array $replaces) : string
+    private function renderMenuItem(string $label, string $url, array $replaces): string
     {
         $url = $this->replaceMenuItemUrl($url, $replaces);
 
@@ -196,7 +187,7 @@ class Converter
         ]);
     }
 
-    private function renderMenuBlock(string $label, array $items, array $replaces) : string
+    private function renderMenuBlock(string $label, array $items, array $replaces): string
     {
         return implode("\n", [
             "<li>",
@@ -206,7 +197,7 @@ class Converter
         ]);
     }
 
-    private function replaceMenuItemUrl(string $url, array $replaces) : string
+    private function replaceMenuItemUrl(string $url, array $replaces): string
     {
         $search  = array_keys($replaces);
         $replace = array_values($replaces);

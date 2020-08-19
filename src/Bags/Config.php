@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarkHelp\Bags;
@@ -49,7 +50,9 @@ class Config extends Bag
             'clone.branchs'       => $this->makeString('master'),
         ];
         
-        $this->addParams(array_map(function($v){ return $v->value; }, $this->defaults));
+        $this->addParams(array_map(function ($v) {
+            return $v->value;
+        }, $this->defaults));
     }
 
     private function makeParam(string $type, $value, bool $required = false)
@@ -100,7 +103,6 @@ class Config extends Bag
         }
 
         if ($info->type === 'file') {
-            
             $support = [
                 'support.menu'     => 'menu.json',
                 'support.document' => 'document.html',
@@ -134,15 +136,15 @@ class Config extends Bag
     private function castValue($info, $value)
     {
         switch ($info->type) {
-            case 'bool': 
+            case 'bool':
                 $value = (bool) $value;
                 break;
-            case 'int': 
+            case 'int':
                 $value = (int) $value;
                 break;
-            case 'string': 
-            case 'path': 
-            case 'file': 
+            case 'string':
+            case 'path':
+            case 'file':
                 $value = (string) $value;
                 break;
         }
@@ -157,11 +159,11 @@ class Config extends Bag
         }
 
         $value     = rtrim($value, DIRECTORY_SEPARATOR);
-        $themePath = rtrim($this->param('path.theme'),  DIRECTORY_SEPARATOR);
+        $themePath = rtrim($this->param('path.theme'), DIRECTORY_SEPARATOR);
         $value     = str_replace(["{{theme}}", "{{ theme }}"], $themePath, $value);
 
-        $rootPath = rtrim($this->param('path.root'),  DIRECTORY_SEPARATOR);
-        $value     = str_replace(["{{project}}", "{{ project }}"], $rootPath, $value);
+        $rootPath = rtrim($this->param('path.root'), DIRECTORY_SEPARATOR);
+        $value    = str_replace(["{{project}}", "{{ project }}"], $rootPath, $value);
 
         if ($checkExist === true) {
             return $this->isDirectory($value) ? $value : null;
@@ -178,7 +180,7 @@ class Config extends Bag
         $projectFileBasename = $this->basename($value);
         $projectFile = $this->param('path.root') . DIRECTORY_SEPARATOR . $projectFileBasename;
         if ($this->isFile($projectFile) === true) {
-            return $projectFile; 
+            return $projectFile;
         }
 
         if ($this->isFile($value) === true) {
@@ -207,11 +209,12 @@ class Config extends Bag
         }
 
         // caminhos padrões dinâmicos, contendo variáveis {{theme|project}} devem ser reprocessados
-        if (strpos((string) $value, "{{theme}}") !== false 
-         || strpos((string) $value, "{{ theme }}") !== false
-         || strpos((string) $value, "{{project}}") !== false 
-         || strpos((string) $value, "{{ project }}") !== false
-        ) {
+        $tags = strpos((string) $value, "{{theme}}") !== false
+             || strpos((string) $value, "{{ theme }}") !== false
+             || strpos((string) $value, "{{project}}") !== false
+             || strpos((string) $value, "{{ project }}") !== false;
+
+        if ($tags === true) {
             $value = $this->normalizeFile($value);
         }
 

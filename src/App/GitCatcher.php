@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarkHelp\App;
@@ -19,28 +20,26 @@ class GitCatcher
 
     public function __construct()
     {
-        $this->filesystem = new Filesystem;        
+        $this->filesystem = new Filesystem();
     }
 
     /**
      * Devolve uma lista com as informações de documentações clonadas.
-     * 
      * @return array
      */
-    public function allCloneds() : array
+    public function allCloneds(): array
     {
         return $this->listCloneds;
     }
 
     /**
      * Adiciona um repositório para ser clonado.
-     * 
-     * @param string $gitUrl 
+     * @param string $gitUrl
      * @param string $docsDirectory
      * @param array $versionBranchs
      * @return GitCatcher
      */
-    public function addRepo(string $gitUrl, string $docsDirectory = 'docs', array $versionBranchs = []) : GitCatcher
+    public function addRepo(string $gitUrl, string $docsDirectory = 'docs', array $versionBranchs = []): GitCatcher
     {
         $this->repositories[$gitUrl] = $docsDirectory;
         $this->branchs[$gitUrl] = count($versionBranchs) === 0 ? ['master'] : $versionBranchs;
@@ -49,11 +48,10 @@ class GitCatcher
 
     /**
      * Faz o clone dos repositórios no diretório especificado.
-     * 
      * @param string $path
      * @return void
      */
-    public function grabTo(string $path) : void
+    public function grabTo(string $path): void
     {
         $this->rootPath = $path;
 
@@ -61,8 +59,7 @@ class GitCatcher
 
         $this->cleanup();
 
-        foreach($this->repositories as $url => $copyDirectory) {
-
+        foreach ($this->repositories as $url => $copyDirectory) {
             if ($this->isRemoteUrlReadable($url) === false) {
                 throw new Exception("The url {$url} is invalid");
             }
@@ -75,13 +72,12 @@ class GitCatcher
 
     /**
      * Extrai os arquivos de documentos de um repositório.
-     * 
      * @param string $repoName
-     * @param string $url 
+     * @param string $url
      * @param string $copyDirectory
      * @return void
      */
-    protected function extractRepository(string $repoName, string $url, string $copyDirectory) : void
+    protected function extractRepository(string $repoName, string $url, string $copyDirectory): void
     {
         $cloneName = "{$repoName}-clone";
         $clonePath = $this->rootPath . DIRECTORY_SEPARATOR . $cloneName;
@@ -92,22 +88,26 @@ class GitCatcher
         $branchsArgs = $this->branchs[$url];
         $branchsList = array_intersect($branchsArgs, $branchsRepo);
 
-        foreach($branchsList as $branchName) {
+        foreach ($branchsList as $branchName) {
             $this->extractBranch($branchName, $repoName, $copyDirectory, $cloneName, $clonePath);
         }
 
         $this->cleanup($cloneName);
     }
 
-    public function extractBranch(string $branchName, string $repoName, string $copyDirectory, string $cloneName, string $clonePath) : void
-    {
+    public function extractBranch(
+        string $branchName,
+        string $repoName,
+        string $copyDirectory,
+        string $cloneName,
+        string $clonePath
+    ): void {
         $this->checkout($clonePath, $branchName);
 
         $extractDirectoryPath = "{$cloneName}/{$copyDirectory}";
 
         $list = $this->filesystem->listContents("destination://{$extractDirectoryPath}", true);
-        foreach($list as $item) {
-
+        foreach ($list as $item) {
             if ($item['type'] === 'dir') {
                 continue;
             }
@@ -120,17 +120,16 @@ class GitCatcher
             $this->listCloneds[$repoName] = [];
         }
 
-        $this->listCloneds[$repoName][$branchName] = [ 
-            'path' => "{$repoName}/{$branchName}" 
+        $this->listCloneds[$repoName][$branchName] = [
+            'path' => "{$repoName}/{$branchName}"
         ];
     }
 
     /**
      * Remove o diretório especificado.
-     * 
      * @return void
      */
-    private function cleanup($path = null) : void
+    private function cleanup($path = null): void
     {
         if ($path !== null) {
             $this->filesystem->deleteDir("destination://{$path}");
@@ -138,7 +137,7 @@ class GitCatcher
         }
 
         $cleanup = $this->filesystem->listContents('destination://');
-        foreach($cleanup as $item) {
+        foreach ($cleanup as $item) {
             if ($item['type'] === 'dir') {
                 $this->filesystem->deleteDir("destination://{$item['path']}");
                 continue;
@@ -149,18 +148,17 @@ class GitCatcher
 
     /**
      * Executa um comando de terminal.
-     * 
      * @param  string|array $command
      * @return GitCatcher
      * @throws Exception
      */
-    protected function run($command) : GitCatcher
+    protected function run($command): GitCatcher
     {
         $arguments = func_get_args();
         $command = $this->processCommand($arguments);
         exec($command . ' 2>&1', $output, $returnCode);
 
-        if($returnCode !== 0) {
+        if ($returnCode !== 0) {
             throw new Exception("Command '{$command}' failed (exit-code {$returnCode}).", $returnCode);
         }
 
@@ -169,30 +167,27 @@ class GitCatcher
 
     /**
      * Processa um comando de terminal, validando suas entradas.
-     * 
      * @param array $arguments
      * @return string
      */
-    protected function processCommand(array $arguments)
+    protected function processCommand(array $arguments): string
     {
         $command = [];
 
         $programName = array_shift($arguments);
 
         foreach ($arguments as $arg) {
-
-            if (is_array($arg)) {
-
-                foreach($arg as $key => $value) {
+            if (is_array($arg) === true) {
+                foreach ($arg as $key => $value) {
                     $escapedCommand = '';
-                    if(is_string($key)) {
+                    if (is_string($key)) {
                         $escapedCommand = "$key ";
                     }
                     $command[] = $escapedCommand . escapeshellarg($value);
                 }
 
                 continue;
-            } 
+            }
 
             if ($arg !== null) {
                 $command[] = escapeshellarg($arg);
@@ -203,12 +198,11 @@ class GitCatcher
     }
 
     /**
-     * Devolve o nome do repositório a partir da url fornecida.
-     * 
+     * Devolve o nome do repositório a partir do URL fornecido.
      * @param  string $url /path/to/repo.git | host.xz:foo/.git | ...
      * @return string
      */
-    public function extractRepositoryNameFromUrl(string $url) : string
+    public function extractRepositoryNameFromUrl(string $url): string
     {
         // host.xz:foo/.git => foo
         // /path/to/repo.git => repo
@@ -219,7 +213,7 @@ class GitCatcher
 
         $directory = basename($directory, '.git');
 
-        if(($pos = strrpos($directory, ':')) !== false) {
+        if (($pos = strrpos($directory, ':')) !== false) {
             $directory = substr($directory, $pos + 1);
         }
 
@@ -228,16 +222,15 @@ class GitCatcher
 
     /**
      * Verifica se o URL é de um repositório válido.
-     * 
      * @param  string $url
      * @param  array|null $refs
      * @return bool
      */
-    public function isRemoteUrlReadable(string $url, array $refs = null) : bool
+    public function isRemoteUrlReadable(string $url, array $refs = null): bool
     {
         $env = 'GIT_TERMINAL_PROMPT=0';
 
-        if (DIRECTORY_SEPARATOR === '\\') { 
+        if (DIRECTORY_SEPARATOR === '\\') {
             // Windows
             $env = 'set GIT_TERMINAL_PROMPT=0 &&';
         }
@@ -259,14 +252,13 @@ class GitCatcher
 
     /**
      * Clona um repositório GIT a partir da url fornecida.
-     * 
      * @param  string $url
      * @param  string $directory
      * @param  array|null $params
      * @return bool
      * @throws Exception
      */
-    public function cloneRepository(string $url, string $directory, ?array $params = null) : bool
+    public function cloneRepository(string $url, string $directory, ?array $params = null): bool
     {
         if ($this->isDirectory("$directory/.git")) {
             throw new Exception("Repository already exists in $directory.");
@@ -300,7 +292,6 @@ class GitCatcher
         $stderr = '';
 
         while (true) {
-
             // lê a saída padrão
             $output = fgets($pipes[1], 1024);
             if ($output) {
@@ -313,10 +304,9 @@ class GitCatcher
                 $stderr .= $output_err;
             }
 
-            // execução do comando finalizada
-            if ((feof($pipes[1]) OR $output === false) 
-             && (feof($pipes[2]) OR $output_err === false)
-            ) {
+            $executionFinished = (feof($pipes[1]) or $output === false)
+                && (feof($pipes[2]) or $output_err === false);
+            if ($executionFinished) {
                 break;
             }
         }
@@ -331,26 +321,24 @@ class GitCatcher
 
     /**
      * Devolve a lista de branchs presentes no repositorio.
-     * 
      * @return array
      * @throws Exception
      */
-    public function getBranches(string $path) : array
+    public function getBranches(string $path): array
     {
-        $list = $this->extractFromCommand("cd {$path}; git branch -r", function($value) {
+        $list = $this->extractFromCommand("cd {$path}; git branch -r", function ($value) {
             $value = trim(substr($value, 1));
             $value = explode('/', $value)[1];
             return $value;
         });
 
-        return array_filter($list, function($value){
+        return array_filter($list, function ($value) {
             return strpos($value, 'HEAD') === false;
         });
     }
 
     /**
      * Faz o chckout em um Branch.
-     * 
      * @param string $path
      * @param string $branch
      * @throws Exception
@@ -363,8 +351,7 @@ class GitCatcher
     
     /**
      * Returns list of tags in repo.
-     * 
-     * @return string[]|NULL  NULL => no tags
+     * @return string[]|null  null => no tags
      * @throws GitException
      */
     public function getTags()
@@ -389,13 +376,11 @@ class GitCatcher
             throw new Exception("Command $command failed.");
         }
 
-        if ($filter !== null){
-
+        if ($filter !== null) {
             $newArray = [];
             foreach ($output as $line) {
-
                 $value = $filter($line);
-                if($value === false){
+                if ($value === false) {
                     continue;
                 }
                 $newArray[] = $value;
@@ -404,7 +389,7 @@ class GitCatcher
             $output = $newArray;
         }
 
-        if(!isset($output[0])){
+        if (!isset($output[0])) {
             // array vazio
             return null;
         }

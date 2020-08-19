@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace MarkHelp\Console;
@@ -21,7 +22,7 @@ class Cli
         $directory = $this->dirname($versionFile);
         $basename = $this->basename($versionFile);
 
-        $filesystem = new Filesystem;
+        $filesystem = new Filesystem();
         $filesystem->mount('root', $directory);
         $this->version = $filesystem->read("root://{$basename}");
 
@@ -31,14 +32,13 @@ class Cli
     /**
      * Captura as informações fornecidas pelo usuário,
      * executa o comando mais adequado e devolve o status de resolução.
-     * 
      * @param Input $input
-     * @param Output $output 
+     * @param Output $output
      * @return int 0 para sucesso, 1 para falhas
      */
     public function run(Input $input = null, Output $output = null)
     {
-        $command = new Command;
+        $command = new Command();
 
         $this->consoleApplication = new Application('MarkHelp', $this->version);
         $this->consoleApplication->setAutoExit(false);

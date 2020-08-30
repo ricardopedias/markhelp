@@ -6,24 +6,19 @@ namespace MarkHelp;
 
 use Error;
 use Exception;
-use MarkHelp\App\Filesystem;
-use MarkHelp\App\Tools;
-use MarkHelp\Handlers\LocalHandle;
-use MarkHelp\Handlers\RepositoryHandle;
+use MarkHelp\Reader\Handlers\IHandle;
+use MarkHelp\Reader\Handlers\LocalHandle;
+use MarkHelp\Reader\Handlers\RepositoryHandle;
+use Reliability\Reliability;
 
 class MarkHelp
 {
-    use Tools;
+    private IHandle $handle;
 
-    private $pathOrigin = null;
+    private bool $isRepository = false;
 
-    private $urlRepository = null;
-
-    private $configList = [];
-
-    private $handle = null;
-
-    private $isRepository = false;
+    /** @var array<string|null> */
+    private array $configList = [];
 
     /**
      * Constrói um leitor de arquivos markdown.
@@ -33,11 +28,8 @@ class MarkHelp
      */
     public function __construct(string $path)
     {
-        $this->origin = $path;
-
         if ($this->canBeGitUrl($path) === true) {
             $this->isRepository = true;
-
             $this->handle = new RepositoryHandle();
             $this->handle->setOrigin($path);
             return;
@@ -47,37 +39,46 @@ class MarkHelp
         $this->handle->setOrigin($path);
     }
 
-    public function canBeGitUrl($url)
+    public function canBeGitUrl(string $url): bool
     {
         return substr($url, -4) === '.git';
     }
 
-    public function saveTo(string $pathDestination)
+    public function saveTo(string $pathDestination): void
     {
         $path = $this->isRepository === true
             ? $pathDestination // a origem é o local que foram clonados
-            : $this->origin;
+            : $this->handle->origin();
 
         $this->handle->setConfigList($this->configList);
         $this->handle->toDestination($path);
     }
 
-    public function setConfig(string $param, $value)
+    public function setConfig(string $param, string $value): MarkHelp
     {
+        if ($value === "null") {
+            $value = null;
+        }
+
         $this->configList[$param] = $value;
         return $this;
     }
 
-    public function config(string $param)
+    public function config(string $param): ?string
     {
         return $this->configList[$param] ?? null;
     }
 
-    public function loadConfigFrom(string $pathConfigJsonFile)
+    public function loadConfigFrom(string $pathConfigJsonFile): MarkHelp
     {
-        $filesystem = new Filesystem();
-        $filesystem->mount('jsonfile', $this->dirname($pathConfigJsonFile));
-        $jsonContent = $filesystem->read("jsonfile://" . $this->basename($pathConfigJsonFile));
+        $reliability = new Reliability();
+        $filesystem = $reliability->mountDirectory($reliability->dirname($pathConfigJsonFile));
+
+        $jsonContent = $filesystem->read($reliability->basename($pathConfigJsonFile));
+
+        if ($jsonContent === false) {
+            throw new Exception("The config file does not contain a valid json");
+        }
 
         $configList = @json_decode($jsonContent, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -90,26 +91,12 @@ class MarkHelp
                     throw new Exception("Parameter {$param} does not contain a valid value");
                 }
 
-                $value = $this->normalizeValue($value);
-                $this->setConfig($param, $value);
+                $this->setConfig($param, (string)$value);
             }
         } catch (Error $e) {
             throw new Exception("The config file format is invalid. " . $e->getMessage(), $e->getCode());
         }
         
         return $this;
-    }
-
-    public function normalizeValue($value)
-    {
-        if ($value === "null") {
-            return null;
-        }
-
-        if (in_array($value, ["true", "false"]) === true) {
-            return (bool) $value;
-        }
-
-        return $value;
     }
 }

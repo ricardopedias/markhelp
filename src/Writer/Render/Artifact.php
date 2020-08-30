@@ -2,49 +2,97 @@
 
 declare(strict_types=1);
 
-namespace MarkHelp\App;
+namespace MarkHelp\Writer\Render;
 
 use Error;
 use Exception;
 use League\CommonMark\CommonMarkConverter;
-use League\Flysystem\FilesystemNotFoundException;
-use MarkHelp\Bags\Support;
+use MarkHelp\Reader\Files\File;
+use MarkHelp\Reader\Loader;
 
-class Converter
+class Artifact
 {
-    use Tools;
+    private Loader $loader;
 
-    private $documentContent = null;
+    private File $file;
 
-    private $menuContent = null;
-
-    private $filesystem = null;
-
-    public function __construct(Filesystem $filesystem)
+    public function __construct(Loader $loader, File $file)
     {
-        $this->filesystem = $filesystem;
+        $this->loader = $loader;
+        $this->file   = $file;
     }
 
-    public function useDocument(Support $documentBag)
+    protected function loader(): Loader
+    {
+        return $this->loader;
+    }
+
+    protected function path(): string
+    {
+        return $this->file->path();
+    }
+
+    protected function fullPath(): string
+    {
+        return $this->file->fullPath();
+    }
+
+    protected function basePath(): string
+    {
+        return $this->file->basePath();
+    }
+
+    
+
+    public function generate()
+    {
+        
+    }
+
+    public function saveTo(string $path): void
+    {
+        $path = rtrim($path, DIRECTORY_SEPARATOR);
+        reliability()->copyFile(
+            $this->file->fullPath(), 
+            $path . DIRECTORY_SEPARATOR .$this->file->path()
+        );
+    }
+
+
+    
+    public function mountedDirectory(string $mountPoint): Filesystem
+    {
+        return $this->reader->mountedDirectory($mountPoint);
+    }
+
+    public function useDocument(Support $documentBag): void
     {
         $mountPoint  = $documentBag->param('mountPoint');
         $supportPath = $documentBag->param('supportPath');
 
+        if ($mountPoint === null || $supportPath === null) {
+            return;
+        }
+
         try {
-            $this->documentContent = $this->filesystem->read("{$mountPoint}://{$supportPath}");
-        } catch (FilesystemNotFoundException $e) {
+            $filesystem = $this->mountedDirectory($mountPoint);
+            $content = $filesystem->read("{$supportPath}");
+            if ($content !== false) {
+                $this->documentContent = $content;
+            }
+        } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode());
         }
     }
 
-    public function useMenu(Support $menuBag)
+    public function useMenu(Support $menuBag): void
     {
         $mountPoint = $menuBag->param('mountPoint');
         $supportPath = $menuBag->param('supportPath');
 
         try {
-            $this->menuContent = $this->filesystem->read("{$mountPoint}://{$supportPath}");
-        } catch (FilesystemNotFoundException $e) {
+            $this->menuContent = $this->mountedDirectory($mountPoint)->read("{$supportPath}");
+        } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode());
         }
     }
@@ -63,16 +111,15 @@ class Converter
 
     private function menuItems(): array
     {
-        if ($this->menuContent === null || $this->menuContent === '') {
-            return [];
+        if ($this->menuItems === [] && $this->menuContent !== null) {
+            $menuItems =  @json_decode($this->menuContent, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception("The menu file does not contain a json: " . \json_last_error_msg());
+            }
+            $this->menuItems = $menuItems;
         }
 
-        $this->menuContent = @json_decode($this->menuContent, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception("The menu file does not contain a json: " . \json_last_error_msg());
-        }
-
-        return $this->menuContent;
+        return $this->menuItems;
     }
 
     /**

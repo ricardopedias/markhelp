@@ -1,0 +1,15 @@
+
+            <menu>
+                
+                <div class='block-version-selector'>
+                    <select class='version-select'>
+                        {% for label, url in releases_list %}
+                        <option value="{{ url }}">{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                {{ sidemenu }}
+
+            </menu>
+    

@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace MarkHelp\Console;
 
-use MarkHelp\App\Tools;
 use MarkHelp\MarkHelp;
+use Reliability\Reliability;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -14,11 +15,13 @@ use TypeError;
 
 class Command extends SymfonyCommand
 {
-    use Tools;
+    private const EXIT_SUCCESS = 0;
+
+    private const EXIT_FAIL = 1;
 
     protected static $defaultName = 'make';
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Create an HTML site based on the markdown files');
         $this->setHelp('This command scans a directory containing markdown files '
@@ -59,7 +62,14 @@ class Command extends SymfonyCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $version = $this->getApplication()->getVersion();
+        $reliability = new Reliability();
+        $application = $this->getApplication();
+
+        if ($application === null) {
+            throw new RuntimeException("Unable to get the symfony application");
+        }
+
+        $version = $application->getVersion();
         $output->writeln([
             '<fg=green>---------------------------------------------------</>',
             '<fg=green>MarkHelp ' . $version . '</>',
@@ -67,16 +77,17 @@ class Command extends SymfonyCommand
         ]);
         
 
-        $currentDir = str_replace("\n", "", shell_exec('pwd'));
+        $currentDir = (string)shell_exec('pwd');
+        $currentDir = str_replace("\n", "", $currentDir);
 
-        $config      = $input->getOption('config');
-        $repository  = $input->getOption('repository');
-        $source      = $input->getOption('input');
-        $destination = $input->getOption('output');
+        $config      = $this->stringOrNullOption($input, 'config');
+        $repository  = $this->stringOrNullOption($input, 'repository');
+        $source      = $this->stringOrNullOption($input, 'input');
+        $destination = $this->stringOrNullOption($input, 'output');
 
         if ($destination === null) {
             $output->writeln('<fg=red>A destination for compiled pages is required</>');
-            return 1;
+            return self::EXIT_FAIL;
         }
 
         if ($this->isGitUrl($source)) {
@@ -89,45 +100,41 @@ class Command extends SymfonyCommand
         }
 
         try {
-            $source = $source !== null ? $this->absolutePath($source) : null;
+            $source = $source !== null ? $reliability->absolutePath($source) : null;
         } catch (TypeError $e) {
             $output->writeln('<fg=red>The specified source is not a valid path</>');
-            return 1;
+            return self::EXIT_FAIL;
         }
 
-        if ($source === false) {
+        if ($source === null) {
             $output->writeln('<fg=red>The specified source is not a valid path</>');
-            return 1;
+            return self::EXIT_FAIL;
         }
 
         try {
-            $destination = $this->absolutePath($destination);
+            $destination = $reliability->absolutePath($destination);
         } catch (TypeError $e) {
             $output->writeln('<fg=red>The specified destination is not a valid path</>');
-            return 1;
+            return self::EXIT_FAIL;
         }
 
-        if ($destination === false) {
+        if ($destination === null) {
             $output->writeln('<fg=red>The specified destination is not a valid path</>');
+            return self::EXIT_FAIL;
         }
         
-        $source      = $source !== null ? rtrim($source, '/') . "/" : null;
+        $source      = rtrim($source, '/') . "/";
         $destination = rtrim($destination, '/') . "/";
 
-        $sourceMessage = "Reading from: {$source}";
-        if ($source === null && $repository === null) {
-            $source = $currentDir;
-            $sourceMessage = "Reading from current directory";
-        }
-        $output->writeln("<fg=blue>{$sourceMessage}</>");
+        $output->writeln("<fg=blue>Reading from: {$source}</>");
         $output->writeln("<fg=blue>Saving in {$destination}</>");
         
-        if ($config === null && $this->isFile($currentDir . DIRECTORY_SEPARATOR . 'config.json')) {
+        if ($config === null && $reliability->isFile($currentDir . DIRECTORY_SEPARATOR . 'config.json')) {
             $config = $currentDir . DIRECTORY_SEPARATOR . 'config.json';
             $output->writeln("<fg=blue>Load config.js from current directory</>");
         }
 
-        if ($config === null && $this->isFile($source . DIRECTORY_SEPARATOR . 'config.json')) {
+        if ($config === null && $reliability->isFile($source . DIRECTORY_SEPARATOR . 'config.json')) {
             $config = $source . 'config.json';
             $output->writeln("<fg=blue>Load config from {$config}</>");
         }
@@ -144,11 +151,26 @@ class Command extends SymfonyCommand
         $app->saveTo($destination);
         $output->writeln("<fg=green>Documentation site successfully generated</>");
 
-        return 0;
+        return self::EXIT_SUCCESS;
     }
 
-    private function isGitUrl($url)
+    private function isGitUrl(?string $url): bool
     {
-        return strpos($url, ".git") !== false;
+        return $url !== null && strpos($url, ".git") !== false;
+    }
+
+    private function stringOrNullOption(InputInterface $input, string $option): ?string
+    {
+        $value = $input->getOption('output');
+
+        if (is_array($value) === true) {
+            return (string) $value[0];
+        }
+
+        if ($value === false) {
+            return null;
+        }
+
+        return (string)$value;
     }
 }

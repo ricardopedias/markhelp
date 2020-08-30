@@ -1,0 +1,17 @@
+        <header>
+            <a class="logo" href="{{ home_url }}">
+                <span class="icon {{ logo_status }}">
+                    <img src="{{ project_logo }}" width="50" height="40" alt="{{ project_name }} - {{ project_slogan }}">
+                </span>
+                <span class="name">{{ project_name }}</span>
+                <span class="tagline">{{ project_slogan }}</span>
+            </a>
+
+            <div class='block-version-selector'>
+                <select class='version-select'>
+                {{ versions }}
+                </select>
+            </div>
+            
+        </header>
+

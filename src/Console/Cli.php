@@ -4,27 +4,28 @@ declare(strict_types=1);
 
 namespace MarkHelp\Console;
 
-use MarkHelp\App\Filesystem;
-use MarkHelp\App\Tools;
 use MarkHelp\Console\Command;
+use Reliability\Reliability;
 use Symfony\Component\Console\Application;
 
 class Cli
 {
-    use Tools;
+    private ?Application $consoleApplication = null;
 
-    private $consoleApplication = null;
+    private string $version;
 
-    private $version = null;
-
-    public function loadVersionFrom($versionFile)
+    public function loadVersionFrom(string $versionFile): Cli
     {
-        $directory = $this->dirname($versionFile);
-        $basename = $this->basename($versionFile);
+        $reliability = new Reliability();
+        $directory = $reliability->dirname($versionFile);
+        $basename = $reliability->basename($versionFile);
 
-        $filesystem = new Filesystem();
-        $filesystem->mount('root', $directory);
-        $this->version = $filesystem->read("root://{$basename}");
+        $filesystem = $reliability->mountDirectory($directory);
+        $version = $filesystem->read("{$basename}");
+
+        if ($version !== false) {
+            $this->version = '';
+        }
 
         return $this;
     }
@@ -36,14 +37,15 @@ class Cli
      * @param Output $output
      * @return int 0 para sucesso, 1 para falhas
      */
-    public function run(Input $input = null, Output $output = null)
+    public function run(Input $input = null, Output $output = null): int
     {
+        $name = 'MarkHelp';
         $command = new Command();
 
-        $this->consoleApplication = new Application('MarkHelp', $this->version);
+        $this->consoleApplication = new Application($name, $this->version);
         $this->consoleApplication->setAutoExit(false);
         $this->consoleApplication->add($command);
-        $this->consoleApplication->setDefaultCommand($command->getName(), true);
-        $this->consoleApplication->run($input, $output);
+        $this->consoleApplication->setDefaultCommand($name, true);
+        return $this->consoleApplication->run($input, $output);
     }
 }

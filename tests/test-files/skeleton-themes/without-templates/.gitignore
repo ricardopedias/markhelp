@@ -1,0 +1,17 @@
+/node_modules
+/.idea
+/.vagrant
+/npm-debug.log
+/yarn-error.log
+/.vscode
+/.docker-project
+/docker-compose.yml
+/composer.lock
+/package-lock.json
+/mix-manifest.json
+/compiles
+/nohup.out
+/vendor
+/.phpunit.result.cache
+/*.backup
+/tests/destination/*

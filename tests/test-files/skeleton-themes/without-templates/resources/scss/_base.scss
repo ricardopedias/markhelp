@@ -1,0 +1,37 @@
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: $header-bg-color;
+  background: linear-gradient(0deg, $footer-bg-color 0%, $footer-bg-color 50%, $header-bg-color 51%, $header-bg-color 100%);
+}
+
+@media screen and (max-width: 549px) {
+  html {
+    overflow-x: hidden;
+  }
+}
+
+@media screen and (max-width: 549px) {
+  body {
+    overflow-x: hidden;
+  }
+}
+
+::-moz-selection {
+  background: $select-bg-color;
+  color: $select-font-color;
+  text-shadow: none;
+}
+
+::selection {
+  background: $select-bg-color;
+  color: $select-font-color;
+  text-shadow: none;
+}
+
+.select2-container {
+  font-family: $font-family;
+}

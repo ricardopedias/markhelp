@@ -12,4 +12,5 @@ Sinta-se à vontade para conferir o [changelog](https://github.com/ricardopedias
 -   [Implementando projetos PHP](utilizar-como-biblioteca.md)
 -   [Utilizando no Terminal Linux](utilizar-no-terminal.md)
 -   [Personalizando e Configurando](configuracoes.md)
+-   [Arquitetura](arquitetura.md)
 -   [Quero ajudar o projeto](como-ajudar.md)

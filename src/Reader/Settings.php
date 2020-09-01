@@ -16,7 +16,7 @@ class Settings
 
     private const TYPE_BOOL = 'bool';
 
-    /** @var array<string|null> */
+    /** @var array<string> */
     protected array $params = [];
 
     /** @var array<string> */
@@ -41,30 +41,25 @@ class Settings
         $this->setupParam(self::TYPE_BOOL, 'project_fork', 'true');
         $this->setupParam(self::TYPE_STRING, 'project_description', 'Gerador de documentação feito em PHP');
         $this->setupParam(self::TYPE_PATH, 'project_images', '{{project}}/images');
-        $this->setupParam(self::TYPE_STRING, 'project_home', '{{project}}/home.html');
+        $this->setupParam(self::TYPE_FILE, 'project_logo_status', 'enabled');
         $this->setupParam(self::TYPE_FILE, 'project_logo', '{{project}}/images/logo.png');
-        $this->setupParam(self::TYPE_FILE, 'project_menu', '{{project}}/menu.json');
-
-        $this->setupParam(self::TYPE_FILE, 'assets_styles', '{{theme}}/assets/styles.css');
-        $this->setupParam(self::TYPE_FILE, 'assets_scripts', '{{theme}}/assets/scripts.js');
-        $this->setupParam(self::TYPE_FILE, 'assets_icon_favicon', '{{theme}}/assets/favicon.ico');
-        $this->setupParam(self::TYPE_FILE, 'assets_icon_apple', '{{theme}}/assets/apple-touch-icon-precomposed.png');
     }
 
     /**
      * Seta um valor de configuração.
      * @param string $name
-     * @param string|null $value
+     * @param string $value
      * @return \MarkHelp\Reader\Settings
      */
-    public function setParam(string $name, ?string $value): Settings
+    public function setParam(string $name, string $value): Settings
     {
         if ($this->validadeParam($name) === false) {
             throw new Exception("Param {$name} is invalid");
         }
 
-        if ($this->types[$name] === self::TYPE_PATH && $value !== null) {
+        if ($this->types[$name] === self::TYPE_PATH && $value !== '') {
             $value = rtrim($value, DIRECTORY_SEPARATOR);
+            $value = str_replace(['{{ ',' }}'], ['{{','}}'], $value);
         }
 
         $this->params[$name] = $value;
@@ -93,9 +88,9 @@ class Settings
     /**
      * Obtém um valor de configuração.
      * @param string $name
-     * @return string|null
+     * @return string
     */
-    public function param(string $name): ?string
+    public function param(string $name): string
     {
         if (isset($this->params[$name]) === false) {
             throw new Exception("Param {$name} is not exists");
@@ -110,7 +105,7 @@ class Settings
 
     /**
      * Devolve uma lista com todos os parâmetros existentes
-     * @return array<string|null>
+     * @return array<string>
     */
     public function allParams(): array
     {
@@ -131,19 +126,19 @@ class Settings
         return $this;
     }
 
-    private function parseTags(?string $value): ?string
+    private function parseTags(string $value): string
     {
-        if ($value === null) {
-            return null;
+        if ($value === '') {
+            return '';
         }
 
         $projectPath = $this->params['path_project'] ?? '';
-        if ($projectPath !== "") {
-            $value = str_replace(["{{project}}", "{{ project }}"], $projectPath, $value);
+        if ($projectPath !== '') {
+            $value = str_replace("{{project}}", $projectPath, $value);
         }
 
         $themePath = $this->params['path_theme'] ?? '';
-        $value = str_replace(["{{theme}}", "{{ theme }}"], $themePath, $value);
+        $value = str_replace("{{theme}}", $themePath, $value);
 
         return $value;
     }

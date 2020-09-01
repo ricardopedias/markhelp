@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace MarkHelp\Reader;
 
-use MarkHelp\Reader\Files\Asset;
-use MarkHelp\Reader\Files\File;
-use MarkHelp\Reader\Files\Image;
-use MarkHelp\Reader\Files\Markdown;
+use MarkHelp\Reader\File;
 use MarkHelp\Reader\Git\Catcher;
 
 class Loader
@@ -19,28 +16,25 @@ class Loader
 
     private Theme $theme;
 
-    private ?File $menuConfig = null;
-
     private string $templatesPath;
 
     /**
      * Constrói um leitor de arquivos markdown.
-     * @param string $projectPath Diretório contendo arquivos markdown
      */
     public function __construct()
     {
         $this->settings      = new Settings();
-        $this->theme         = new Theme();
+        $this->theme         = new Theme($this->pathTheme());
         $this->templatesPath = $this->pathTheme('templates');
     }
 
     /**
      * Seta um valor de configuração.
      * @param string $param
-     * @param string|null $value
+     * @param string $value
      * @return \MarkHelp\Reader\Loader
      */
-    public function setConfig(string $param, ?string $value): Loader
+    public function setConfig(string $param, string $value): Loader
     {
         $this->settings->setParam($param, $value);
         return $this;
@@ -49,9 +43,9 @@ class Loader
     /**
      * Obtém um valor de configuração.
      * @param string $param
-     * @return string|null
+     * @return string
     */
-    public function config(string $param): ?string
+    public function config(string $param): string
     {
         return $this->settings->param($param);
     }
@@ -80,7 +74,7 @@ class Loader
      */
     public function fromLocalDirectory(string $originDirectory)
     {
-        $this->setConfig('path_project', $originDirectory); 
+        $this->setConfig('path_project', $originDirectory);
         $this->parseProject();
         $this->parseTheme();
         return $this;
@@ -111,7 +105,7 @@ class Loader
         return $themePath . DIRECTORY_SEPARATOR . $appendPath;
     }
 
-    /** 
+    /**
      * Lê os releases localizados no diretório do projeto
      */
     private function parseProject(): void
@@ -136,54 +130,25 @@ class Loader
         // Usa-se o diretório principal
         if ($hasReleases === false) {
             $root = rtrim($root, '/');
-            $object = $this->parseRelease($root);
-            $object->setName('_');
+            $object = $this->parseRelease('_', $root);
             $this->releases['_'] = $object;
             return;
         }
 
         foreach ($releases as $release) {
-             $object = $this->parseRelease($this->pathProject($release));
-             $object->setName($release);
+             $object = $this->parseRelease($release, $this->pathProject($release));
              $this->releases[$release] = $object;
         }
     }
 
-    /** 
-     * Lê os arquivos do tema
-     */
-    private function parseTheme(): void
-    {
-        $pathTheme = $this->pathTheme();
-
-        $themeDirectory = reliability()->mountDirectory($pathTheme);
-        $themeItems = $themeDirectory->listContents("/", true);
-        foreach ($themeItems as $item) {
-
-            if ($item['type'] === 'dir' && $item['basename'] === 'templates') {
-                $this->templatesPath = $this->pathTheme($item['path']);
-                continue;
-            }
-
-            if ($item['type'] !== 'file') {
-                continue;
-            }
-
-            $themeFile = $this->parseThemeFile($pathTheme, $item['path'], $item['basename'], $item['extension']);
-            if ($themeFile !== null) {
-                $this->theme->addFile($themeFile);
-            }
-        }
-    }
-
-    /** 
+    /**
      * Lê o conteúdo de um release
      */
-    private function parseRelease(?string $pathRelease): Release
+    private function parseRelease(string $name, string $pathRelease): Release
     {
         $homeSetted = false;
 
-        $release = new Release();
+        $release = new Release($name, $pathRelease);
         $releaseDirectory = reliability()->mountDirectory($pathRelease);
         $rootItems = $releaseDirectory->listContents("/", true);
         foreach ($rootItems as $item) {
@@ -191,12 +156,17 @@ class Loader
                 continue;
             }
 
-            $releaseFile = $this->parseReleaseFile($pathRelease, $item['path'], $item['basename'], $item['extension']);
+            $allowed = ['md','jpg','jpeg','png','gif','webm'];
+            if (in_array($item['extension'], $allowed) === false) {
+                continue;
+            }
+
+            $releaseFile = $this->parseReleaseFile($pathRelease, $item['path'], $item['extension']);
             if ($releaseFile !== null) {
                 $release->addFile($releaseFile);
             }
 
-            // O primeiro arquivo markdown deve ser um fallback 
+            // O primeiro arquivo markdown deve ser um fallback
             // para caso a home não exista
             if ($item['extension'] === 'md' && $homeSetted === false) {
                 $release->setCurrentFileAsHome();
@@ -212,46 +182,85 @@ class Loader
         return $release;
     }
 
-    private function parseReleaseFile(string $basePath, string $path, string $basename, string $extension): ?File
+    private function parseReleaseFile(string $basePath, string $path, string $extension): File
     {
-        if ($basename === 'menu.json') {
-            $this->menuConfig = new File($basePath, $path);
-            return null;
-        }
+        $file = new File($basePath, $path);
 
         switch ($extension) {
             case 'md':
-                return new Markdown($basePath, $path);
+                $file->setType(File::TYPE_MARKDOWN);
                 break;
             case 'jpg':
             case 'jpeg':
             case 'png':
             case 'gif':
             case 'webm':
-                return new Image($basePath, $path);
+                $file->setType(File::TYPE_IMAGE);
         }
 
-        return null;
+        return $file;
     }
 
-    private function parseThemeFile(string $basePath, string $path, string $basename, string $extension): ?File
+    /**
+     * Lê os arquivos do tema
+     */
+    private function parseTheme(): void
     {
+        $pathTheme = $this->pathTheme();
+
+        $themeDirectory = reliability()->mountDirectory($pathTheme);
+        $themeItems = $themeDirectory->listContents("/", true);
+        foreach ($themeItems as $item) {
+            if ($item['type'] === 'dir' && $item['basename'] === 'templates') {
+                $this->templatesPath = $this->pathTheme($item['path']);
+                continue;
+            }
+
+            if (preg_match('/node_modules|resources|templates/', $item['path'])) {
+                continue;
+            }
+
+            if ($item['type'] === 'dir') {
+                continue;
+            }
+
+            $allowed = ['ico','jpg','jpeg','png','gif','webm', 'js', 'css'];
+            if (in_array($item['extension'], $allowed) === false) {
+                continue;
+            }
+
+            $isAsset = (bool)preg_match('/assets/', $item['path']);
+            if ($item['extension'] === 'js' && $isAsset === false) {
+                continue;
+            }
+
+            $themeFile = $this->parseThemeFile($pathTheme, $item['path'], $item['basename'], $item['extension']);
+            if ($themeFile !== null) {
+                $this->theme->addFile($themeFile);
+            }
+        }
+    }
+
+    private function parseThemeFile(string $basePath, string $path, string $basename, string $extension): File
+    {
+        $file = new File($basePath, $path);
+
         if ($basename === '.gitignore') {
-            return null;
+            return $file;
         }
 
         if ($basename === 'package.json') {
-            return null;
+            return $file;
         }
 
-        if ($basename === 'webpack.mix.js') {
-            return null;
+        if ($basename === 'webpack.config.js') {
+            return $file;
         }
 
         // Diretório resources contém assets do mix
         $isResource = (int)preg_match('/.*(resources\/js).*/', $path);
         if ($isResource > 0) {
-            return null;
+            return $file;
         }
 
         switch ($extension) {
@@ -263,11 +272,10 @@ class Loader
             case 'gif':
             case 'webm':
             case 'ico':
-                return new Asset($basePath, $path);
-            default:
+                $file->setType(File::TYPE_ASSET);
         }
 
-        return null;
+        return $file;
     }
 
     public function hasReleases(): bool
@@ -276,6 +284,9 @@ class Loader
             && count($this->releases) > 1;
     }
 
+    /**
+     * @return array<\MarkHelp\Reader\Release>
+     */
     public function releases(): array
     {
         return $this->releases;
@@ -286,29 +297,16 @@ class Loader
         return $this->theme;
     }
 
+    /**
+     * @return array<string>
+     */
     public function params(): array
     {
         return $this->settings->allParams();
     }
     
-    public function menuConfig(): ?File
-    {
-        return $this->menuConfig;
-    }
-
     public function templatesPath(): string
     {
         return $this->templatesPath;
     }
-    
-//     /**
-//      * Devolve um nome seguro para um arquivo a ser salvo.
-//      * @param string $name
-//      * @return string
-//      */
-//     private function safeFilename(string $name): string
-//     {
-//         $except = array('\\', ':', '*', '?', '"', '<', '>', '|');
-//         return str_replace($except, '', $name);
-//     }
 }

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Reader;
 
-use MarkHelp\Reader\Files\Asset;
-use MarkHelp\Reader\Files\Image;
-use MarkHelp\Reader\Files\Markdown;
+use MarkHelp\Reader\File;
 use MarkHelp\Reader\Loader;
 use Tests\TestCase;
 
@@ -36,11 +34,11 @@ class LoaderLocalThemesTest extends TestCase
         ], $files);
 
         $objects = $loader->theme()->files();
-        $this->assertInstanceOf(Asset::class, $objects[0]);
-        $this->assertInstanceOf(Asset::class, $objects[1]);
-        $this->assertInstanceOf(Asset::class, $objects[2]);
-        $this->assertInstanceOf(Asset::class, $objects[3]);
-        $this->assertInstanceOf(Asset::class, $objects[4]);
+        $this->assertEquals(File::TYPE_ASSET, $objects[0]->type());
+        $this->assertEquals(File::TYPE_ASSET, $objects[1]->type());
+        $this->assertEquals(File::TYPE_ASSET, $objects[2]->type());
+        $this->assertEquals(File::TYPE_ASSET, $objects[3]->type());
+        $this->assertEquals(File::TYPE_ASSET, $objects[4]->type());
     }
 
     /** @test */
@@ -62,9 +60,9 @@ class LoaderLocalThemesTest extends TestCase
         ], $files);
 
         $objects = $loader->theme()->files();
-        $this->assertInstanceOf(Asset::class, $objects[0]);
-        $this->assertInstanceOf(Asset::class, $objects[1]);
-        $this->assertInstanceOf(Asset::class, $objects[2]);
+        $this->assertEquals(File::TYPE_ASSET, $objects[0]->type());
+        $this->assertEquals(File::TYPE_ASSET, $objects[1]->type());
+        $this->assertEquals(File::TYPE_ASSET, $objects[2]->type());
     }
 
     /** @test */

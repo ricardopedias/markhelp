@@ -27,7 +27,7 @@ class LoaderLocalReleasesTest extends TestCase
 
         $releases = $loader->releases();
 
-        $this->assertCount(15, $releases);
+        $this->assertCount(16, $releases);
 
         $this->assertArrayHasKey('1', $releases);
         $this->assertArrayHasKey('1.0', $releases);
@@ -44,6 +44,7 @@ class LoaderLocalReleasesTest extends TestCase
         $this->assertArrayHasKey('v111.111.111', $releases);
         $this->assertArrayHasKey('v2.0.0', $releases);
         $this->assertArrayHasKey('v3.0.0', $releases);
+        $this->assertArrayHasKey('v4.0.0', $releases);
 
         $expectsOneFile = [
             '1', '1.0.0', '111.0.0', '111.111.0', '111.111.111', 'master',

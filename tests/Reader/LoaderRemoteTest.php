@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Reader;
 
-use MarkHelp\Reader\Files\Asset;
-use MarkHelp\Reader\Files\File;
-use MarkHelp\Reader\Files\Image;
-use MarkHelp\Reader\Files\Markdown;
+use MarkHelp\Reader\File;
 use MarkHelp\Reader\Loader;
 use Tests\TestCase;
 
@@ -27,8 +24,6 @@ class LoaderRemoteTest extends TestCase
             'https://github.com/ricardopedias/markhelp-test-repo.git', 
             $this->pathDestination
         );
-
-        $this->assertNotNull($loader->menuConfig());
 
         $clonedRelease1 = "{$this->pathDestination}/markhelp-test-repo/v1.0.0";
         $clonedRelease2 = "{$this->pathDestination}/markhelp-test-repo/v2.0.0";
@@ -54,13 +49,13 @@ class LoaderRemoteTest extends TestCase
         ], $releases['v1.0.0']->files(true));
 
         $objects = $releases['v1.0.0']->files();
-        $this->assertInstanceOf(Markdown::class, $objects[0]);
-        $this->assertInstanceOf(Markdown::class, $objects[1]);
-        $this->assertInstanceOf(Image::class, $objects[2]);
-        $this->assertInstanceOf(Image::class, $objects[3]);
-        $this->assertInstanceOf(Markdown::class, $objects[4]);
-        $this->assertInstanceOf(Markdown::class, $objects[5]);
-        $this->assertInstanceOf(Markdown::class, $objects[6]);
+        $this->assertEquals(File::TYPE_MARKDOWN, $objects[0]->type());
+        $this->assertEquals(File::TYPE_MARKDOWN, $objects[1]->type());
+        $this->assertEquals(File::TYPE_IMAGE, $objects[2]->type());
+        $this->assertEquals(File::TYPE_IMAGE, $objects[3]->type());
+        $this->assertEquals(File::TYPE_MARKDOWN, $objects[4]->type());
+        $this->assertEquals(File::TYPE_MARKDOWN, $objects[5]->type());
+        $this->assertEquals(File::TYPE_MARKDOWN, $objects[6]->type());
 
         // v2.0.0
 
@@ -89,8 +84,6 @@ class LoaderRemoteTest extends TestCase
         ], $releases['v3.0.0']->files(true));
 
         // tema
-
-        $theme = $loader->theme()->files(true);
         $this->assertEquals([
             $this->normalizePath("{$this->pathDefaultTheme}/assets/apple-touch-icon-precomposed.png"),
             $this->normalizePath("{$this->pathDefaultTheme}/assets/favicon.ico"),
@@ -100,10 +93,10 @@ class LoaderRemoteTest extends TestCase
         ], $loader->theme()->files(true));
 
         $theme = $loader->theme()->files();
-        $this->assertInstanceOf(Asset::class, $theme[0]);
-        $this->assertInstanceOf(Asset::class, $theme[1]);
-        $this->assertInstanceOf(Asset::class, $theme[2]);
-        $this->assertInstanceOf(Asset::class, $theme[3]);
-        $this->assertInstanceOf(Asset::class, $theme[4]);
+        $this->assertEquals(File::TYPE_ASSET, $theme[0]->type());
+        $this->assertEquals(File::TYPE_ASSET, $theme[1]->type());
+        $this->assertEquals(File::TYPE_ASSET, $theme[2]->type());
+        $this->assertEquals(File::TYPE_ASSET, $theme[3]->type());
+        $this->assertEquals(File::TYPE_ASSET, $theme[4]->type());
     }
 }

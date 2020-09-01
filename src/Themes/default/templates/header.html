@@ -1,15 +1,19 @@
         <header>
             <a class="logo" href="{{ home_url }}">
-                <span class="icon {{ logo_status }}">
+                {% if project_logo_status != 'disabled' %}
+                <span class="icon">
                     <img src="{{ project_logo }}" width="50" height="40" alt="{{ project_name }} - {{ project_slogan }}">
                 </span>
+                {% endif %}
                 <span class="name">{{ project_name }}</span>
                 <span class="tagline">{{ project_slogan }}</span>
             </a>
 
             <div class='block-version-selector'>
                 <select class='version-select'>
-                {{ versions }}
+                    {% for label, url in releases_list %}
+                    <option value="{{ url }}">{{ label }}</option>
+                    {% endfor %}
                 </select>
             </div>
             

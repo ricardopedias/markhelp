@@ -7,7 +7,6 @@
 @import url('https://fonts.googleapis.com/css?family=Fira+Code&display=swap');
 @import "variables";
 @import "~normalize-scss";
-@import "~highlight.js/scss/github.scss";
 
 @include normalize();
 
@@ -18,3 +17,4 @@
 @import "footer";
 @import "code";
 @import "forkme";
+@import "~highlight.js/scss/github.scss";

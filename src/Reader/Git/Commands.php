@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MarkHelp\Reader\Git;
 
+use Closure;
 use Exception;
 
 class Commands
@@ -29,31 +30,29 @@ class Commands
 
      /**
      * Processa um comando de terminal, validando suas entradas.
-     * @param array<string|array> $arguments
+     * @param array<string> $arguments
      * @return string
      */
     protected function processCommand(array $arguments): string
     {
         $command = [];
 
-        $programName = (string)array_shift($arguments);
+        $programName = $arguments[0];
+        unset($arguments[0]);
 
         foreach ($arguments as $arg) {
-            if (is_array($arg) === true) {
-                foreach ($arg as $key => $value) {
-                    $escapedCommand = '';
-                    if (is_string($key)) {
-                        $escapedCommand = "$key ";
-                    }
-                    $command[] = $escapedCommand . escapeshellarg($value);
-                }
+            // if (is_array($arg) === true) {
+            //     foreach ($arg as $key => $value) {
+            //         $escapedCommand = '';
+            //         if (is_string($key)) {
+            //             $escapedCommand = "$key ";
+            //         }
+            //         $command[] = $escapedCommand . escapeshellarg($value);
+            //     }
 
-                continue;
-            }
-
-            if ($arg !== null) {
-                $command[] = escapeshellarg($arg);
-            }
+            //     continue;
+            // }
+            $command[] = escapeshellarg($arg);
         }
 
         return "$programName " . implode(' ', $command);
@@ -62,10 +61,10 @@ class Commands
 /**
      * Verifica se o URL é de um repositório válido.
      * @param  string $url
-     * @param  array<string>|null $refs
+     * @param  array<string> $refs
      * @return bool
      */
-    public function isValidRemote(string $url, array $refs = null): bool
+    public function isValidRemote(string $url, array $refs = []): bool
     {
         $env = 'GIT_TERMINAL_PROMPT=0';
 
@@ -77,14 +76,15 @@ class Commands
         $output = null;
         $returnCode = 1;
 
-        exec($this->processCommand([
+        $nodes = [
             $env . ' git ls-remote',
             '--heads',
             '--quiet',
             '--exit-code',
-            $url,
-            $refs,
-        ]) . ' 2>&1', $output, $returnCode);
+            $url
+        ];
+        $withRefs = array_merge($nodes, $refs);
+        exec($this->processCommand($withRefs) . ' 2>&1', $output, $returnCode);
 
         return $returnCode === 0;
     }
@@ -156,17 +156,20 @@ class Commands
     /**
      * Devolve a lista de releases presentes no repositorio.
      * @param string $clonedPath
-     * @return array
+     * @return array<string>
      * @throws Exception
      */
     public function getReleases(string $clonedPath): array
     {
-        return $this->extractFromCommand("cd {$clonedPath}; git tag -l", 'trim');
+        $result = $this->extractFromCommand("cd {$clonedPath}; git tag -l", function ($value) {
+            return trim($value);
+        });
+        return $result ?? [];
     }
 
     /**
      * Faz o chckout em um Release.
-     * @param string $path
+     * @param string $clonePath
      * @param string $release
      * @throws Exception
      * @return string
@@ -181,7 +184,7 @@ class Commands
 /**
      * Devolve a lista de branchs presentes no repositorio.
      * @param string $clonedPath
-     * @return array
+     * @return array<string>
      * @throws Exception
      */
     public function getBranches(string $clonedPath): array
@@ -192,25 +195,25 @@ class Commands
             return $value;
         });
 
-        return array_filter($list, function ($value) {
+        return array_filter($list ?? [], function ($value) {
             return strpos($value, 'HEAD') === false;
         });
     }
 
     /**
      * @param  string $command
-     * @param  callback|null $filter
-     * @return array|null
+     * @param  Closure $filter
+     * @return array<string>
      * @throws \Exception
      */
-    protected function extractFromCommand(string $command, $filter = null)
+    protected function extractFromCommand(string $command, ?Closure $filter = null): array
     {
         $output = [];
         $exitCode = null;
 
         exec("$command", $output, $exitCode);
 
-        if ($exitCode !== 0 || !is_array($output)) {
+        if ($exitCode !== 0 || is_array($output) === false) {
             throw new Exception("Command $command failed.");
         }
 
@@ -229,7 +232,7 @@ class Commands
 
         if (!isset($output[0])) {
             // array vazio
-            return null;
+            return [];
         }
 
         return $output;

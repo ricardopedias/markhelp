@@ -1,42 +1,30 @@
-/* 
----------------------------------------------------------------------------------------------
-Este script contém as funcionalidades do menu lateral.
----------------------------------------------------------------------------------------------
-*/
 
-$('select.version-select').change(function () {
+let elements = document.querySelectorAll('select.version-select');
 
-    var versions = [];
-    $('select.version-select option').each(function(){ versions.push($(this).val()) });
-
-    var versionSelected = $("option:selected", this).val();
-
-    var currentUrl = (window.location.href);
-    $.each(versions, function(k, v){
-
-        if (currentUrl.match(v)) {
-            window.location.href = currentUrl.replace(v, versionSelected);
-            return;
-        }
+elements.forEach(function(select, key){
+    select.addEventListener('change', function(){
+        let versionUrl = this.options[this.selectedIndex].value;
+        window.location.href = versionUrl;
     });
 });
 
-$("menu ul li:has(ul)").each(function(){
 
-    $(this).addClass("has-childs");
+// $("menu ul li:has(ul)").each(function(){
 
-    $(this).find("> a")
-        .attr({ href: "javascript:void(0);" })
-        .click(function() {
+//     $(this).addClass("has-childs");
+
+//     $(this).find("> a")
+//         .attr({ href: "javascript:void(0);" })
+//         .click(function() {
             
-            if ($(this).parent().hasClass("open")) {
-                $(this).parent().removeClass("open");
-                $(this).find(".arrow").removeClass("up").addClass("down");
-                return;
-            }
+//             if ($(this).parent().hasClass("open")) {
+//                 $(this).parent().removeClass("open");
+//                 $(this).find(".arrow").removeClass("up").addClass("down");
+//                 return;
+//             }
 
-            $(this).parent().addClass("open");
-            $(this).find(".arrow").removeClass("down").addClass("up");
-        })
-        .append("<i class='arrow down'></i>");
-});
+//             $(this).parent().addClass("open");
+//             $(this).find(".arrow").removeClass("down").addClass("up");
+//         })
+//         .append("<i class='arrow down'></i>");
+// });

@@ -61,14 +61,8 @@ class SettingsTest extends TestCase
         $this->assertSame('true', $config->param('project_fork'));
         $this->assertSame('Gerador de documentação feito em PHP', $config->param('project_description'));
         $this->assertSame('{{project}}/images', $config->param('project_images'));
-        $this->assertSame('{{project}}/home.html', $config->param('project_home'));
         $this->assertSame('{{project}}/images/logo.png', $config->param('project_logo'));
-        $this->assertSame('{{project}}/menu.json', $config->param('project_menu'));
-
-        $this->assertSame('{{theme}}/assets/styles.css', $config->param('assets_styles'));
-        $this->assertSame('{{theme}}/assets/scripts.js',$config->param('assets_scripts'));
-        $this->assertSame('{{theme}}/assets/favicon.ico', $config->param('assets_icon_favicon'));
-        $this->assertSame('{{theme}}/assets/apple-touch-icon-precomposed.png', $config->param('assets_icon_apple'));
+        $this->assertSame('enabled', $config->param('project_logo_status'));
     }
 
     /** @test */

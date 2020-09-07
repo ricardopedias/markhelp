@@ -41,7 +41,7 @@ class Page
             ->write($file, $html);
     }
 
-    private function generateHtml(): string
+    public function generateHtml(): string
     {
         $currentRelease = $this->currentRelease();
 
@@ -63,15 +63,20 @@ class Page
         $markdownString = str_replace('.md)', '.html)', $this->fileContent());
         $htmlString     = (new CommonMarkConverter())->convertToHtml($markdownString);
 
-        $tags['page_title']     = (new Parser($markdownString))->extractTitle();
+        $tags['page_title']     = (new Parser())->extractTitle($markdownString);
         $tags['release']        = $this->currentRelease()->name();
         $tags['releases_list']  = $releasesList;
-        $tags['menu']           = (new Menu($currentRelease))->extractItems($urlPrefix);
+        $tags['menu']           = (new Parser())->extractMenuItems($currentRelease, $urlPrefix);
         $tags['content']        = $htmlString;
         $tags['project_logo']   = $urlPrefix . $this->resolveProjectLogoUrl();
-        $tags['project_images'] = $urlPrefix . $params['project_images'];
 
-        return $this->templateEngine()->render('page.html', $params);
+        foreach ($this->loader->theme()->filesAsString(false) as $assetPath) {
+            $assetName = reliability()->filename($assetPath);
+            $assetName = str_replace("-", "_", $assetName);
+            $tags["asset_{$assetName}"] = $urlPrefix . $assetPath;
+        }
+
+        return $this->templateEngine()->render('page.html', $tags);
     }
 
     private function currentRelease(): Release

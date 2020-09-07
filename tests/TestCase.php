@@ -24,11 +24,12 @@ class TestCase extends PhpUnitTestCase
         $this->pathDefaultTheme = $this->normalizePath("{$this->pathSource}/Themes/default");
         $this->pathTests        = __DIR__;
         $this->pathTestFiles    = $this->normalizePath("{$this->pathTests}/test-files");
-        $this->pathComplete     = $this->normalizePath("{$this->pathTestFiles}/skeleton-complete");
         $this->pathReleases     = $this->normalizePath("{$this->pathTestFiles}/skeleton-releases");
         $this->pathThemes       = $this->normalizePath("{$this->pathTestFiles}/skeleton-themes");
         $this->pathDestination  = $this->normalizePath("{$this->pathTestFiles}/destination");
 
+
+        $this->pathComplete     = $this->normalizePath("{$this->pathTestFiles}/skeleton-complete");
 
         $this->pathRootMinimal  = implode(DIRECTORY_SEPARATOR, [__DIR__, 'test-files', 'skeleton-minimal']);
         $this->pathRootDocument = implode(DIRECTORY_SEPARATOR, [__DIR__, 'test-files', 'skeleton-document']);

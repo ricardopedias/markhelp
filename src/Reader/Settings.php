@@ -40,7 +40,6 @@ class Settings
         $this->setupParam(self::TYPE_STRING, 'project_slogan', 'Gerador de documentação');
         $this->setupParam(self::TYPE_BOOL, 'project_fork', 'true');
         $this->setupParam(self::TYPE_STRING, 'project_description', 'Gerador de documentação feito em PHP');
-        $this->setupParam(self::TYPE_PATH, 'project_images', '{{project}}/images');
         $this->setupParam(self::TYPE_FILE, 'project_logo_status', 'enabled');
         $this->setupParam(self::TYPE_FILE, 'project_logo', '{{project}}/images/logo.png');
     }

@@ -46,7 +46,7 @@ class LoaderRemoteTest extends TestCase
             $this->normalizePath("{$clonedRelease1}/instalando.md"),
             $this->normalizePath("{$clonedRelease1}/utilizar-como-biblioteca.md"),
             $this->normalizePath("{$clonedRelease1}/utilizar-no-terminal.md"),
-        ], $releases['v1.0.0']->files(true));
+        ], $releases['v1.0.0']->filesAsString());
 
         $objects = $releases['v1.0.0']->files();
         $this->assertEquals(File::TYPE_MARKDOWN, $objects[0]->type());
@@ -68,7 +68,7 @@ class LoaderRemoteTest extends TestCase
             $this->normalizePath("{$clonedRelease2}/instalando.md"),
             $this->normalizePath("{$clonedRelease2}/utilizar-como-biblioteca.md"),
             $this->normalizePath("{$clonedRelease2}/utilizar-no-terminal.md"),
-        ], $releases['v2.0.0']->files(true));
+        ], $releases['v2.0.0']->filesAsString());
 
         // v3.0.0
 
@@ -81,7 +81,7 @@ class LoaderRemoteTest extends TestCase
             $this->normalizePath("{$clonedRelease3}/instalando.md"),
             $this->normalizePath("{$clonedRelease3}/utilizar-como-biblioteca.md"),
             $this->normalizePath("{$clonedRelease3}/utilizar-no-terminal.md"),
-        ], $releases['v3.0.0']->files(true));
+        ], $releases['v3.0.0']->filesAsString());
 
         // tema
         $this->assertEquals([
@@ -90,7 +90,7 @@ class LoaderRemoteTest extends TestCase
             $this->normalizePath("{$this->pathDefaultTheme}/assets/logo.png"),
             $this->normalizePath("{$this->pathDefaultTheme}/assets/scripts.js"),
             $this->normalizePath("{$this->pathDefaultTheme}/assets/styles.css"),
-        ], $loader->theme()->files(true));
+        ], $loader->theme()->filesAsString());
 
         $theme = $loader->theme()->files();
         $this->assertEquals(File::TYPE_ASSET, $theme[0]->type());

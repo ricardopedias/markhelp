@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace MarkHelp\Reader;
 
-use MarkHelp\Reader\File;
 use MarkHelp\Reader\Git\Catcher;
 
 class Loader
@@ -16,16 +15,18 @@ class Loader
 
     private Theme $theme;
 
-    private string $templatesPath;
+    private string $defaultTemplatesPath;
 
     /**
      * Constrói um leitor de arquivos markdown.
      */
     public function __construct()
     {
-        $this->settings      = new Settings();
-        $this->theme         = new Theme($this->pathTheme());
-        $this->templatesPath = $this->pathTheme('templates');
+        $this->settings = new Settings();
+        $this->defaultTemplatesPath = $this->pathTheme('templates');
+
+        // 0 atributo theme é reconfigurado em fromLocalDirectory().
+        $this->theme = new Theme();
     }
 
     /**
@@ -76,7 +77,7 @@ class Loader
     {
         $this->setConfig('path_project', $originDirectory);
         $this->parseProject();
-        $this->parseTheme();
+        $this->theme = new Theme($this->pathTheme());
         return $this;
     }
 
@@ -130,152 +131,16 @@ class Loader
         // Usa-se o diretório principal
         if ($hasReleases === false) {
             $root = rtrim($root, '/');
-            $object = $this->parseRelease('_', $root);
-            $this->releases['_'] = $object;
+            $this->releases['_'] = new Release('_', $root);
             return;
         }
 
         foreach ($releases as $release) {
-             $object = $this->parseRelease($release, $this->pathProject($release));
-             $this->releases[$release] = $object;
+            $this->releases[$release] = new Release(
+                $release,
+                $this->pathProject($release)
+            );
         }
-    }
-
-    /**
-     * Lê o conteúdo de um release
-     */
-    private function parseRelease(string $name, string $pathRelease): Release
-    {
-        $homeSetted = false;
-
-        $release = new Release($name, $pathRelease);
-        $releaseDirectory = reliability()->mountDirectory($pathRelease);
-        $rootItems = $releaseDirectory->listContents("/", true);
-        foreach ($rootItems as $item) {
-            if ($item['type'] !== 'file') {
-                continue;
-            }
-
-            $allowed = ['md','jpg','jpeg','png','gif','webm'];
-            if (in_array($item['extension'], $allowed) === false) {
-                continue;
-            }
-
-            $releaseFile = $this->parseReleaseFile($pathRelease, $item['path'], $item['extension']);
-            if ($releaseFile !== null) {
-                $release->addFile($releaseFile);
-            }
-
-            // O primeiro arquivo markdown deve ser um fallback
-            // para caso a home não exista
-            if ($item['extension'] === 'md' && $homeSetted === false) {
-                $release->setCurrentFileAsHome();
-                $homeSetted = true;
-            }
-
-            // A página home real
-            if ($item['basename'] === 'index.md') {
-                $release->setCurrentFileAsHome();
-            }
-        }
-
-        return $release;
-    }
-
-    private function parseReleaseFile(string $basePath, string $path, string $extension): File
-    {
-        $file = new File($basePath, $path);
-
-        switch ($extension) {
-            case 'md':
-                $file->setType(File::TYPE_MARKDOWN);
-                break;
-            case 'jpg':
-            case 'jpeg':
-            case 'png':
-            case 'gif':
-            case 'webm':
-                $file->setType(File::TYPE_IMAGE);
-        }
-
-        return $file;
-    }
-
-    /**
-     * Lê os arquivos do tema
-     */
-    private function parseTheme(): void
-    {
-        $pathTheme = $this->pathTheme();
-
-        $themeDirectory = reliability()->mountDirectory($pathTheme);
-        $themeItems = $themeDirectory->listContents("/", true);
-        foreach ($themeItems as $item) {
-            if ($item['type'] === 'dir' && $item['basename'] === 'templates') {
-                $this->templatesPath = $this->pathTheme($item['path']);
-                continue;
-            }
-
-            if (preg_match('/node_modules|resources|templates/', $item['path'])) {
-                continue;
-            }
-
-            if ($item['type'] === 'dir') {
-                continue;
-            }
-
-            $allowed = ['ico','jpg','jpeg','png','gif','webm', 'js', 'css'];
-            if (in_array($item['extension'], $allowed) === false) {
-                continue;
-            }
-
-            $isAsset = (bool)preg_match('/assets/', $item['path']);
-            if ($item['extension'] === 'js' && $isAsset === false) {
-                continue;
-            }
-
-            $themeFile = $this->parseThemeFile($pathTheme, $item['path'], $item['basename'], $item['extension']);
-            if ($themeFile !== null) {
-                $this->theme->addFile($themeFile);
-            }
-        }
-    }
-
-    private function parseThemeFile(string $basePath, string $path, string $basename, string $extension): File
-    {
-        $file = new File($basePath, $path);
-
-        if ($basename === '.gitignore') {
-            return $file;
-        }
-
-        if ($basename === 'package.json') {
-            return $file;
-        }
-
-        if ($basename === 'webpack.config.js') {
-            return $file;
-        }
-
-        // Diretório resources contém assets do mix
-        $isResource = (int)preg_match('/.*(resources\/js).*/', $path);
-        if ($isResource > 0) {
-            return $file;
-        }
-
-        switch ($extension) {
-            case 'js':
-            case 'css':
-            case 'jpg':
-            case 'jpeg':
-            case 'png':
-            case 'gif':
-            case 'webm':
-            case 'ico':
-                $file->setType(File::TYPE_ASSET);
-        }
-
-        return $file;
     }
 
     public function hasReleases(): bool
@@ -307,6 +172,10 @@ class Loader
     
     public function templatesPath(): string
     {
-        return $this->templatesPath;
+        $path = $this->theme->templatesPath();
+        if ($path === '') {
+            $path = $this->defaultTemplatesPath;
+        }
+        return $path;
     }
 }

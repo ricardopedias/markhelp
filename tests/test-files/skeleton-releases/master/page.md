@@ -2,8 +2,6 @@
 
 ## Tópico 1
 
-![Image](images/example.png)
-
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus velit nisi, luctus et enim eget, malesuada semper urna. Donec viverra sem lectus, sit amet commodo diam volutpat ut. Sed ac blandit ligula. 
 
 [Link](https://github.com/ricardopedias/markhelp)

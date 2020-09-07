@@ -53,47 +53,38 @@ class LoaderLocalReleasesTest extends TestCase
 
         array_walk($expectsOneFile, function($version) use ($releases) {
 
-            $this->assertEquals([
-                $this->normalizePath("{$this->pathReleases}/{$version}/test.md"),
-            ], $releases[$version]->files(true));
+            $pagePath = $this->normalizePath("{$this->pathReleases}/{$version}/page.md");
+            $this->assertEquals([$pagePath], $releases[$version]->filesAsString());
 
-            $this->assertEquals(
-                $releases[$version]->home()->fullPath(), 
-                $this->normalizePath("{$this->pathReleases}/{$version}/test.md")
-            );
+            $homePath = $releases[$version]->home()->fullPath();
+            $this->assertEquals($homePath, $this->normalizePath("{$this->pathReleases}/{$version}/page.md"));
         });
 
         $this->assertEquals([
-            $this->normalizePath("{$this->pathReleases}/v1.0.0/images/screenshot.png"),
+            $this->normalizePath("{$this->pathReleases}/v1.0.0/images/example.png"),
             $this->normalizePath("{$this->pathReleases}/v1.0.0/index.md"),
             $this->normalizePath("{$this->pathReleases}/v1.0.0/page.md"),
-        ], $releases['v1.0.0']->files(true));
+        ], $releases['v1.0.0']->filesAsString());
 
-        $this->assertEquals(
-            $releases['v1.0.0']->home()->fullPath(), 
-            $this->normalizePath("{$this->pathReleases}/v1.0.0/index.md"),
-        );
+        $homePath = $releases['v1.0.0']->home()->fullPath();
+        $this->assertEquals($homePath, $this->normalizePath("{$this->pathReleases}/v1.0.0/index.md"));
 
         $this->assertEquals([
-            $this->normalizePath("{$this->pathReleases}/v2.0.0/images/screenshot.png"),
+            $this->normalizePath("{$this->pathReleases}/v2.0.0/images/example.png"),
             $this->normalizePath("{$this->pathReleases}/v2.0.0/page.md"),
             $this->normalizePath("{$this->pathReleases}/v2.0.0/sub/subpage.md"),
-        ], $releases['v2.0.0']->files(true));
+        ], $releases['v2.0.0']->filesAsString());
 
-        $this->assertEquals(
-            $releases['v2.0.0']->home()->fullPath(), 
-            $this->normalizePath("{$this->pathReleases}/v2.0.0/page.md"),
-        );
+        $homePath = $releases['v2.0.0']->home()->fullPath();
+        $this->assertEquals($homePath, $this->normalizePath("{$this->pathReleases}/v2.0.0/page.md"));
 
         $this->assertEquals([
-            $this->normalizePath("{$this->pathReleases}/v3.0.0/images/screenshot.png"),
+            $this->normalizePath("{$this->pathReleases}/v3.0.0/images/example.png"),
             $this->normalizePath("{$this->pathReleases}/v3.0.0/page.md"),
-        ], $releases['v3.0.0']->files(true));
+        ], $releases['v3.0.0']->filesAsString());
 
-        $this->assertEquals(
-            $releases['v3.0.0']->home()->fullPath(), 
-            $this->normalizePath("{$this->pathReleases}/v3.0.0/page.md"),
-        );
+        $homePath = $releases['v3.0.0']->home()->fullPath();
+        $this->assertEquals($homePath, $this->normalizePath("{$this->pathReleases}/v3.0.0/page.md"));
 
         $this->assertEquals([
             $this->normalizePath("{$this->pathDefaultTheme}/assets/apple-touch-icon-precomposed.png"),
@@ -101,7 +92,7 @@ class LoaderLocalReleasesTest extends TestCase
             $this->normalizePath("{$this->pathDefaultTheme}/assets/logo.png"),
             $this->normalizePath("{$this->pathDefaultTheme}/assets/scripts.js"),
             $this->normalizePath("{$this->pathDefaultTheme}/assets/styles.css"),
-        ], $loader->theme()->files(true));
+        ], $loader->theme()->filesAsString());
     }
 
     /** @test */
@@ -122,14 +113,12 @@ class LoaderLocalReleasesTest extends TestCase
         $this->assertCount(1, $releases);
 
         $this->assertEquals([
-            $this->normalizePath("{$this->pathReleases}/v1.0.0/images/screenshot.png"),
+            $this->normalizePath("{$this->pathReleases}/v1.0.0/images/example.png"),
             $this->normalizePath("{$this->pathReleases}/v1.0.0/index.md"),
             $this->normalizePath("{$this->pathReleases}/v1.0.0/page.md"),
-        ], $releases['_']->files(true));
+        ], $releases['_']->filesAsString());
 
-        $this->assertEquals(
-            $releases['_']->home()->fullPath(), 
-            $this->normalizePath("{$this->pathReleases}/v1.0.0/index.md"),
-        );
+        $homePath = $releases['_']->home()->fullPath();
+        $this->assertEquals($homePath, $this->normalizePath("{$this->pathReleases}/v1.0.0/index.md"));
     }
 }

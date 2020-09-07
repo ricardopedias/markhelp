@@ -24,7 +24,7 @@ class LoaderLocalThemesTest extends TestCase
         $projectPath = $this->normalizePath("{$this->pathReleases}/v1.0.0");
         $loader->fromLocalDirectory($projectPath);
 
-        $files = $loader->theme()->files(true);
+        $files = $loader->theme()->filesAsString();
         $this->assertEquals([
             $this->normalizePath("{$this->pathDefaultTheme}/assets/apple-touch-icon-precomposed.png"),
             $this->normalizePath("{$this->pathDefaultTheme}/assets/favicon.ico"),
@@ -52,7 +52,7 @@ class LoaderLocalThemesTest extends TestCase
         $projectPath = $this->normalizePath("{$this->pathReleases}/v2.0.0");
         $loader->fromLocalDirectory($projectPath);
 
-        $files = $loader->theme()->files(true);
+        $files = $loader->theme()->filesAsString();
         $this->assertEquals([
             $this->normalizePath("{$this->pathThemes}/with-templates/assets/logo.png"),
             $this->normalizePath("{$this->pathThemes}/with-templates/assets/scripts.js"),

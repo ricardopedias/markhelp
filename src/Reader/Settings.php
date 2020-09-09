@@ -56,7 +56,7 @@ class Settings
             throw new Exception("Param {$name} is invalid");
         }
 
-        if ($this->types[$name] === self::TYPE_PATH && $value !== '') {
+        if (in_array($this->types[$name], [self::TYPE_PATH, self::TYPE_FILE]) && $value !== '') {
             $value = rtrim($value, DIRECTORY_SEPARATOR);
             $value = str_replace(['{{ ',' }}'], ['{{','}}'], $value);
         }
@@ -95,7 +95,7 @@ class Settings
             throw new Exception("Param {$name} is not exists");
         }
 
-        if ($this->types[$name] === self::TYPE_PATH) {
+        if (in_array($this->types[$name], [self::TYPE_PATH, self::TYPE_FILE]) === true) {
             return $this->parseTags($this->params[$name]);
         }
 

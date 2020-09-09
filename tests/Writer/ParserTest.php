@@ -18,7 +18,7 @@ class ParserTest extends TestCase
     /** @test */
     public function extractTitle()
     {
-        $pagePath = $this->normalizePath($this->pathReleases . '/v4.0.0/01-page-one.md');
+        $pagePath = $this->normalizePath($this->pathReleases . '/v4.0.0/01_page_one.md');
         $contents = file_get_contents($pagePath);
         $parser = new Parser();
         $this->assertEquals('Página 1', $parser->extractTitle($contents));
@@ -34,12 +34,12 @@ class ParserTest extends TestCase
     /** @test */
     public function extractTitleNotInFirstLine()
     {
-        $pagePath = $this->normalizePath($this->pathReleases . '/v4.0.0/01-page-one.md');
+        $pagePath = $this->normalizePath($this->pathReleases . '/v4.0.0/01_page_one.md');
         $contents = file_get_contents($pagePath);
         $parser = new Parser();
         $this->assertEquals('Página 1', $parser->extractTitle("\n" . $contents));
 
-        $pagePath = $this->normalizePath($this->pathReleases . '/v4.0.0/01-page-one.md');
+        $pagePath = $this->normalizePath($this->pathReleases . '/v4.0.0/01_page_one.md');
         $contents = file_get_contents($pagePath);
         $parser = new Parser();
         $this->assertEquals('Página 1', $parser->extractTitle("\n\n\n" . $contents));
@@ -48,12 +48,12 @@ class ParserTest extends TestCase
     /** @test */
     public function extractTitleWithBeforeSpaces()
     {
-        $pagePath = $this->normalizePath($this->pathReleases . '/v4.0.0/01-page-one.md');
+        $pagePath = $this->normalizePath($this->pathReleases . '/v4.0.0/01_page_one.md');
         $contents = file_get_contents($pagePath);
         $parser = new Parser();
         $this->assertEquals('Página 1', $parser->extractTitle(" " . $contents));
 
-        $pagePath = $this->normalizePath($this->pathReleases . '/v4.0.0/01-page-one.md');
+        $pagePath = $this->normalizePath($this->pathReleases . '/v4.0.0/01_page_one.md');
         $contents = file_get_contents($pagePath);
         $parser = new Parser();
         $this->assertEquals('Página 1', $parser->extractTitle("     " . $contents));
@@ -62,12 +62,12 @@ class ParserTest extends TestCase
     /** @test */
     public function extractTitleNotInFirstLineWithBeforeSpaces()
     {
-        $pagePath = $this->normalizePath($this->pathReleases . '/v4.0.0/01-page-one.md');
+        $pagePath = $this->normalizePath($this->pathReleases . '/v4.0.0/01_page_one.md');
         $contents = file_get_contents($pagePath);
         $parser = new Parser();
         $this->assertEquals('Página 1', $parser->extractTitle("\n " . $contents));
 
-        $pagePath = $this->normalizePath($this->pathReleases . '/v4.0.0/01-page-one.md');
+        $pagePath = $this->normalizePath($this->pathReleases . '/v4.0.0/01_page_one.md');
         $contents = file_get_contents($pagePath);
         $parser = new Parser();
         $this->assertEquals('Página 1', $parser->extractTitle("\n\n\n     " . $contents));
@@ -89,7 +89,7 @@ class ParserTest extends TestCase
             ],
             1 => [
                 'label' => 'Página 1',
-                'url'   => '01-page-one.html'
+                'url'   => '01_page_one.html'
             ],
             2 => [
                 'label' => 'Página 2',

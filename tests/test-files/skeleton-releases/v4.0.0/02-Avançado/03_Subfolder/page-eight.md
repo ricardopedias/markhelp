@@ -14,8 +14,8 @@ Sed bibendum nisi vitae est tempus, nec interdum libero placerat. Curabitur ut l
 
 ## Tópico 3
 
--   [Página 1](../../page-one.md)
--   [Página 2](../../page-two.md)
+-   [Página 1](../../01_page_one.md)
+-   [Página 2](../../02-page-two.md)
 -   [Página 3](../../01_O_Básico/01-page-three.md)
 -   [Página 4](../../01_O_Básico/02-page-four.md)
 -   [Página 5](../../02-Avançado/01-page-five.md)

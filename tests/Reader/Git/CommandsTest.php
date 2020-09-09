@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Reader;
+namespace Tests\Reader\Git;
 
 use MarkHelp\Reader\Git\Commands;
 use Tests\TestCase;

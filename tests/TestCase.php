@@ -20,24 +20,14 @@ class TestCase extends PhpUnitTestCase
 
     protected function setUp() : void
     {
-        $this->pathSource       = $this->normalizePath(dirname(__DIR__) . '/src');
-        $this->pathDefaultTheme = $this->normalizePath("{$this->pathSource}/Themes/default");
-        $this->pathTests        = __DIR__;
-        $this->pathTestFiles    = $this->normalizePath("{$this->pathTests}/test-files");
-        $this->pathReleases     = $this->normalizePath("{$this->pathTestFiles}/skeleton-releases");
-        $this->pathThemes       = $this->normalizePath("{$this->pathTestFiles}/skeleton-themes");
-        $this->pathDestination  = $this->normalizePath("{$this->pathTestFiles}/destination");
-
-
-        // $this->pathComplete     = $this->normalizePath("{$this->pathTestFiles}/skeleton-complete");
-
-        // $this->pathRootMinimal  = implode(DIRECTORY_SEPARATOR, [__DIR__, 'test-files', 'skeleton-minimal']);
-        // $this->pathRootDocument = implode(DIRECTORY_SEPARATOR, [__DIR__, 'test-files', 'skeleton-document']);
-        // $this->pathRootMenu     = implode(DIRECTORY_SEPARATOR, [__DIR__, 'test-files', 'skeleton-menu']);
-        
-        // $this->pathExternal     = implode(DIRECTORY_SEPARATOR, [__DIR__, 'test-files', 'external']);
-        // $this->pathThemeAltWithDocument = implode(DIRECTORY_SEPARATOR, [ __DIR__, 'test-files', 'theme-with-document']);
-        // $this->pathThemeAltNotDocument = implode(DIRECTORY_SEPARATOR, [ __DIR__, 'test-files', 'theme-with-document']);
+        $this->pathSource         = $this->normalizePath(dirname(__DIR__) . '/src');
+        $this->pathDefaultTheme   = $this->normalizePath("{$this->pathSource}/Themes/default");
+        $this->pathTests          = __DIR__;
+        $this->pathTestFiles      = $this->normalizePath("{$this->pathTests}/test-files");
+        $this->pathConfigurations = $this->normalizePath("{$this->pathTestFiles}/configurations");
+        $this->pathReleases       = $this->normalizePath("{$this->pathTestFiles}/skeleton-releases");
+        $this->pathThemes         = $this->normalizePath("{$this->pathTestFiles}/skeleton-themes");
+        $this->pathDestination    = $this->normalizePath("{$this->pathTestFiles}/destination");
     }
 
     protected function normalizePath(string $path): string

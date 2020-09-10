@@ -1,0 +1,17 @@
+{
+    "path_theme" : "",
+
+    "clone_url" : "http://www.ricardopedias.com.br",
+    "clone_directory" : "/docs",
+    "clone_tags" : "v0.0.05, v1.66.5555",
+
+    "copy_name" : "Ricardo Pereira",
+    "copy_url" : "https://github.com/ricardopedias",
+
+    "project_name" : "Documentação Fácil",
+    "project_slogan" : "Fazedor de documentos com buniteza",
+    "project_fork" : "true",
+    "project_description" : "Este é um projeto bem legal",
+    "project_logo_status" : "enabled",
+    "project_logo" : "{{ project }}/logo.png"
+}

@@ -62,6 +62,7 @@ class LoaderLocalReleasesTest extends TestCase
 
         $this->assertEquals([
             $this->normalizePath("{$this->pathReleases}/v1.0.0/images/example.png"),
+            $this->normalizePath("{$this->pathReleases}/v1.0.0/images/logo.png"),
             $this->normalizePath("{$this->pathReleases}/v1.0.0/index.md"),
             $this->normalizePath("{$this->pathReleases}/v1.0.0/page.md"),
         ], $releases['v1.0.0']->filesAsString());
@@ -114,6 +115,7 @@ class LoaderLocalReleasesTest extends TestCase
 
         $this->assertEquals([
             $this->normalizePath("{$this->pathReleases}/v1.0.0/images/example.png"),
+            $this->normalizePath("{$this->pathReleases}/v1.0.0/images/logo.png"),
             $this->normalizePath("{$this->pathReleases}/v1.0.0/index.md"),
             $this->normalizePath("{$this->pathReleases}/v1.0.0/page.md"),
         ], $releases['_']->filesAsString());

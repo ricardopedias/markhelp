@@ -6,75 +6,72 @@ namespace MarkHelp;
 
 use Error;
 use Exception;
-use MarkHelp\Reader\Handlers\IHandle;
-use MarkHelp\Reader\Handlers\LocalHandle;
-use MarkHelp\Reader\Handlers\RepositoryHandle;
-use Reliability\Reliability;
+use MarkHelp\Reader\Loader;
+use MarkHelp\Writer\Maker;
 
 class MarkHelp
 {
-    private IHandle $handle;
+    private Loader $loader;
 
-    private bool $isRepository = false;
-
-    /** @var array<string|null> */
-    private array $configList = [];
+    private string $origin;
 
     /**
-     * Constrói um leitor de arquivos markdown.
-     * O argumento $path pode ser um caminho real (/caminho/para/projeto)
+     * O argumento $origin pode ser um caminho real (/caminho/para/projeto)
      * ou um URL para repositório do git (http://meurepos.com/repo.git)
-     * @param string $path Localização contendo arquivos markdown
+     * @param string $origin Localização contendo arquivos markdown
      */
-    public function __construct(string $path)
+    public function __construct(string $origin)
     {
-        if ($this->canBeGitUrl($path) === true) {
-            $this->isRepository = true;
-            $this->handle = new RepositoryHandle();
-            $this->handle->setOrigin($path);
-            return;
-        }
-
-        $this->handle = new LocalHandle();
-        $this->handle->setOrigin($path);
+        $this->loader = new Loader();
+        $this->origin = $origin;
     }
 
-    public function canBeGitUrl(string $url): bool
+    protected function canBeGitUrl(): bool
     {
+        $url = $this->origin;
         return substr($url, -4) === '.git';
-    }
-
-    public function saveTo(string $pathDestination): void
-    {
-        $path = $this->isRepository === true
-            ? $pathDestination // a origem é o local que foram clonados
-            : $this->handle->origin();
-
-        $this->handle->setConfigList($this->configList);
-        $this->handle->toDestination($path);
     }
 
     public function setConfig(string $param, string $value): MarkHelp
     {
-        if ($value === "null") {
-            $value = null;
-        }
-
-        $this->configList[$param] = $value;
+        $this->loader->setConfig($param, $value);
         return $this;
     }
 
-    public function config(string $param): ?string
+    public function config(string $param): string
     {
-        return $this->configList[$param] ?? null;
+        return $this->loader->config($param);
     }
 
-    public function loadConfigFrom(string $pathConfigJsonFile): MarkHelp
+    public function saveTo(string $pathDestination): void
     {
-        $reliability = new Reliability();
-        $filesystem = $reliability->mountDirectory($reliability->dirname($pathConfigJsonFile));
+        $pathDestination = rtrim($pathDestination, DIRECTORY_SEPARATOR);
 
-        $jsonContent = $filesystem->read($reliability->basename($pathConfigJsonFile));
+        if ($this->canBeGitUrl() === true) {
+            $pathClone = $pathDestination . DIRECTORY_SEPARATOR . 'clone';
+            $this->loader->fromRemoteUrl($this->origin, $pathClone);
+            $this->process($pathDestination);
+            reliability()->removeDirectory($pathClone);
+            return;
+        }
+
+        $this->loader->fromLocalDirectory($this->origin);
+        $this->process($pathDestination);
+    }
+
+    private function process(string $pathDestination): void
+    {
+        $maker = new Maker($this->loader);
+        $maker->toDirectory($pathDestination);
+    }
+
+    public function loadConfigFrom(string $configJson): MarkHelp
+    {
+        $directory  = reliability()->dirname($configJson);
+        $file       = reliability()->basename($configJson);
+        $filesystem = reliability()->mountDirectory($directory);
+
+        $jsonContent = $filesystem->read($file);
 
         if ($jsonContent === false) {
             throw new Exception("The config file does not contain a valid json");

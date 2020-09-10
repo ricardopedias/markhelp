@@ -9,13 +9,19 @@
                 <span class="tagline">{{ project_slogan }}</span>
             </a>
 
-            <div class='block-version-selector'>
-                <select class='version-select'>
-                    {% for label, url in releases_list %}
-                    <option value="{{ url }}">{{ label }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            
+            {% if releases_list|length > 0 %}
+                <div class="block-version-selector">
+                    <select class="version-select">
+                        {% for label, url in releases_list %}
+                            {% if release == label %}
+                            <option value="{{ url }}" selected>{{ label }}</option>
+                            {% else %}
+                            <option value="{{ url }}">{{ label }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            {% endif %}
+
         </header>
 

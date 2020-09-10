@@ -1,9 +1,9 @@
 
             <menu>
                 
-                {% if releases_list|length > 1 %}
-                    <div class='block-version-selector'>
-                        <select class='version-select'>
+                {% if releases_list|length > 0 %}
+                    <div class="block-version-selector">
+                        <select class="version-select">
                             {% for label, url in releases_list %}
                                 {% if release == label %}
                                 <option value="{{ url }}" selected>{{ label }}</option>

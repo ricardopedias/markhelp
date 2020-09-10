@@ -24,16 +24,20 @@ class Maker
     /**
      * Salva o projeto no diretório especificado.
      * @param string $path
+     * @param bool $clearDestination
      * @return void
      */
-    public function toDirectory(string $path): void
+    public function toDirectory(string $path, bool $clearDestination = false): void
     {
         $this->destinationPath = $path;
 
         if (reliability()->isDirectory($path) === false) {
             throw new Exception("Directory {$path} is not exists");
         }
-        reliability()->removeDirectory($path, true);
+
+        if ($clearDestination === true) {
+            reliability()->removeDirectory($path, true);
+        }
 
         $this->convert();
     }

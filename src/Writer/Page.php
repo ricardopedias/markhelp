@@ -54,6 +54,10 @@ class Page
 
         $releasesList = [];
         foreach ($this->loader->releases() as $release) {
+            if ($release->name() === '_') {
+                continue;
+            }
+            
             $homePath = str_replace('.md', '.html', $release->home()->path());
             $url = '../' . $release->name() . '/' . $homePath;
             $releasesList[$release->name()] = $url;

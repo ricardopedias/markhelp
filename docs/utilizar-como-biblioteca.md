@@ -43,8 +43,8 @@ Para setar parâmetros de configurações pontuais, use o método `config`:
 
 ```php
 $app = new MarkHelp('/caminho/ate/meu/projeto/markdown/');
-$app->config('project.name', 'Meu Projeto Legal');
-$app->config('assets.logo.src', '/caminho/do/meu/logotipo.png');
+$app->config('project_name', 'Meu Projeto Legal');
+$app->config('project_logo', '/caminho/do/meu/logotipo.png');
 $app->saveTo('/caminho/para/resultado/html/');
 ```
 

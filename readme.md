@@ -1,6 +1,6 @@
 # MarkHelp
 
-![PHP Version](https://img.shields.io/badge/php-%5E7.2.0-blue)
+![PHP Version](https://img.shields.io/badge/php-%5E7.4.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 ![TDD](https://img.shields.io/badge/tdd-Tested%20100%25-blue)
 [![Build Status](https://travis-ci.org/ricardopedias/plexi.svg?branch=master)](https://travis-ci.org/ricardopedias/markhelp)

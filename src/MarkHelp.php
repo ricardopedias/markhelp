@@ -22,8 +22,8 @@ class MarkHelp
      */
     public function __construct(string $origin)
     {
-        $this->loader = new Loader();
         $this->origin = $origin;
+        $this->loader = new Loader();
     }
 
     protected function canBeGitUrl(): bool
@@ -67,33 +67,7 @@ class MarkHelp
 
     public function loadConfigFrom(string $configJson): MarkHelp
     {
-        $directory  = reliability()->dirname($configJson);
-        $file       = reliability()->basename($configJson);
-        $filesystem = reliability()->mountDirectory($directory);
-
-        $jsonContent = $filesystem->read($file);
-
-        if ($jsonContent === false) {
-            throw new Exception("The config file does not contain a valid json");
-        }
-
-        $configList = @json_decode($jsonContent, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new Exception("The config file does not contain a json: " . \json_last_error_msg());
-        }
-
-        try {
-            foreach ($configList as $param => $value) {
-                if (is_array($value) === true) {
-                    throw new Exception("Parameter {$param} does not contain a valid value");
-                }
-
-                $this->setConfig($param, (string)$value);
-            }
-        } catch (Error $e) {
-            throw new Exception("The config file format is invalid. " . $e->getMessage(), $e->getCode());
-        }
-        
+        $this->loader->loadConfigFrom($configJson);
         return $this;
     }
 }

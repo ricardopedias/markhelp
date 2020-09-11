@@ -41,7 +41,7 @@ class Settings
         $this->setupParam(self::TYPE_BOOL, 'project_fork', 'true');
         $this->setupParam(self::TYPE_STRING, 'project_description', 'Gerador de documentação feito em PHP');
         $this->setupParam(self::TYPE_FILE, 'project_logo_status', 'enabled');
-        $this->setupParam(self::TYPE_FILE, 'project_logo', '{{project}}/images/logo.png');
+        $this->setupParam(self::TYPE_FILE, 'project_logo', '/images/logo.png');
     }
 
     /**
@@ -61,8 +61,23 @@ class Settings
             $value = str_replace(['{{ ',' }}'], ['{{','}}'], $value);
         }
 
+        if ($name === 'path_theme') {
+            $value = $this->prepareThemePath($value);
+        }
+
         $this->params[$name] = $value;
         return $this;
+    }
+
+    private function prepareThemePath(string $path): string
+    {
+        $pathDefault = \reliability()->dirname(__DIR__) . '/Themes/default';
+
+        if (reliability()->isDirectory($path) === false || $path === '') {
+            return $pathDefault;
+        }
+
+        return $path;
     }
 
     /**
@@ -129,11 +144,6 @@ class Settings
     {
         if ($value === '') {
             return '';
-        }
-
-        $projectPath = $this->params['path_project'] ?? '';
-        if ($projectPath !== '') {
-            $value = str_replace("{{project}}", $projectPath, $value);
         }
 
         $themePath = $this->params['path_theme'] ?? '';

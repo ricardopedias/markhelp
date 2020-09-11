@@ -29,16 +29,21 @@ class Maker
      */
     public function toDirectory(string $path, bool $clearDestination = false): void
     {
-        $this->destinationPath = $path;
+        $path = rtrim($path, DIRECTORY_SEPARATOR);
 
         if (reliability()->isDirectory($path) === false) {
             throw new Exception("Directory {$path} is not exists");
+        }
+
+        if ($path === $this->loader->config('path_project')) {
+            throw new Exception("Source directory cannot be the same as the destination directory");
         }
 
         if ($clearDestination === true) {
             reliability()->removeDirectory($path, true);
         }
 
+        $this->destinationPath = $path;
         $this->convert();
     }
 

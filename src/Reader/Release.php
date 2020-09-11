@@ -17,6 +17,8 @@ class Release
 
     private int $homeIndex = 0;
 
+    private string $configFile = '';
+
     public function __construct(string $name, string $path)
     {
         $this->name = $name;
@@ -32,6 +34,11 @@ class Release
     public function path(): string
     {
         return $this->path;
+    }
+
+    public function configFile(): string
+    {
+        return $this->configFile;
     }
 
     private function addFile(File $fileInstance): Release
@@ -95,6 +102,10 @@ class Release
         foreach ($rootItems as $item) {
             if ($item['type'] !== 'file') {
                 continue;
+            }
+
+            if ($item['path'] === 'config.json') {
+                $this->configFile = $item['path'];
             }
 
             $allowed = ['md','jpg','jpeg','png','gif','webm'];

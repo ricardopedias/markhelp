@@ -18,6 +18,12 @@ class SettingsTest extends TestCase
         $config = new Settings();
         $config->setParam("path_project", $projectPath);
         $this->assertEquals($projectPath, $config->param('path_project'));
+
+        // Barra no final deve ser removida de caminhos
+        $config = new Settings();
+        $config->setParam("path_project", $projectPath . DIRECTORY_SEPARATOR);
+        $this->assertNotEquals($projectPath . DIRECTORY_SEPARATOR, $config->param('path_project'));
+        $this->assertEquals($projectPath, $config->param('path_project'));
     }
 
     /** @test */
@@ -60,36 +66,25 @@ class SettingsTest extends TestCase
         $this->assertSame('Gerador de documentação', $config->param('project_slogan'));
         $this->assertSame('true', $config->param('project_fork'));
         $this->assertSame('Gerador de documentação feito em PHP', $config->param('project_description'));
-        $this->assertSame('{{project}}/images/logo.png', $config->param('project_logo'));
+        $this->assertSame('/images/logo.png', $config->param('project_logo'));
         $this->assertSame('enabled', $config->param('project_logo_status'));
     }
 
     /** @test */
     public function setParamStripRightBar()
     {
+        $themePath    = $this->normalizePath("{$this->pathThemes}/with-templates");
+        $themePathBar = $this->normalizePath("{$this->pathThemes}/with-templates/");
+
         $config = new Settings();
-        $config->setParam('path_theme', '/teste/de/diretorio/');
+        $config->setParam('path_theme', $themePathBar);
         // a barra final deve ser removida
-        $this->assertSame('/teste/de/diretorio', $config->param('path_theme'));
+        $this->assertSame($themePath, $config->param('path_theme'));
     }
 
     /** @test */
     public function setParamReplaceTemplateTags()
     {
-        $projectPath = $this->normalizePath("{$this->pathReleases}/v1.0.0");
-
-        // tag {{project}}
-        $config = new Settings();
-        $config->setParam('path_project', $projectPath);
-        $config->setParam('project_logo', '{{project}}/teste/de/logo.png');
-        $this->assertSame("{$projectPath}/teste/de/logo.png", $config->param('project_logo'));
-
-        // tag {{ project }} (com espaços)
-        $config = new Settings();
-        $config->setParam('path_project', $projectPath);
-        $config->setParam('project_logo', '{{ project }}/teste/de/logo.png');
-        $this->assertSame("{$projectPath}/teste/de/logo.png", $config->param('project_logo'));
-
         // tag {{theme}}
         $config = new Settings();
         $config->setParam('project_logo', '{{theme}}/teste/de/logo.png');
@@ -101,6 +96,27 @@ class SettingsTest extends TestCase
         $config->setParam('project_logo', '{{ theme }}/teste/de/diretorio/');
         $themePath = $config->param('path_theme');
         $this->assertSame("{$themePath}/teste/de/diretorio", $config->param('project_logo'));
-        
+    }
+
+    /** @test */
+    public function setParamThemePath()
+    {
+        $themePath = $this->normalizePath("{$this->pathThemes}/with-templates");
+
+        // Tema existente é permitido
+        $config = new Settings();
+        $config->setParam('path_theme', $themePath);
+        $themePath = $config->param('path_theme');
+        $this->assertSame($themePath, $config->param('path_theme'));
+
+        // Tema inexistente não é permitido
+        $config = new Settings();
+        $config->setParam('path_theme', '/path/not/exists');
+        $this->assertSame("{$this->pathSource}/Themes/default", $config->param('path_theme'));
+
+        // Tema vazio não é permitido
+        $config = new Settings();
+        $config->setParam('path_theme', '');
+        $this->assertSame("{$this->pathSource}/Themes/default", $config->param('path_theme'));
     }
 }

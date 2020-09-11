@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace MarkHelp\Reader;
 
+use Error;
+use Exception;
 use MarkHelp\Reader\Git\Catcher;
 
 class Loader
@@ -16,6 +18,8 @@ class Loader
     private Theme $theme;
 
     private string $defaultTemplatesPath;
+
+    private string $configFile = '';
 
     /**
      * Constrói um leitor de arquivos markdown.
@@ -78,6 +82,10 @@ class Loader
         $this->setConfig('path_project', $originDirectory);
         $this->parseProject();
         $this->theme = new Theme($this->pathTheme());
+
+        if ($this->configFile !== '') {
+            $this->loadConfigFrom($originDirectory . DIRECTORY_SEPARATOR . $this->configFile);
+        }
         return $this;
     }
 
@@ -131,16 +139,34 @@ class Loader
         // Usa-se o diretório principal
         if ($hasReleases === false) {
             $root = rtrim($root, '/');
-            $this->releases['_'] = new Release('_', $root);
+            $release = new Release('_', $root);
+            $this->checkConfigFile($release);
+            $this->releases['_'] = $release;
             return;
         }
 
-        foreach ($releases as $release) {
-            $this->releases[$release] = new Release(
-                $release,
-                $this->pathProject($release)
+        foreach ($releases as $directory) {
+            $release = new Release(
+                $directory,
+                $this->pathProject($directory)
             );
+            $this->checkConfigFile($release);
+            $this->releases[$directory] = $release;
         }
+    }
+
+    private function checkConfigFile(Release $release): void
+    {
+        if ($this->configFile !== '' || $release->configFile() === '') {
+            return;
+        }
+
+        if ($release->name() === '_') {
+            $this->configFile = $release->configFile();
+            return;
+        }
+
+        $this->configFile = $release->name() . DIRECTORY_SEPARATOR . $release->configFile();
     }
 
     public function hasReleases(): bool
@@ -177,5 +203,41 @@ class Loader
             $path = $this->defaultTemplatesPath;
         }
         return $path;
+    }
+
+    public function loadConfigFrom(string $configJson): Loader
+    {
+        if (reliability()->isFile($configJson) === false) {
+            throw new Exception("The specified configuration file {$configJson} does not exist");
+        }
+
+        $directory  = reliability()->dirname($configJson);
+        $file       = reliability()->basename($configJson);
+        $filesystem = reliability()->mountDirectory($directory);
+
+        $jsonContent = $filesystem->read($file);
+
+        if ($jsonContent === false) {
+            throw new Exception("The config file does not contain a valid json");
+        }
+
+        $configList = @json_decode($jsonContent, true);
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception("The config file does not contain a json: " . \json_last_error_msg());
+        }
+
+        try {
+            foreach ($configList as $param => $value) {
+                if (is_array($value) === true) {
+                    throw new Exception("Parameter {$param} does not contain a valid value");
+                }
+
+                $this->setConfig($param, (string)$value);
+            }
+        } catch (Error $e) {
+            throw new Exception("The config file format is invalid. " . $e->getMessage(), $e->getCode());
+        }
+        
+        return $this;
     }
 }

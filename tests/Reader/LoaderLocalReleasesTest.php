@@ -16,7 +16,7 @@ class LoaderLocalReleasesTest extends TestCase
     }
 
     /** @test */
-    public function projectWithReleases()
+    public function projectMultiReleases()
     {
         $loader = new Loader();
          
@@ -82,6 +82,7 @@ class LoaderLocalReleasesTest extends TestCase
         $this->assertEquals([
             $this->normalizePath("{$this->pathReleases}/v3.0.0/images/example.png"),
             $this->normalizePath("{$this->pathReleases}/v3.0.0/page.md"),
+            $this->normalizePath("{$this->pathReleases}/v3.0.0/test/logo.jpg"),
         ], $releases['v3.0.0']->filesAsString());
 
         $homePath = $releases['v3.0.0']->home()->fullPath();
@@ -97,7 +98,7 @@ class LoaderLocalReleasesTest extends TestCase
     }
 
     /** @test */
-    public function projectWithoutReleases()
+    public function projectSingleRelease()
     {
         $loader = new Loader();
         

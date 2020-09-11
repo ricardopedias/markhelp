@@ -20,6 +20,7 @@ class MakerTest extends TestCase
     public function toDirectoryException()
     {
         $this->expectException(Exception::class);
+        $this->expectExceptionMessage("Directory /directory/inexistent is not exists");
 
         $loader = new Loader();
          
@@ -28,6 +29,36 @@ class MakerTest extends TestCase
         
         $maker = new Maker($loader);
         $maker->toDirectory('/directory/inexistent');
+    }
+
+    /** @test */
+    public function toDirectoryEqualOriginExceptionNotEndBar()
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("Source directory cannot be the same as the destination directory");
+
+        $loader = new Loader();
+         
+        $projectPath = $this->normalizePath("{$this->pathReleases}/v1.0.0");
+        $loader->fromLocalDirectory($projectPath);
+        
+        $maker = new Maker($loader);
+        $maker->toDirectory($projectPath);
+    }
+
+    /** @test */
+    public function toDirectoryEqualOriginExceptionWithEndBar()
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage("Source directory cannot be the same as the destination directory");
+
+        $loader = new Loader();
+         
+        $projectPath = $this->normalizePath("{$this->pathReleases}/v1.0.0/");
+        $loader->fromLocalDirectory($projectPath);
+        
+        $maker = new Maker($loader);
+        $maker->toDirectory($projectPath);
     }
 
     /** @test */

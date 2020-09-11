@@ -13,5 +13,5 @@
     "project_fork" : "true",
     "project_description" : "Este é um projeto bem legal",
     "project_logo_status" : "enabled",
-    "project_logo" : "/logo.png"
+    "project_logo" : "images/logo.png"
 }

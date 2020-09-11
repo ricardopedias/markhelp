@@ -4,27 +4,31 @@ declare(strict_types=1);
 
 namespace MarkHelp\Console;
 
-use MarkHelp\Console\Command;
-use Reliability\Reliability;
+use Exception;
+use League\Flysystem\FileNotFoundException;
 use Symfony\Component\Console\Application;
 
 class Cli
 {
     private ?Application $consoleApplication = null;
 
-    private string $version;
+    private string $version = '';
 
     public function loadVersionFrom(string $versionFile): Cli
     {
-        $reliability = new Reliability();
-        $directory = $reliability->dirname($versionFile);
-        $basename = $reliability->basename($versionFile);
+        $directory = reliability()->dirname($versionFile);
+        $basename = reliability()->basename($versionFile);
 
-        $filesystem = $reliability->mountDirectory($directory);
-        $version = $filesystem->read("{$basename}");
+        $filesystem = reliability()->mountDirectory($directory);
+
+        try {
+            $version = $filesystem->read("{$basename}");
+        } catch (FileNotFoundException $e) {
+            throw new Exception("The file {$versionFile} does not exist");
+        }
 
         if ($version !== false) {
-            $this->version = '';
+            $this->version = trim($version);
         }
 
         return $this;
@@ -40,12 +44,12 @@ class Cli
     public function run(Input $input = null, Output $output = null): int
     {
         $name = 'MarkHelp';
-        $command = new Command();
 
         $this->consoleApplication = new Application($name, $this->version);
         $this->consoleApplication->setAutoExit(false);
-        $this->consoleApplication->add($command);
-        $this->consoleApplication->setDefaultCommand($name, true);
+        $this->consoleApplication->add(new Command());
+        $this->consoleApplication->setDefaultCommand('markhelp', true);
+
         return $this->consoleApplication->run($input, $output);
     }
 }

@@ -1,10 +1,12 @@
 #!/usr/bin/env php
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of MarkHelp.
  *
- * (c) Ricardo Pereira <contato@ricardopdias.com.br>
+ * (c) Ricardo Pereira <contato@ricardopedias.com.br>
  *
  * For the full copyright and license information, please view the licence.md
  * file that was distributed with this source code.
@@ -14,17 +16,16 @@ use MarkHelp\Console\Cli;
 
 define('APP_START', microtime(true));
 
-if (version_compare('7.2.0', PHP_VERSION, '>')) {
+if (version_compare('7.4.0', PHP_VERSION, '>')) {
     fwrite(
         STDERR,
         sprintf(
-            'This version of MarkHelp is supported on PHP 7.2, PHP 7.3, and PHP 7.4.' . PHP_EOL .
+            'This version of MarkHelp is supported on PHP 7.4' . PHP_EOL .
             'You are using PHP %s (%s).' . PHP_EOL,
             PHP_VERSION,
             PHP_BINARY
         )
     );
-
     die(1);
 }
 
@@ -36,7 +37,6 @@ $locations = [__DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.ph
 foreach ($locations as $file) {
     if (file_exists($file)) {
         define('MARKHELP_COMPOSER_INSTALL', $file);
-
         break;
     }
 }
@@ -50,7 +50,6 @@ if (!defined('MARKHELP_COMPOSER_INSTALL')) {
         '    composer install' . PHP_EOL . PHP_EOL .
         'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
     );
-
     die(1);
 }
 

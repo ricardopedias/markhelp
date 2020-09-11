@@ -50,7 +50,7 @@ Package: markhelp
 Priority: optional
 Version: $VERSION
 Architecture: all
-Maintainer: Ricardo Pereira Dias <contato@ricardopdias.com.br>
+Maintainer: Ricardo Pereira Dias <contato@ricardopedias.com.br>
 Depends: php-cli
 Description: Ferramenta para gerar sites HTML a partir de arquivos Markdown
 EOF

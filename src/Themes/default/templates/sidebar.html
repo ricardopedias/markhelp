@@ -15,20 +15,7 @@
                     </div>
                 {% endif %}
 
-                <ul>
-                    {% for item in menu %}
-                        <li>
-                        <a href="{{ item.url }}">{{ item.label }}</a>
-                        </li>
-                        {% if item.childs %}
-                            <h2>{{ item.childs.label }}</h2>
-                            {% for subitem in item.childs.items %}
-                                <li>
-                                <a href="{{ subitem.url }}">{{ subitem.label }}</a>
-                                </li>
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                </ul>
+                {{ menu|raw }}
+                
             </menu>
     

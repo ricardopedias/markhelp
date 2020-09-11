@@ -65,14 +65,17 @@ class Page
 
         $urlPrefix      = $this->resolveUrlPrefix();
         $markdownString = str_replace('.md)', '.html)', $this->fileContent());
-        $htmlString     = (new CommonMarkConverter())->convertToHtml($markdownString);
+        
+        $htmlString = (new CommonMarkConverter())->convertToHtml($markdownString);
+        $pageTitle  = (new Parser())->extractTitle($markdownString);
+        $menuItems  = (new Parser())->extractMenuItems($currentRelease, $urlPrefix);
 
-        $tags['page_title']     = (new Parser())->extractTitle($markdownString);
-        $tags['release']        = $this->currentRelease()->name();
-        $tags['releases_list']  = $releasesList;
-        $tags['menu']           = (new Parser())->extractMenuItems($currentRelease, $urlPrefix);
-        $tags['content']        = $htmlString;
-        $tags['project_logo']   = $urlPrefix . $this->resolveProjectLogoUrl();
+        $tags['page_title']    = $pageTitle;
+        $tags['release']       = $this->currentRelease()->name();
+        $tags['releases_list'] = $releasesList;
+        $tags['menu']          = (new Menu($menuItems))->toHtml();
+        $tags['content']       = $htmlString;
+        $tags['project_logo']  = $urlPrefix . $this->resolveProjectLogoUrl();
 
         foreach ($this->loader->theme()->filesAsString(false) as $assetPath) {
             $assetName = reliability()->filename($assetPath);
@@ -135,20 +138,29 @@ class Page
 
     private function resolveProjectLogoUrl(): string
     {
-        $basePath = $this->currentRelease()->path();
+        $basePath = $this->loader->config('path_project');
         $logoPath = $this->loader->config('project_logo');
-        $logoPath = str_replace('{{project}}/', '', $logoPath);
 
-        $hasLogo = reliability()->isFile($basePath . DIRECTORY_SEPARATOR . $logoPath);
+        $filePath = trim(str_replace([$basePath], '', $logoPath), DIRECTORY_SEPARATOR);
+        $baseReleasePath = $basePath;
+        if ($this->releaseName !== '_') {
+            $baseReleasePath .= DIRECTORY_SEPARATOR . $this->releaseName;
+        }
+        $fileReleasedPath = $baseReleasePath . DIRECTORY_SEPARATOR . $filePath;
+
+        $hasLogo = reliability()->isFile($fileReleasedPath);
         if ($hasLogo === true) {
-            return $logoPath;
+            $filePath = str_replace(DIRECTORY_SEPARATOR, '/', $filePath);
+            return $filePath;
         }
 
         $themePath = $this->loader->theme()->path();
-        $logoPath = str_replace('images', 'assets', $logoPath);
-        $hasLogo = reliability()->isFile($themePath . DIRECTORY_SEPARATOR . $logoPath);
+        $logoPath = $themePath
+            . DIRECTORY_SEPARATOR . 'assets'
+            . DIRECTORY_SEPARATOR . 'logo.png';
+        $hasLogo = reliability()->isFile($logoPath);
         if ($hasLogo === true) {
-            return $logoPath;
+            return 'assets/logo.png';
         }
 
         return '';

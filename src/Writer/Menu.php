@@ -4,87 +4,88 @@ declare(strict_types=1);
 
 namespace MarkHelp\Writer;
 
-use Error;
-use Exception;
-use League\CommonMark\CommonMarkConverter;
-use MarkHelp\Reader\File;
-use MarkHelp\Reader\Loader;
-use MarkHelp\Reader\Release;
-use Twig\Environment;
-
 class Menu
 {
     private string $html = '';
 
-    public function __construct(array $items)
+    /**
+     * @param array<array> $itemsList
+     */
+    public function __construct(array $itemsList)
     {
-        $this->html = $this->renderMenu($items);
+        $this->html = $this->renderMenu($itemsList);
     }
+
+    /**
+     * @param array<array> $itemsList
+     * @return string
+     */
+    private function renderMenu(array $itemsList): string
+    {
+        $html = "\n<ul>\n";
+
+        foreach ($itemsList as $item) {
+            if (isset($item['children']) === true) {
+                $html .= "</ul>\n\n";
+                $html .= "<h2>{$item['label']}</h2>\n\n";
+                $html .= "<ul>\n";
+                $html .= $this->renderMenuBlock($item['children']);
+                continue;
+            }
+
+            $html .= $this->renderMenuItem($item['label'], $item['url']);
+        }
+
+        $html .= "</ul>\n";
+
+        return $html;
+    }
+
+    /**
+     * @param array<array> $itemsList
+     * @return string
+     */
+    private function renderMenuBlock(array $itemsList): string
+    {
+        $html = '';
+        foreach ($itemsList as $blockItem) {
+            if (isset($blockItem['children']) === true) {
+                $html .= $this->renderMenuItem($blockItem['label'], $blockItem['url'], $blockItem['children']);
+                continue;
+            }
+
+            $html .= $this->renderMenuItem($blockItem['label'], $blockItem['url']);
+        }
+
+        return $html;
+    }
+
+    /**
+     * @param array<array> $itemsList
+     * @return string
+     */
+    private function renderMenuItem(string $label, string $url, array $itemsList = []): string
+    {
+        $submenu = [];
+        foreach ($itemsList as $item) {
+            $submenu[] = "        " . $this->renderMenuItem($item['label'], $item['url']);
+        }
+
+        if ($submenu !== []) {
+            return "    <li>\n"
+                 . "        <a href=\"{$url}\">{$label}</a>\n"
+                 . "        <ul>\n"
+                 . implode("", $submenu)
+                 . "        </ul>\n"
+                 . "    </li>\n";
+        }
+
+        return "    <li><a href=\"{$url}\">{$label}</a></li>\n";
+    }
+
 
     public function toHtml(): string
     {
         return $this->html;
-    }
-
-    private function renderMenu(array $menuItems): string
-    {
-        if (count($menuItems) === 0) {
-            return '';
-        }
-
-        try {
-            $menu = "";
-            foreach ($menuItems as $item) {
-
-                if (isset($item['children']) === false) {
-                    $menu .= "<ul>";
-                    $menu .= $this->renderMenuItem($item['label'], $item['url']);
-                    continue;
-                }
-
-                $menu .= "</ul>";
-                $menu .= "<h2>{$item['label']}</h2>";
-                $menu .= $this->renderMenuSection($item['children']);
-            }
-        } catch (Error $e) {
-            throw new Exception("The menu file format is invalid. " . $e->getMessage(), $e->getCode());
-        }
-
-        return $menu;
-    }
-
-    private function renderMenuSection(array $menuItems): string
-    {
-        $block = "<ul>";
-        foreach ($menuItems as $item) {
-            if (isset($item['children']) === false) {
-                $block .= $this->renderMenuItem($item['label'], $item['url']);
-                continue;
-            }
-
-            $block .= $this->renderMenuBlock($item['label'], $item['children']);
-        }
-        $block .= "</ul>";
-
-        return $block;
-    }
-
-    private function renderMenuItem(string $label, string $url): string
-    {
-        return implode("\n", [
-            "<li>",
-            "<a href=\"{$url}\">{$label}</a>",
-            "</li>"
-        ]);
-    }
-
-    private function renderMenuBlock(string $label, array $items): string
-    {
-        return implode("\n", [
-            "<li>",
-                "<a href=\"javascript:void(0);\">{$label}</a>",
-                $this->renderMenuSection($items),
-            "</li>"
-        ]);
     }
 }

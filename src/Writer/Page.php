@@ -70,10 +70,12 @@ class Page
         $pageTitle  = (new Parser())->extractTitle($markdownString);
         $menuItems  = (new Parser())->extractMenuItems($currentRelease, $urlPrefix);
 
+        $currentPage = $urlPrefix . str_replace('.md', '.html', $this->markdown->path());
+
         $tags['page_title']    = $pageTitle;
         $tags['release']       = $this->currentRelease()->name();
         $tags['releases_list'] = $releasesList;
-        $tags['menu']          = (new Menu($menuItems))->toHtml();
+        $tags['menu']          = (new Menu($menuItems, $currentPage))->toHtml();
         $tags['content']       = $htmlString;
         $tags['project_logo']  = $urlPrefix . $this->resolveProjectLogoUrl();
 

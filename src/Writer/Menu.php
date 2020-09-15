@@ -8,11 +8,14 @@ class Menu
 {
     private string $html = '';
 
+    private string $currentPage = '';
+
     /**
      * @param array<array> $itemsList
      */
-    public function __construct(array $itemsList)
+    public function __construct(array $itemsList, string $currentPage = '')
     {
+        $this->currentPage = $currentPage;
         $this->html = $this->renderMenu($itemsList);
     }
 
@@ -66,18 +69,28 @@ class Menu
      */
     private function renderMenuItem(string $label, string $url, array $itemsList = []): string
     {
-        $submenu = [];
+        $openedClass = '';
+        $arrowClass  = 'down';
+        $submenu     = [];
         foreach ($itemsList as $item) {
+            if ($this->currentPage === $item['url']) {
+                $openedClass = ' open';
+                $arrowClass  = 'up';
+            }
             $submenu[] = "        " . $this->renderMenuItem($item['label'], $item['url']);
         }
 
         if ($submenu !== []) {
-            return "    <li>\n"
-                 . "        <a href=\"{$url}\">{$label}</a>\n"
+            return "    <li class=\"has-childs{$openedClass}\">\n"
+                 . "        <a href=\"{$url}\">{$label} <i class=\"arrow {$arrowClass}\"></i></a>\n"
                  . "        <ul>\n"
                  . implode("", $submenu)
                  . "        </ul>\n"
                  . "    </li>\n";
+        }
+
+        if ($this->currentPage === $url) {
+            return "    <li class=\"selected\"><a href=\"{$url}\">{$label}</a></li>\n";
         }
 
         return "    <li><a href=\"{$url}\">{$label}</a></li>\n";

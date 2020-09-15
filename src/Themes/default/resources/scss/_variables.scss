@@ -10,18 +10,20 @@ $header-border-bottom-size: 1px;
 
 $sidebar-font-family: $font-family;
 
+$sidebar-version-select-font-family: $font-family;
+
 $sidebar-title-font-family: $font-family;
 $sidebar-title-font-size: 15px;
 $sidebar-title-font-color: #fff;
 
 $sidebar-menu-bg-color: #2b3d50;
-$sidebar-menu-bg-color-hover: darken($sidebar-menu-bg-color, 5%);
+$sidebar-menu-bg-color-hover: darken($sidebar-menu-bg-color, 2%);
 $sidebar-menu-font-size: 17px;
 $sidebar-menu-font-color: lighten($sidebar-menu-bg-color, 50%);
 $sidebar-menu-font-color-hover: lighten($sidebar-menu-font-color, 5%);
 
 $sidebar-submenu-bg-color: $sidebar-menu-bg-color-hover;
-$sidebar-submenu-bg-color-hover: darken($sidebar-submenu-bg-color, 10%);
+$sidebar-submenu-bg-color-hover: darken($sidebar-submenu-bg-color, 2%);
 $sidebar-submenu-font-size: 15px;
 $sidebar-submenu-font-color: $sidebar-menu-font-color;
 $sidebar-submenu-font-color-hover: darken($sidebar-menu-font-color, 10%);

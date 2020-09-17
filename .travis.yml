@@ -2,7 +2,10 @@ dist: bionic
 language: php
 php:
     - '7.4'
-script: phpunit
+script: 
+    - vendor/bin/phpunit
+    - vendor/bin/phpcs --ignore=*/Themes/* --standard=PSR1,PSR2,PSR12 src
+    - vendor/bin/phpstan analyse src --level 8
 install: composer install
 cache:
     directories:

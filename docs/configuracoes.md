@@ -29,7 +29,7 @@ Abaixo, seguem todas elas:
 
 ## 2. Personalizando o menu lateral
 
-O menu lateral é gerado automaticamente com base na estrutura de diretórios da coleção de arquivos markdown existente no projeto.
+O menu lateral é gerado automaticamente com base na estrutura de diretórios da coleção de arquivos markdown existentes no projeto.
 
 Os títulos dos arquivos são utilizados para nomear os itens de menu, como pode ser conferido no exemplo abaixo:
 
@@ -47,7 +47,7 @@ Na imagem acima, pode-se observar como o MarkHelp "entende" a estrutura de arqui
 
 ### Ordenação dos Itens
 
-Por padrão, os itens são ordenados afabeticamente:
+Por padrão, os itens são ordenados alfabeticamente:
 
 ```
 arquitetura.md
@@ -61,7 +61,7 @@ Mas é possível obter um controle maior sobre isso, colocando um prefixo numér
 02-arquitetura.md
 ```
 
-Na imagem anterior de exemplo, você pode observar que os arquivos e diretórios estão nomeados com um prefixo numérico, adequando-os corretamente no menu lateral.
+Na imagem anterior de exemplo, você pode observar que os arquivos e diretórios estão nomeados com um prefixo numérico, adequando-os corretamente no menu lateral. Perceba que os prefixos numéricos são removidos automaticamente ao desenhar o menu.
 
 ## Sumário
 

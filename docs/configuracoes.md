@@ -1,6 +1,8 @@
 # Personalizando e configurando
 
-O MarkHelp é capaz de transformar qualquer projeto contendo arquivos markdown em HTML, formatando-os de uma forma padrão. Mas é possível personalizar várias coisas, de forma que a geração dos documentos se adapte às mais diversas necessidades.
+O MarkHelp é capaz de transformar qualquer projeto contendo arquivos markdown em HTML, formatando-os com um design padrão. 
+
+Mas é possível personalizar várias coisas, de forma que a geração dos documentos se adapte às mais diversas necessidades.
 
 ## 1. Configurações avançadas
 
@@ -23,58 +25,48 @@ Abaixo, seguem todas elas:
 * **project_logo_status**: define se o logotipo aparecerá ou não no cabeçalho das páginas HTML. Por padrão, o valor setado é `true`;
 * **project_logo**: define o caminho até o logotipo da documentação. Por padrão, o logotipo do MarkHelp será utilizado;
 
-> **Observação**: usando o MarkHelp para implementar em projetos PHP, é possível setar configurações pontuais, sem a necessidade de usar um arquivo `config.json`. Para mais informações, confira [Implementando projetos PHP](utilizar-como-biblioteca.md).
+> **Observação**: usando o MarkHelp como biblioteca em projetos PHP, é possível setar configurações pontuais, sem a necessidade de usar um arquivo `config.json`. Para mais informações, confira [Implementando projetos PHP](utilizar-como-biblioteca.md).
 
 ## 2. Personalizando o menu lateral
 
-Para personalizar o menu lateral basta adicionar um arquivo `menu.json` dentro do projeto markdown, ou especificar sua localização absoluta (caminho completo) diretamente no MarkHelp através da configuração avançada (que será abordada a seguir). 
+O menu lateral é gerado automaticamente com base na estrutura de diretórios da coleção de arquivos markdown existente no projeto.
 
-Este arquivo deve possuir a seguinte formatação:
-
-```json
-{
-    "Item Simples 1" : "item-um.md",
-    "Item Simples 2" : "item-dois.md",
-
-    "Titulo 1" : {
-        "Item Agrupado 1" : "Diretório Um/item-três.md",
-        "Item Agrupado 2" : "Diretório Um/item-quatro.md"
-    },
-
-    "Título 2": {
-
-        "Item Agrupado 3" : {
-            "Subitem 1" : "Diretório Dois/item-cinco.md",
-            "Subitem 2" : "item-seis.md",
-            "Subitem 3" : "item-sete.md"
-        },
-
-        "Item Agrupado 4" : {
-            "Subitem 4" : "Diretório Três/item-oito.md",
-            "Subitem 5" : "Diretório Três/item-nove.md"
-        }
-    }
-}
-```
-
-### Entendendo a estrutura
-
-Analisando o objeto Json, vejamos o que significa cada item na estrutura:
-
-1. **Nível 1**: se o valor for uma url, esses itens serão renderizados diretamente no primeiro nível do menu;
-2. **Nível 1 (objeto como valor)**: se o valor for um outro objeto, os itens dele serão considerados *grupos de itens*. Isso significa que eles serão agrupados em um bloco delimitado por um título;
-3. **Nível 2**: se o valor for uma url, esses itens serão renderizados diretamente no menu, dentro da delimitação do título;
-4. **Nível 2 (objeto como valor)**: se o valor for um outro objeto, os itens dele serão considerados um *submenu*. Isso significa que eles estarão ocultos, devendo ser clicado no item para expandir os demais *sub-items*;
-
-Abaixo, um exemplo desta estrutura após a renderização.
+Os títulos dos arquivos são utilizados para nomear os itens de menu, como pode ser conferido no exemplo abaixo:
 
 ![Menu Lateral](images/menu-lateral.png)
 
+### Entendendo mais a fundo
+
+Na imagem acima, pode-se observar como o MarkHelp "entende" a estrutura de arquivos do projeto markdown. A seguinte regra é usada para desenhar o menu lateral:
+
+1. **Itens (ex: Introdução)**: seus nomes são baseados nos títulos dos arquivos markdown;
+2. **Títulos (ex: O BÁSICO)**: são baseados nos nomes dos diretórios que agrupam os subitens de segundo nível;
+3. **Submenus (ex: Configurações)**: são baseados nos nomes dos diretórios que agrupam os subitens de terceiro nível;
+
+> **Importante:** não coloque espaços nos nomes de arquivos e diretórios. Ao invés disso, separe as palavras compostas usando "-" ou "_".
+
+### Ordenação dos Itens
+
+Por padrão, os itens são ordenados afabeticamente:
+
+```
+arquitetura.md
+design-patterns.md
+```
+
+Mas é possível obter um controle maior sobre isso, colocando um prefixo numérico em cada elemento do projeto. Isso forçará uma ordenação personalizada:
+
+```
+01-design-patterns.md
+02-arquitetura.md
+```
+
+Na imagem anterior de exemplo, você pode observar que os arquivos e diretórios estão nomeados com um prefixo numérico, adequando-os corretamente no menu lateral.
 
 ## Sumário
 
 -   [Início](index.md)
--   [Implementando projetos PHP](utilizar-como-biblioteca.md)
--   [Utilizando no Terminal Linux](utilizar-no-terminal.md)
+-   [Usando como Biblioteca](utilizar-como-biblioteca.md)
+-   [Usando no Terminal](utilizar-no-terminal.md)
 -   [Personalizando e Configurando](configuracoes.md)
 -   [Quero ajudar o projeto](como-ajudar.md)

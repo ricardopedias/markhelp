@@ -1,4 +1,4 @@
-# Implementando projetos PHP
+# Usando o MarkHelp como biblioteca
 
 ## 1. Instalando a biblioteca
 
@@ -16,7 +16,6 @@ include 'vendor/autoload.php';
 
 $app = new MarkHelp('/meus/arquivos/markdown/');
 ```
-
 
 ## 2. Uso básico
 
@@ -53,7 +52,7 @@ Para mais informações sobra as configurações disponíveis, configa [Personal
 ## Sumário
 
 -   [Início](index.md)
--   [Implementando projetos PHP](utilizar-como-biblioteca.md)
--   [Utilizando no Terminal Linux](utilizar-no-terminal.md)
+-   [Usando como Biblioteca](utilizar-como-biblioteca.md)
+-   [Usando no Terminal](utilizar-no-terminal.md)
 -   [Personalizando e Configurando](configuracoes.md)
 -   [Quero ajudar o projeto](como-ajudar.md)

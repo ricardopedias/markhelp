@@ -1,4 +1,4 @@
-# Utilizando o MarkHelp no terminal
+# Usando o MarkHelp no terminal
 
 O MarkHelp foi escrito para funcionar em sistemas Linux. Por isso, o projeto 
 acompanha um script para geração de pacotes Debian. 
@@ -56,7 +56,7 @@ O resultado será parecido com o mostrado abaixo:
 
 ```bash
 ---------------------------------------------------
-MarkHelp 0.6.1
+MarkHelp 1.0.0
 ---------------------------------------------------
 Reading from: /home/ricardo/caminho/ate/meu/projeto/markdown/
 Saving in /home/ricardo/caminho/para/resultado/html/
@@ -78,7 +78,7 @@ Para mais informações sobre como criar um arquivo contendo configurações, ac
 ## Sumário
 
 -   [Início](index.md)
--   [Implementando projetos PHP](utilizar-como-biblioteca.md)
--   [Utilizando no Terminal Linux](utilizar-no-terminal.md)
+-   [Usando como Biblioteca](utilizar-como-biblioteca.md)
+-   [Usando no Terminal](utilizar-no-terminal.md)
 -   [Personalizando e Configurando](configuracoes.md)
 -   [Quero ajudar o projeto](como-ajudar.md)

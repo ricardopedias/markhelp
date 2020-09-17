@@ -11,6 +11,25 @@ As versões seguem as regras do [Semantic Versioning](https://semver.org/lang/pt
 
 Nada implementado ainda.
 
+## \[1.0.0] - 2020-09-17
+
+### Added
+
+-   Melhorias na documentação
+-   Adicionada geração automática do menu lateral com base na estrutura do projeto
+-   Adicionada biblioteca twig/twig para renderização de templates
+-   Adicionados analisadores para qualidade de código
+-   Adicionado componente choices.js como seletor de versões
+
+### Changed
+
+-   Melhoria na arquitetura do projeto
+-   Adicionados templates twig ao tema padrão
+
+### Fixed 
+
+-   Remoção de barras duplas nas urls geradas pelo processo de interpretação
+
 ## \[0.7.0] - 2020-04-01
 
 ### Added
